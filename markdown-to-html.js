@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const marked = require('marked');
 
-const pagesLocation = path.join(__dirname, 'pages');
+const pagesLocation = path.join(__dirname, 'docs');
 const htmlPagesLocation = path.join(__dirname, 'html-pages');
 const mdFiles = fs.readdirSync(pagesLocation);
 
