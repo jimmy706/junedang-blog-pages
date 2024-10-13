@@ -1,0 +1,51 @@
+<p>Continuing from our previous <a href="https://junedang.com/an-evolution-story-of-software-deployment-from-dedicated-server-to-containerization/">article</a> on the evolution of software deployment, we now turn our attention to the remarkable benefits brought about by containerization—a concept that has revolutionized the tech world. Containerization has been used for a while now from its buzz to describe a system virtualized environments to run applications, offering unparalleled flexibility and lightweight execution.</p>
+<p>In this story, let’s we will discuss one of the most popular tools used in the containerization realm: Docker Containers. We will unravel what is Docker, why you should use it, and the key concepts of Docker.</p>
+<h2>Understanding Containerization</h2>
+<p>With the people who first time come to this article and are not yet clear about what containerization is, here I will give some brief explanation before we head into other sections.</p>
+<p>Containerization is a technique that bundles an application and its dependencies into a single virtualized unit called the <em>container</em>. By abstracting at the operating-system level, containerization only requires a small number of resources to run while bringing better control over the virtualized environment you want to bundle.</p>
+<h2>Docker Container?</h2>
+<p>Among all containerization technologies, <a href="https://www.docker.com/get-started/">Docker</a> grow as the best option for developers and enterprises to containerize their applications due to the following factors:</p>
+<p><strong>Ease of use</strong>: Docker has a user-friendly and easy-to-learn interface that helps manage containers without too much worrying about remembering all the necessary commands making it accessible for both developers and administrators.</p>
+<ul>
+<li><strong>Portability</strong>: Docker supports all popular OS like Windows, MacOS, and Linus. Furthermore, you can easily run Docker in any environment from the data center to the cloud.</li>
+<li><strong>Large Ecosystem</strong>: Docker has a massive user base and ecosystem which support all your needed packaged containers through accessing <a href="https://hub.docker.com/">Docker Hub</a> public registry.</li>
+<li><strong>Lightweight</strong>: Be leverages OS level kernel, Docker does not require OS on each bundled application to run which improves server performance with better start-up time.</li>
+<li><strong>Isolation &amp; Security</strong>: Each Docker container is highly isolated from the others allowing applications decoupled and run with better security.</li>
+</ul>
+<h2>Why use Docker?</h2>
+<p>You now have a brief understanding of containerization and Docker Containers but may not yet be convinced to use Docker Container for your application deployment process. So let’s have a short story to explain and convincing why you should try Docker for your deployment process.</p>
+<p>Imagine you have two applications that are developed both in Java with different versions: one in Java 8 and one in Java 11. Now you want to deploy these 2 applications to your server for testing purposes but facing the issue that one machine barely manages to run two versions of a programming language. You can think of one of the following solutions:</p>
+<ul>
+<li>Using 2 physical machines to run different Java versions.</li>
+<li>Run two different virtual machines on a single physical server.</li>
+</ul>
+<p>Both options seem to solve your problem but are bulky and not very cost-effective. Instead, a better third option is you only need a Docker to run two containers, each with a different installed version of Java. This approach eliminates the need for multiple physical machines or resource-intensive virtual machines without too much worrying about the cost and the performance of your application.</p>
+<h2>Docker key concepts</h2>
+<p>To have a further understanding of how Docker improves your system deployment process, let’s deep dive into the architecture and the core concepts of Docker.</p>
+<h3>Docker architecture</h3>
+<p>Docker follows client-server architecture with consists of three main components working together to bring the ability of containerization and help manage containerized applications:</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/o91pewjlwi4njtj4zvjs.png" alt="Docker Architecture"></p>
+<ul>
+<li><strong>Docker Daemon</strong>: The Docker daemon, called dockerd, runs as a background process on the host machine. It listens to requests sent from Docker Client to manage and control objects like images, containers, networks, and volumes.</li>
+<li><strong>Docker client</strong>: This component acts as a command line interface for users to communicate with Docker. Through the Docker client, users can execute a wide range of operations, such as creating and managing containers, building and pushing images, configuring networks, and more.</li>
+<li><strong>Docker registry</strong>: Docker registry serves as a repository for storing Docker images where the Docker daemon can retrieve required images for running containers. Docker Hub is the public Docker registry which allows anyone can use. Alternatively, organizations can set up their own private Docker registry for enhanced security and control over image distribution.</li>
+</ul>
+<h3>Docker components</h3>
+<ul>
+<li><p><strong>Docker Image</strong>: A Docker Image is a package that included code, runtime environment, dependencies, and libraries needed to run your application. An Image can be created using instruction that is defined in a Dockerfile.</p>
+</li>
+<li><p><strong>Container</strong>: A Docker Container is an instance created from Docker Image that runs on a host machine. Each container is an encapsulation of the application and its dependencies, providing a consistent and reproducible execution environment. Containers run in isolation from others to ensure applications’ reliability and portability across different environments.</p>
+</li>
+<li><p><strong>Dockerfile</strong>: To create a Docker Image, you need to instruct Docker what is the running environment, dependencies, how the code will run, how the application folder be structured, and what version of your application be like. All this related information of your Image is defined in a Dockerfile.</p>
+</li>
+<li><p><strong>Docker Compose</strong>: In some cases, you need to run a bunch of applications like in a microservice network, and need a way to chain them together as multiple Docker Images. Docker Compose can help you achieve this. It is a tool used for defining and managing multi-container Docker applications which allows you to specify the services, networks, and volumes required for your application in a YAML file</p>
+</li>
+<li><p><strong>Volumes</strong>: By default, data inside containers is not persistent and so any changes made are lost when the container is stopped or deleted. To prevent this happen, you can use Docker Volumes to persist data generated by containers or share data between containers</p>
+</li>
+<li><p><strong>Docker Networking</strong>: Each container is isolated from others and the outside world. So if you want to connect to them or make them communicate with each other you need a Docker Network. Docker Networking enables you to define networks, assign containers to networks, and expose container ports to make services accessible.</p>
+</li>
+</ul>
+<h2>Conclusion</h2>
+<p>Containerization is a game-changer that helps developers easier to manage deployed applications by providing a lightweight and flexible environment. Among all containerization technologies, Docker is one of the best options to containerize your application due to its ease to use and largely supported ecosystem.</p>
+<hr>
+<p><em>Originally published at <a href="https://junedang.com/efficient-system-deployment-with-containerization-how-your-system-benefits-from-docker-containers/">junedang.com</a> on May 21, 2023.</em></p>

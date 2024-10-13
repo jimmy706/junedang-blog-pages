@@ -1,0 +1,36 @@
+<h2>Situation</h2>
+<p>Imagine that you are working on calling an API to receive a list of Person. Each Person has their first name, last name and title. Knowing the model received from the backend, you create a model in the frontend side to catch the value received like:</p>
+<pre><code>type Person {
+	title: string;
+	first: string;
+	last: string;
+}
+</code></pre>
+<p>Now you have received the data from the backend, it’s time for rendering it into view. The requirement is to <em>have title, first name and last name ordered in the same row</em>. Your HTML now looks something like this:</p>
+<pre><code>&lt;div&gt;{person.title}, {person.first} {person.last}&lt;/div&gt;
+</code></pre>
+<p>Until now, the code looks fine and everything runs as you expected. But a new UI comes and you have to adapt that kind of HTML layout in other components. Things look a little duplicate here so you decide to reuse the template by setting a method in <code>Person</code> type. You change Person type to a class and add a method <code>getInfo</code> so that the template can be reused in your components. The code now looks like this:</p>
+<pre><code>class Person {
+	title: string;
+	first: string;
+	last: string;
+
+	getInfo(): string {
+		return `${this.title}, ${this.first} ${this.last}`;
+	}
+}
+</code></pre>
+<p>By using a class, now your components can reuse the template by calling <code>getInfo()</code> method:</p>
+<pre><code>&lt;div&gt;{person.getInfo()}&lt;/div&gt;
+</code></pre>
+<p>The problem with this approach is that unlike Java, data serialized from JSON to JavaScript code only mapped to fields not to methods and so when you try to run the above code, you are likely to receive an error <code>getInfo</code> is not a function.</p>
+<h2>Solution</h2>
+<p>In order to solve this problem, <code>Object.assign</code> provides a way to map data to the class constructor. By using <code>Object.assign</code>, you can convert a plain object to a class instance and all the fields in the object will be assigned to the class fields. Therefore, you can call an instance method, in this case <code>getInfo</code>, after mapping the data. You can use <code>Object.assign</code> like this:</p>
+<pre><code>let person = Object.assign(new Person(), data);
+</code></pre>
+<p>Now you can use the person instance to call getInfo method:</p>
+<pre><code>&lt;div&gt;{person.getInfo()}&lt;/div&gt;
+</code></pre>
+<p>This approach helps you to reuse the template and avoid duplicate code.</p>
+<hr>
+<p>In this article, you learned how to cast plain object data to a class in TypeScript. If you found it useful, please consider liking and sharing it to help spread the knowledge.</p>

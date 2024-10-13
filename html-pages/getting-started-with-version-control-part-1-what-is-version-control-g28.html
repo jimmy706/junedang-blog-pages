@@ -1,0 +1,73 @@
+<p>If you are learning how to develop a project and on the path to becoming a developer, you have at least heard a term called &quot;version control&quot; or &quot;source control&quot;. In today&#39;s article, you will read about what is version control, how it works, and how it benefits a tech project.</p>
+<h2>What is version control anyway?</h2>
+<p>Version control system (VCS) is a system running on your project used for tracking, and managing the changes in your code. You can then use this system to:</p>
+<ul>
+<li>See the changing history of your file.</li>
+<li>Tracking the author of every change in the file.</li>
+<li>Versioning each change of your file.</li>
+<li>Recall any change to its version in the past.</li>
+</ul>
+<h2>Version control varieties</h2>
+<h3>Local Version Control</h3>
+<p>A long-ago edition of VCS was developed for local-machine that has its database on personal computer.</p>
+<p>One of the most popular VCS dedicated to the local machine is called <a href="https://www.gnu.org/software/rcs/">RCS</a>. It works by keeping changed files as patch sets, you can then recall the change at any point of the file by adding the patches.</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/8t779t79v0nq3joqx39p.png" alt="Local Control System - source: git-scml"></p>
+<h3>Centralized Version Control</h3>
+<p>In order to be able to work with multiple persons on the same project, a <em>centralized version control systems</em> (CVCSs) was introduced.</p>
+<p>These systems have their own single server containing all versioned files and the history of that project so that every member of the same project can cooperate together.</p>
+<p>CVCSs however, have a downside if that single server goes down, nobody can not have their work sync and save their changes to the system. Another con is that if the server is corrupted and all data were deleted without backup, the project will be gone forever.</p>
+<p>Some tools that support CVCSs are CVS, Subversion, and Perforce.</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ouuy2pzrnset4gk3j3yh.png" alt="Centralized Version Control Systems - source: git-scm
+"></p>
+<h2>Distributed Version Control</h2>
+<p>For a long time, centralized version control systems were a standard, until the term distributed version control systems (DVCSs). In these systems, users will have their own copied version of the repository they are working on their machine. And thus, if any corruption happens with the main server, any copy of that repository can work as a backup.</p>
+<p>Some examples of DVCSs are: Git, Mercurial, Bazaar and Darcs</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/i44ayyu22taked96vz1l.png" alt="Distributed Version Control Systems - source: git-scm"></p>
+<h2>How does version control work?</h2>
+<p>To get familiar with version control, you should understand some of key concepts of version control like:</p>
+<p>repository, diffs, branching, merging…. Let&#39;s dig into terms and concepts of version control system to understand how it works:</p>
+<h3>Repository</h3>
+<p>A repository is a directory of your project that uses version control. It contains all of your tracked files and directories.</p>
+<p>You can see a repository as the database for tracking and managing all changes you make to the project.</p>
+<h3>Working copy</h3>
+<p>A copy of the file edited by you is called a working copy. Simply say, it&#39;s a copy of the original file from the project managed by the repository.</p>
+<p>You make an edit to the file and when you are done with the change, simply <em>commit</em> the change into <em>repository</em> and your changes will immediately be stored, other peoples working with you just have to <em>update</em> to be able to sync with your work.</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/93t5cv8fmvtqyq420h9y.png" alt="Repository"></p>
+<h3>Diffs</h3>
+<p>When you make a <em>commit</em>, the change of your file will be versioned on repository. The difference between the old version of the file and the new version you just edited is called &quot;diffs&quot;.</p>
+<p>Diffs can help you to visualize the changes in the file conveniently. As image below, I just added a new line on the file (visualized by green color).</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5grx2y6gbj9ep4nrv4la.png" alt="Diffs"></p>
+<p>With more advanced tools like <a href="https://www.sourcetreeapp.com/">SourceTree</a> or <a href="https://git-fork.com/">GitFork</a>, you can even see more detail about the changes on the file in a graphically and user-friendly way.</p>
+<h3>Conflicts</h3>
+<p>When two persons edited and committed on the same file, there likely that they edited the same line of that file and this led to <em>conflicts.</em> To be able to sync the change between the two, they must manually resolve the conflict in some ways like:</p>
+<ul>
+<li>Accepting the current version.</li>
+<li>Accepting the incoming version.</li>
+<li>Accepting both changes.</li>
+</ul>
+<p>Some modern IDEs like <a href="https://www.jetbrains.com/idea/">IntelliJ</a> or <a href="https://code.visualstudio.com/">Visual Studio Code</a> have the ability to help developers resolve conflict easily.</p>
+<h3>Branching and Merging</h3>
+<p><em>Branching</em> is a feature in version control system that help developers to separate the work from each other and continue on their work without conflict with other changes.</p>
+<p>When their work has been done, just simply merge their working branches into the main branch of the project, this is also called <em>merging.</em></p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/oqph6gx4vic4kr0zb9lf.png" alt="Branching &amp; Merging"></p>
+<h3>Tagging</h3>
+<p>When coming to a time that you want to mark a specific point of the repository&#39;s history as a meaningful label, version control system helps you with a feature called <em>tagging.</em></p>
+<p>In a normal use case, developers would tag a point as a release version (for example <em>1.0.0</em>).</p>
+<h2>Why do developers use version control?</h2>
+<p>For most tech projects, the source code is a precious asset that must be treated carefully by developers. With the ability to versioning, tracking, and managing changes of files in the project, VCS helps programmers prevent human error and can also make everyday work become must more efficient by:</p>
+<ul>
+<li><strong>Tracking the history of every change on the file</strong> : The history included author, modified date, changes, and change notes. Help developers control the life cycle of the project and can revert any changes to a point in the past if anything wrong happen.</li>
+<li><strong>Decouple development</strong> : With <em>branching</em> and <em>merging</em> features that can help every member of the project work on their own code without conflict with others.</li>
+<li><strong>Version control</strong> : VCS makes it easy to release and control version of your project with tagging.</li>
+<li><strong>Backup</strong> : With the raise of distributed version control systems, now VCS can also help you to back up your code on the internet and work with your code anywhere, anytime.</li>
+</ul>
+<p>While it&#39;s normal if you develop a small project all by yourself without using version control. It&#39;s also a big risk when it&#39;s come to multiple</p>
+<h2>Which version control tool should you use?</h2>
+<p>There are many version control systems out there, with one of the most used called Git. It&#39;s a distributed version control system that has been trusted by many developers and companies out there.</p>
+<p>In the upcoming article, we will learn about how to work with Git on a development project.</p>
+<p>Thank you for reading this article. If you enjoy reading this feel free to like and share the knowledge with everyone out there.</p>
+<p>Check out my blog for more articles like this at: <a href="https://junedang.com/">https://junedang.com/</a></p>
+<h2>Reference</h2>
+<p><a href="https://www.codebasehq.com/blog/how-version-control-works">https://www.codebasehq.com/blog/how-version-control-works</a></p>
+<p><a href="https://homes.cs.washington.edu/~mernst/advice/version-control.html#:~:text=Version%20control%20enables%20multiple%20people,interfere%20with%20another%20person's%20work">https://homes.cs.washington.edu/<del>mernst/advice/version-control.html#:</del>:text=Version%20control%20enables%20multiple%20people,interfere%20with%20another%20person&#39;s%20work</a>.</p>
+<p><a href="https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control">https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control</a></p>

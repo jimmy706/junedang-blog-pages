@@ -1,0 +1,68 @@
+<p>In my <a href="https://dev.to/junedang/getting-started-with-version-control-part-1-what-is-version-control-g28">previous article</a>, we learned about what are version control systems and how they work. In this article, we will learn about Git – a distributed version control system. This page will guide you on what is Git, how to use Git in your project, difference between Git and other VCS.</p>
+<h2>What is Git?</h2>
+<p>Git is an open-source distributed version control. It is the most used version control system in today’s tech world due to its ease to learn, security, and fast performance.
+Due to its widely used, Git has been supported by many systems from large enterprise applications to open-source projects.</p>
+<h2>Prerequire</h2>
+<p>Before learning how to use Git, let’s view some prerequire to get started with it:
+-	Personal computer and internet connection (of course 😉).
+-	Basic command line knowledge.
+-	You need to have Git on your computer by downloading it <a href="https://git-scm.com/downloads">here</a>.
+-	Having a code editor is required. My recommendation is <a href="https://code.visualstudio.com/Download">Visual Studio Code</a>.
+That’s all for the requirements. Now let’s grab a cup of coffee and prepare to learn how to use Git.</p>
+<h2>Git basic commands</h2>
+<h3>Config Git with your information</h3>
+<p>One of the first things, after you installed Git was to config your name and email:</p>
+<pre><code>git config --global user.name &quot;&lt;your name&gt;&quot;
+git config --global user.email “&lt;your email&gt;”
+</code></pre>
+<p>Git will use these configs as information about the author who changed the code so that everyone in the same project can contact the author about the changed content.</p>
+<h3>Integrate Git within your project</h3>
+<p>Create your project folder by entering these commands:</p>
+<pre><code>mkidr &lt;project name&gt;
+cd &lt;project name&gt;
+</code></pre>
+<p>After you successfully create the project, type in the command git init to create an empty repository in your project folder. The result like the screen below you</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/y85omydpuo1q8ieiwzjb.png" alt="git init"></p>
+<p>Notice that now your project has a <em>.git</em> directory. This folder contains all the information necessary for version control to work like: logs, commits, repository addresses, histories, etc. 
+Some important subfolders and files of <em>.git</em> directory are:
+•	<strong>hooks</strong>: script files used for executing before or after actions like commit or push. We will learn this in another advanced topic about Git.
+•	<strong>objects</strong>: a database folder for Git that store everything from commits, files, etc as hash values.
+•	<strong>info</strong>: a folder contains exclude files that you don’t want Git to track on it.
+•	<strong>config</strong>: Git local config file.
+•	<strong>refs</strong>: contains information about tags and branches.
+•	<strong>HEAD</strong>: a file reference to our working branch. By default, it points to master branch.
+As you understand about subfolders of .git directory, it is clear to say that this folder is one of the most important folder in your project. Deleting this folder means that you’re going to delete the history of your whole changes. 
+That why <em>.git</em> folder mark as a hidden folder to prevent you from accidentally deleting it.</p>
+<h3>Tracking file changes and Git’s staging area</h3>
+<p>Now you have a brief understanding of how Git stores and working. Let’s us going to some basic commands of Git.
+Create a new file in your project directory with this command:
+<code>touch index.html</code>
+Now check project’s repository status with command 
+<code>git status</code>
+You can see that there is one untracked file on the screen</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/cu5micfkwg8qv8djv8gd.png" alt="git status"></p>
+<p>This means that your created file is in the repository’s working environment but has not yet been added to the git’s tracking indexes (or staging area).
+As in the <a href="https://dev.to/junedang/getting-started-with-version-control-part-1-what-is-version-control-g28">previous article</a>, we knew that VCS has two areas to store data: one in your working directory and one in the repository.
+Git has another area called <em>staging area</em>, which has many advantages as:
+•	An area to review your changes before committing.
+•	Easier to deal with merge code conflict.
+•	Split up large changes into small, easy-to-read commits.</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/piszv5nnusaurdm4ogcg.png" alt="Git staging area"></p>
+<p>Now to add the file’s content to Git staging area, simply use the command: <code>git add index.html</code>
+After that, check the repo status again with git status and you see that your created has been tracked.</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9npwrnzifpb9ikmoeaty.png" alt=""></p>
+<h3>Make your first commit</h3>
+<p>Now to store all your changes in the repository, enter the command 
+<code>git commit -m “my first commit”</code>
+The git commit command tells git that you want to capture the current snapshot on the staging area and store it in your repository. The “m” flag tells Git what is your changed meaning for log purposes.
+Your new commit will be pushed to HEAD of the current branch, then the branch will be updated to point to your new change point.
+To see all your commit logs, simply type in the command: <code>git log</code></p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/t5xrermosz9ymi4ym4pd.png" alt="git commit"></p>
+<h2>Summary</h2>
+<p>That’s all for today&#39;s lesson friend. In summary, you have learned about:
+•	Git folder structure and its use.
+•	Difference storing environment of Git.
+•	Basic commands to integrate with Git.</p>
+<hr>
+<p>If you like my article, feel free to share and like it to spread the knowledge to everyone.
+Check out my other article at <a href="https://junedang.com/">https://junedang.com/</a></p>

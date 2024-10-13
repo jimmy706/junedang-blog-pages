@@ -1,0 +1,60 @@
+<p>As technology advances and businesses become increasingly complex, front-end applications built from a single, monolithic resource are struggling to keep up with the growing demands of both businesses and customers.</p>
+<p>This arises many issues since all front-end code is bundled into a single application, making it difficult to scale, maintain, and deploy. It also becomes challenging to implement changes or add new features to the application since all developers need to work on the same codebase.</p>
+<h2>Microservices for the frontend</h2>
+<p>All tech-based companies when talking about the idea of building an application that is scaling and easy to grow will come with these requirements:</p>
+<ul>
+<li>The application has to be developed in parallel between teams</li>
+<li>New features must easy to deploy and test</li>
+<li>The codebase can be easily maintained by developers</li>
+<li>All the application components can be modular so that it easy to add and remove features</li>
+<li>Continually receive feedback from stakeholders and customers</li>
+</ul>
+<p>This is when we apply Microservices approach to our front-end application by breaking everything down into smaller components so that each team in the project can work independently.</p>
+<p>The idea behind Microfrontend is that no team owns the entire application UI. But <em>every team has to take care of a small piece of front-end component</em>. By breaking down the application into smaller components, Microfrontends simplify the development process, reduce dependencies between teams, and enable faster and more efficient deployment of updates and new features. Furthermore, because every team only takes care of a small part of the entire application so it is easier to deploy new features independently. This can reduce the risk of having a big issue and affect other parts of the application. This increases the application’s flexibility and improves feedback from customers.</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/b93k4b3wopg04cop76xj.png" alt="software architecture evolve by altexsoft"></p>
+<h2>Challenges of having a Microfrontend application</h2>
+<p>While comes with many benefits, Microfrontend is not a silver bullet that solves all our problems of building a large frontend application. Some technical challenges we have to face when implementing Microfrontend applications included:</p>
+<ul>
+<li><p><strong>Consistency</strong>: Each team owns and develops its UI component. It is hard to keep up with every dependency version, framework, and technology in different bundles</p>
+</li>
+<li><p><strong>Performance</strong>: Every Microfrontend project means one single repo has to take care and there likely that some dependencies got duplicated that leading to an increase in overall application size.</p>
+</li>
+<li><p><strong>Testing</strong>: Testing a Microfrontend application can be challenging since each component is developed and tested independently.</p>
+</li>
+<li><p><strong>Reusability</strong>: When different teams work with different parts, it may happen the case that they want to use the same functionality but have to write duplicate code since common dependencies don’t provide enough functionality they need – This Violates the DRY principle.</p>
+</li>
+</ul>
+<h2>Monorepo comes to the rescue</h2>
+<blockquote>
+<p>A Monorepo is a single repository containing multiple distinct projects, with well-defined relationships. - monorepo.tools</p>
+</blockquote>
+<p>The first thing that comes to your mind when reading the above definition of Monorepo is: “<em>Why a monolith-like approach could solve the challenges of implementing Microfrontend?</em>”</p>
+<p>Turn out, <em>A good Monorepo is the opposite of Monolithic</em>. Let me explain clearer about this, let’s say that our familiar approach of Microfrontend is having multiple, small repositories that take care of small components. Which called these repo “polyrepo” as opposed to “monorepo”.</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/gyfdl6owyirdbpavmh6e.png" alt="Monorepo vs Polyrepo"></p>
+<p>Since a Monorepo takes all projects into a single repository, here are some benefits that this way can help reduce the challenges of implementing Microfrontend application:</p>
+<ul>
+<li><strong>Code reusability</strong>: Since all source code is contained in a single project, developers don’t have to reimplement common functionality anymore.</li>
+<li><strong>Shared dependencies and versioning</strong>: In Monorepo, all projects are using the same source of packages so which resolves the headache of having inconsistency dependency and versioning.</li>
+<li><strong>Workflow</strong>: All projects in one repo mean project structure, workflow, and practices are the same.</li>
+</ul>
+<h2>Checklist to work with Monorepo</h2>
+<p>Although solving some challenges of Microfrontend architecture, Monorepo is not an easy approach. To work well with Monorepo, the developer teams should have these capabilities:</p>
+<ul>
+<li><strong>CI/CD &amp; testing</strong>: Every Monorepo project should come with integration testing and CI/CD so that is easy to deploy changes with quick feedback.</li>
+<li><strong>Tooling support</strong>: Teams working on the same Monorepo should use the same supported tooling that stays consistent and helps improve development time.</li>
+<li><strong>Documenting &amp; clear communication</strong>: Monorepo project should have a clear document about the project structure, code owner, and project start guide. Clear communication between teams to channel workflow ensures everything stays on its path.</li>
+<li><strong>Trunk-based development</strong>: One final, the most important aspect is that Monorepo project should be developed in a trunk-based approach than a long-lived feature branch. This ensure changes are small enough easy to review and test but also big enough to bring value.</li>
+</ul>
+<h2>Conclusion</h2>
+<p>Large monolith front-end applications are considered limited in scalability and are transitioning to Microfrontend approach.</p>
+<p>By having a Microfrontend architecture, enterprises have to deal with challenges like inconsistency dependency version, performance, and reusability.</p>
+<p>One of the ways to solve issues of Microfrontend is based on Monorepo approach which acts as a centralized project with benefits like centralized dependencies, easy-to-manage version, and atomic developing process.</p>
+<h2>Reference</h2>
+<h2>{% embed <a href="https://monorepo.tools/">https://monorepo.tools/</a> %}
+{% embed <a href="https://www.endorlabs.com/blog/polyrepo-vs-monorepo-how-does-it-impact-dependency-management">https://www.endorlabs.com/blog/polyrepo-vs-monorepo-how-does-it-impact-dependency-management</a> %}
+{% embed <a href="https://blog.nrwl.io/misconceptions-about-monorepos-monorepo-monolith-df1250d4b03c">https://blog.nrwl.io/misconceptions-about-monorepos-monorepo-monolith-df1250d4b03c</a> %}</h2>
+<p>Original article published on MARCH 11, 2023 at <a href="https://junedang.com">https://junedang.com</a></p>
+<p>Checkout others related articles of me 👇
+{% embed <a href="https://junedang.com/the-5-most-popular-programming-paradigms-every-developer-should-know/">https://junedang.com/the-5-most-popular-programming-paradigms-every-developer-should-know/</a> %}
+{% embed <a href="https://junedang.com/debugging-adventures-how-i-learned-to-solve-problems-faster-with-logs-and-a-debugger/">https://junedang.com/debugging-adventures-how-i-learned-to-solve-problems-faster-with-logs-and-a-debugger/</a> %}
+{% embed <a href="https://junedang.com/5-ways-chatgpt-can-skyrocket-developer-productivity/">https://junedang.com/5-ways-chatgpt-can-skyrocket-developer-productivity/</a> %}</p>
