@@ -68,8 +68,3 @@ Applying DRY is hard and needs discipline, system design skills, tooling, and co
 
 ---
 Original article published on _MARCH 15, 2023_ at [junedang.com](https://junedang.com/)
-
-Checkout other related articles of me 👇
-{% embed https://dev.to/junedang/monorepo-the-solution-to-microfrontend-development-challenges-24jh %}
-{% embed https://junedang.com/the-5-most-popular-programming-paradigms-every-developer-should-know/ %}
-{% embed https://junedang.com/api-implementation-code-first-or-design-first/ %}

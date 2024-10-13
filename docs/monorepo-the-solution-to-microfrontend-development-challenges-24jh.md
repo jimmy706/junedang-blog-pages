@@ -62,13 +62,9 @@ One of the ways to solve issues of Microfrontend is based on Monorepo approach w
 
 ## Reference
 
-{% embed https://monorepo.tools/ %}
-{% embed https://www.endorlabs.com/blog/polyrepo-vs-monorepo-how-does-it-impact-dependency-management %}
-{% embed https://blog.nrwl.io/misconceptions-about-monorepos-monorepo-monolith-df1250d4b03c %}
+- https://monorepo.tools/ 
+- https://www.endorlabs.com/blog/polyrepo-vs-monorepo-how-does-it-impact-dependency-management 
+- https://blog.nrwl.io/misconceptions-about-monorepos-monorepo-monolith-df1250d4b03c 
+
 ---
 Original article published on MARCH 11, 2023 at [https://junedang.com](https://junedang.com)
-
-Checkout others related articles of me 👇
-{% embed https://junedang.com/the-5-most-popular-programming-paradigms-every-developer-should-know/ %}
-{% embed https://junedang.com/debugging-adventures-how-i-learned-to-solve-problems-faster-with-logs-and-a-debugger/ %}
-{% embed https://junedang.com/5-ways-chatgpt-can-skyrocket-developer-productivity/ %}

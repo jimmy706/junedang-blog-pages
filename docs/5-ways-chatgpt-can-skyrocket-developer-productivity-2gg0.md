@@ -35,7 +35,3 @@ Another benefit of having an AI pair programmer is to identify common errors and
 
 Conclusion
 Agree or not, AI assistances like ChatGPT are defining a new way approach that helps developers solve their technical problems. This AI assistance streamlines the problem-solving process and makes it easier and faster for developers to resolve issues.
-
-----
-Find out more articles of me about technology and productivity at 
-{% embed https://junedang.com/ %}
