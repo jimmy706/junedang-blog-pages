@@ -11,3 +11,5 @@ kramdown:
   syntax_highlighter: rouge
 plugins:
   - github-pages-health-check  
+pages_api:
+  enabled: true
