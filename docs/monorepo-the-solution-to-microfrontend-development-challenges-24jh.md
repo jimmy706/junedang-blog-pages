@@ -61,3 +61,6 @@ Large monolith front-end applications are considered limited in scalability and 
 By having a Microfrontend architecture, enterprises have to deal with challenges like inconsistency dependency version, performance, and reusability.
 
 One of the ways to solve issues of Microfrontend is based on Monorepo approach which acts as a centralized project with benefits like centralized dependencies, easy-to-manage version, and atomic developing process.
+
+---
+Original article published on MARCH 11, 2023 at [https://junedang.com](https://junedang.com)

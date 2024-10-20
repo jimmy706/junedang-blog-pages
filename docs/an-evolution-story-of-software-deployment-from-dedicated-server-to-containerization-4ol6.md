@@ -1,3 +1,5 @@
+# An evolution story of Software Deployment: From Dedicated Server to Containerization
+
 ## From the early day
 Let’s assume you are developing an application using Java and want to share the result with your clients to test it out and give early feedback. You then push the code to a centralized repository like GitHub to let your clients clone and test it on their machines.
 
@@ -54,3 +56,4 @@ Containerization presents a new and better approach to deploying applications, w
 
 ---
 Originally published at [junedang.com](https://junedang.com/an-evolution-story-of-software-deployment-from-dedicated-server-to-containerization/) on May 11, 2023.
+

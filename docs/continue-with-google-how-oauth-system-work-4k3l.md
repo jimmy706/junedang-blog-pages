@@ -1,3 +1,5 @@
+# “Continue with Google” – How OAuth system work?
+
 Imagine one day you are downloading a new application – a fitness tracking app I would say. After the app finishes the installation process, you open it and then the application is now asking you to create an account to continue using it.
 
 If you are like me – a lazy guy who is always too tired to type all the information about username and password then you will skip this step and maybe even uninstall the app. Luckily, you see a second option to log in called “Login with Google”. Then no second of hesitation you quickly click on it and now the app is automatically connected to your Google account and you are creating a new fitness account in less than a second!

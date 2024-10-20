@@ -18,13 +18,16 @@ axios
     console.info(`Getting ${articles.length} articles`);
     for (const article of articles) {
       const { slug } = article;
-
-      fetchArticle(slug);
+      delay(1000).then(fetchArticle(slug));
     }
   })
   .catch((error) => {
     console.error(error);
   });
+
+async function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 async function fetchArticle(slug) {
   try {
@@ -40,19 +43,19 @@ ${body_markdown}
     saveArticle(slug, content, "md");
     // saveArticle(slug, String(body_html), "html");
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 
 function saveArticle(articleName, content, file_type) {
-    try {
-        console.info(`Saving article ${articleName} with type ${file_type}`);
-        const filePath =
-          file_type === "md"
-            ? path.join(pagesLocation, articleName + ".md")
-            : path.join(htmlPagesLocation, articleName + ".html");
-        fs.writeFileSync(filePath, content);
-    } catch(error) {
-        console.log(error)
-    }
+  try {
+    console.info(`Saving article ${articleName} with type ${file_type}`);
+    const filePath =
+      file_type === "md"
+        ? path.join(pagesLocation, articleName + ".md")
+        : path.join(htmlPagesLocation, articleName + ".html");
+    fs.writeFileSync(filePath, content);
+  } catch (error) {
+    console.log(error);
+  }
 }

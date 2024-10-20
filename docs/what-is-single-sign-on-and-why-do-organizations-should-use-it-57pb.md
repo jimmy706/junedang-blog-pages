@@ -1,3 +1,5 @@
+# What is Single Sign-On and Why do organizations should use it?
+
 Imagine one day you just bought a new laptop and have to run all the necessary setup before making it work as you expect. Now because all the setting on this laptop is new, you have to manually sign in to countless websites and applications you use daily. This process is tedious and can take hours to get all the things done, not to mention the headache of managing multiple long and forgettable passwords you use to log in to those sites.
 
 Lucky for you, Single Sign On (SSO) was born to solve this problem and make your life more convenient. But what is SSO and Why does it help you solve the above problem? Let’s discuss this topic in today’s article.
@@ -47,3 +49,4 @@ To get the most out of this article, feel free to complete these challenges 👇
 
 1. Does your organization use SSO for the authentication process? If not, do you consider recommend to use it?
 2. If yes, what is the SSO implementation you are currently using?
+
