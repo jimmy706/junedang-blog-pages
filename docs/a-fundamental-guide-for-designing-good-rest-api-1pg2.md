@@ -1,3 +1,5 @@
+# A fundamental guide for Designing Good REST API
+
 We live in a world where everything from applications to websites use exposes API to communicate with backend servers. Therefore, REST API plays an important role in the system and it is crucial to take care of and design it carefully so we won’t fall into problems such as security, performance issues, or make it difficult for our client to use.
 
 A well-written API should provide a clear, consistent, and intuitive interface for developers to interact with it. Developers who design API should aim to:

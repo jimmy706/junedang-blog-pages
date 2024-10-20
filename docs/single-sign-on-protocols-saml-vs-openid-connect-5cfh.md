@@ -1,3 +1,5 @@
+# Single Sign On protocols: SAML vs OpenID Connect
+
 Single Sign On (SSO) is a centralized authentication solution that allows users only use a single login and credential to access multiple applications that trust the SSO protocols within the system. This solution is more and more get implemented by organizations since it improves user experience when working with a system that has multiple applications that share the login user data.
 
 Two of the most common protocol that implemented SSO is SAML (Security Assertion Markup Language) and OpenID Connect (OIDC). At first look, they are both performing the same functionality but they are quite different. Each will fit the specific requirement of your organization and distinguishing between them is crucial if you want to pick one that aligns with your organization’s needs.
@@ -53,3 +55,4 @@ To get the most out of this article, feel free to complete these challenges 👇
 
 1. What is the SSO authentication protocol your organization currently uses?
 2. What is your favorite login method?
+

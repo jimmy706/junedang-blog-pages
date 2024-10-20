@@ -1,3 +1,5 @@
+# How does an email service work?
+
 Email has become the cornerstone of modern communication tools and seamlessly integrating as part of our daily work. A [statistic by Statista](https://www.statista.com/statistics/456500/daily-number-of-e-mails-worldwide/) estimates that over 333 billion emails are sent and received every day. But have you ever been curious about the process of emails being stored and sent across the Internet? If yes, then this article is for you. 
 
 In the upcoming sections of this page, we will guide you through the most important protocols that help email services to function and finally answer the question: “How every email service works by relying on the use of SMTP to send email and IMAP (or POP3) to store and receive email”. 
@@ -69,3 +71,4 @@ Over to you, let’s check your knowledge of this article through some questions
 1. What are the primary components of an email service? 
 2. What are the differences between IMAP and POP3? 
 3. Can you list down some common SMTP commands and their meaning? 
+

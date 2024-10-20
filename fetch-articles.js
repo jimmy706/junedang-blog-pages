@@ -32,9 +32,13 @@ async function fetchArticle(slug) {
     const articleDetails = `https://dev.to/api/articles/junedang/${slug}`;
 
     const response = await axios.get(articleDetails);
-    const { body_html, body_markdown } = response.data;
-    saveArticle(slug, String(body_markdown), "md");
-    saveArticle(slug, String(body_html), "html");
+    const { body_html, body_markdown, title } = response.data;
+    const content = `# ${title}
+
+${body_markdown}
+`;
+    saveArticle(slug, content, "md");
+    // saveArticle(slug, String(body_html), "html");
   } catch (error) {
     console.log(error);
   }

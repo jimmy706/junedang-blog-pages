@@ -1,3 +1,5 @@
+# Monorepo: The Solution to Microfrontend Development Challenges
+
 As technology advances and businesses become increasingly complex, front-end applications built from a single, monolithic resource are struggling to keep up with the growing demands of both businesses and customers.
 
 This arises many issues since all front-end code is bundled into a single application, making it difficult to scale, maintain, and deploy. It also becomes challenging to implement changes or add new features to the application since all developers need to work on the same codebase.
@@ -59,12 +61,3 @@ Large monolith front-end applications are considered limited in scalability and 
 By having a Microfrontend architecture, enterprises have to deal with challenges like inconsistency dependency version, performance, and reusability.
 
 One of the ways to solve issues of Microfrontend is based on Monorepo approach which acts as a centralized project with benefits like centralized dependencies, easy-to-manage version, and atomic developing process.
-
-## Reference
-
-- https://monorepo.tools/ 
-- https://www.endorlabs.com/blog/polyrepo-vs-monorepo-how-does-it-impact-dependency-management 
-- https://blog.nrwl.io/misconceptions-about-monorepos-monorepo-monolith-df1250d4b03c 
-
----
-Original article published on MARCH 11, 2023 at [https://junedang.com](https://junedang.com)

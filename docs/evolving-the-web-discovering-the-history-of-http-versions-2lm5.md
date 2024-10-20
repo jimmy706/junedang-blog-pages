@@ -1,3 +1,5 @@
+# Evolving the Web: Discovering the History of HTTP Versions
+
 If you do not know, HTTP was around us for a bit of time and even older than you think. It is a core of the World Wide Web that allows web applications to communicate with the servers to render data into our view.
 
 As modern technologies and the Internet continuously emerge and so HTTP has evolved time over time to meet the need of the Internet infrastructure and now encompasses five versions that have been introduced since its inception: 0.9, 1.0, 1.1, and 2.0, with a future version, 3.0, on the horizon.
@@ -149,3 +151,4 @@ To get the most out of this article, feel free to complete these challenges👇:
 - https://almanac.httparchive.org/ 
 - https://httpwg.org/specs/rfc9114.html 
 - https://w3techs.com/technologies/details/ce-http3
+

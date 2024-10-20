@@ -1,3 +1,5 @@
+# What is HTTPS and how does it work?
+
 Have you ever wondered how websites communicate with a web browser and request data to the server to render into view?  I used to ask those questions too.
 
 If you are like me, curious about how the Internet work then you come to the right place. In this article let’s discuss how HTTPS works and how essential its role is to the World Wide Web.
@@ -106,3 +108,4 @@ To get the most out of this article, feel free to complete these challenges 👇
 **🔥Hard mode:**
 
 1. Can you list down a step-by-step on how to create a trusted SSL certificate?
+

@@ -1,3 +1,5 @@
+# How to build the culture of delivering clean code
+
 If you are working on the development team and in charge of managing multiple source codes, It’s crucial that you treat those codes with the [utmost care](https://dev.to/junedang/it-requires-more-than-just-coding-for-a-software-engineer-442a) to keep everything on the go. And then over time, the project gets larger and larger and so does your teammate. Now maintaining the cleanness of the codebase can be a challenging and time-consuming task since new joiners with different skills and mindsets can bring a difficulty to the onboarding of delivering code.
 
 Because of that, building a culture that emphasizes the importance of clean code at the beginning is crucial that can ensure the long-term success of your team.
@@ -102,3 +104,4 @@ To get the most out of this article, feel free to complete these challenges 👇
 
 1. Does your organization strive to deliver a clean coder culture or not? If yes, what is the current approach that keeps developers on track with clean coding of your area?
 2. Do you believe that clean code is solely the responsibility of individual developers, or should it be a collective effort within a team or organization? Why?
+
