@@ -1,6 +1,5 @@
 lsi: false
 safe: true
-baseurl: ''
 theme: minima
 incremental: false
 highlighter: rouge
@@ -13,6 +12,4 @@ plugins:
   - github-pages-health-check
   - "jekyll-github-metadata"
   - 'jekyll-paginate'
-  - jekyll-relative-links  
-pages_api:
-  enabled: true
+  - jekyll-relative-links 
