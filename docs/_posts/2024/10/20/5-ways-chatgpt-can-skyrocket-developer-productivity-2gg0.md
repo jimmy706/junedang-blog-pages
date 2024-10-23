@@ -1,3 +1,8 @@
+---
+title: 5 Ways ChatGPT Can Skyrocket Developer Productivity
+description: explore 5 ways that ChatGPT can help developers skyrocket their daily work.
+---
+
 # 5 Ways ChatGPT Can Skyrocket Developer Productivity
 
 Recently raised as the most popular and intelligent chatbot, [ChatGPT](https://chat.openai.com/) proves that it can help developers to be more productive in their daily work by automating working processes. In today’s article, let’s explore 5 ways that ChatGPT can help developers skyrocket their daily work.

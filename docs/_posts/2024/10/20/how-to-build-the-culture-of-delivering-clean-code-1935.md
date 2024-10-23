@@ -1,3 +1,11 @@
+---
+title: How to build the culture of delivering clean code
+description: best practices to follow so that every member of the development team can count on building a culture of keeping the code clean.
+image: https://1drv.ms/i/s!At4dit9d4kzB1khTNHa2zTbyDARE?embed=1&width=256
+---
+
+![](https://1drv.ms/i/s!At4dit9d4kzB1khTNHa2zTbyDARE?embed=1&width=1024)
+
 # How to build the culture of delivering clean code
 
 If you are working on the development team and in charge of managing multiple source codes, It’s crucial that you treat those codes with the [utmost care](https://dev.to/junedang/it-requires-more-than-just-coding-for-a-software-engineer-442a) to keep everything on the go. And then over time, the project gets larger and larger and so does your teammate. Now maintaining the cleanness of the codebase can be a challenging and time-consuming task since new joiners with different skills and mindsets can bring a difficulty to the onboarding of delivering code.
@@ -21,7 +29,7 @@ _So what do we learn from the “Broken Windows” Theory?_
 
 The theory suggests that when one bad behavior happens in a clean and nice place without immediate action to correct it immediately, things can turn bad really quickly as a broken window without fixing is a sign of breaking rules without consequence. When applied to software development, the story gets more straightforward as if someone left the code unstructured without intending to fix it, this can cause the root of entropy within the system and the final result can be the collapse and pull out of control of the entire project which can cost billions every year.
 
-![Economic impact of bad code](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/u2x63bqplws84r88athv.png)
+![Economic impact of bad code](https://1drv.ms/i/s!At4dit9d4kzBmXg_pOqN4xefO68A?embed=1&width=1024)
 
 ## Detect red flags on your codebase
 Since software development is very complex and requires insane detail in craftsmanship skills, the border between clean and functioning features and the rotted ones is hanging on the behavior of developers who maintain that features. For a feature to start running out of control, there are multiple factors which will be listed below:

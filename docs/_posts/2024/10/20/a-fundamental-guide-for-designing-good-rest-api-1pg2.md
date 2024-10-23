@@ -1,3 +1,9 @@
+---
+title: 5 Ways ChatGPT Can Skyrocket Developer Productivity
+description: A well-written API should provide a clear, consistent, and intuitive interface for developers to interact with it...
+image: https://1drv.ms/i/s!At4dit9d4kzBln0qLVNLGaYkIso3?embed=1&width=256
+---
+
 # A fundamental guide for Designing Good REST API
 
 We live in a world where everything from applications to websites use exposes API to communicate with backend servers. Therefore, REST API plays an important role in the system and it is crucial to take care of and design it carefully so we won’t fall into problems such as security, performance issues, or make it difficult for our client to use.

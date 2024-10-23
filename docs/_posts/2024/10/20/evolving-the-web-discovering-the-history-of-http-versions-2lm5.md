@@ -1,3 +1,11 @@
+---
+title: Discovering the History of HTTP Versions
+description: Discovering the History of HTTP Versions
+image: https://1drv.ms/i/s!At4dit9d4kzBvDm5hBq90HUVqfju?embed=1&width=256
+---
+
+![](https://1drv.ms/i/s!At4dit9d4kzBvDm5hBq90HUVqfju?embed=1&width=1024)
+
 # Evolving the Web: Discovering the History of HTTP Versions
 
 If you do not know, HTTP was around us for a bit of time and even older than you think. It is a core of the World Wide Web that allows web applications to communicate with the servers to render data into our view.

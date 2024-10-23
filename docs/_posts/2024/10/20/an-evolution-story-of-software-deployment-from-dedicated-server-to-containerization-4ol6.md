@@ -1,3 +1,9 @@
+---
+title: "An evolution story of Software Deployment: From Dedicated Server to Containerization"
+date: 2024-10-20T00:00:00+00:00
+image: https://1drv.ms/i/s!At4dit9d4kzBl2wdfLKQfWhuSAFF?embed=1&width=256
+---
+
 # An evolution story of Software Deployment: From Dedicated Server to Containerization
 
 ## From the early day
@@ -5,7 +11,7 @@ Let’s assume you are developing an application using Java and want to share th
 
 The steps seem to be great since you have tested the application hundred times on your local machine before delivery to your clients. But suddenly, the clients seem to be not happy and they blame you that the application cannot run and they face weird error messages.
 
-![meme - why application cannot running](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/pszvx9kur8zext2oc4x3.jpg)
+![meme - why application cannot running](https://1drv.ms/i/s!At4dit9d4kzBl22QHh7Ecv14diZB?embed=1&width=660)
 
 Turn out, the clients don’t have the necessary dependencies installed on their machines like yours and so the application cannot work properly. This problem is a common issue with the traditional method of delivery using dedicated physical machines, as _replicating the required environment for applications to run across different machines can be challenging and time-consuming_. Actually, this approach is the only way to deploy applications in the old days. Just imagine how much time and resources have been spent just to make the application run on dedicated servers.
 

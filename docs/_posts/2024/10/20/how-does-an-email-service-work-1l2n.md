@@ -1,3 +1,11 @@
+---
+title: How does an email service work?
+description: How does an email service work?
+image: https://miro.medium.com/v2/resize:fit:1400/format:webp/1*Z5WhK0XAI8buYjN0s4tsdg.jpeg
+---
+
+![](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*Z5WhK0XAI8buYjN0s4tsdg.jpeg)
+
 # How does an email service work?
 
 Email has become the cornerstone of modern communication tools and seamlessly integrating as part of our daily work. A [statistic by Statista](https://www.statista.com/statistics/456500/daily-number-of-e-mails-worldwide/) estimates that over 333 billion emails are sent and received every day. But have you ever been curious about the process of emails being stored and sent across the Internet? If yes, then this article is for you. 
