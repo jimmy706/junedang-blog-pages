@@ -1,5 +1,5 @@
 ---
-title: 5 Ways ChatGPT Can Skyrocket Developer Productivity
+title: A fundamental guide for Designing Good REST API
 description: A well-written API should provide a clear, consistent, and intuitive interface for developers to interact with it...
 image: https://1drv.ms/i/s!At4dit9d4kzBln0qLVNLGaYkIso3?embed=1&width=256
 ---
