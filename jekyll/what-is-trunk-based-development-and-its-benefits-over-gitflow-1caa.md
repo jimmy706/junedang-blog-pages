@@ -5,8 +5,6 @@ image: https://1drv.ms/i/c/c14ce25ddf8a1dde/UQTeHYrfXeJMIIDB4QoAAAAAAO4wqDZbrtXd
 date: 2023-03-30
 ---
 
-# What is trunk-based development and its benefits over GitFlow?
-
 If you have worked with [Git](https://dev.to/junedang/getting-started-with-version-control-part-1-what-is-version-control-g28) and encountered a situation like this: A big, long-lived featured branch was created last week ago about to merge and you have to review all the changed code for the whole week. This is the moment you realize that one developer cannot review those codes without missing small bugs, grammar issues, and missed test cases.
 
 Things can get even worse when your team has implemented continuous integration and delivery (CI/CD), where changes are automatically deployed to production right after the feature branch merges with the deployment branch. With a large number of changes merged directly into the main branch, your product may experience significant changes in functionality, behavior, and user interface, making it easier for big issues to occur.

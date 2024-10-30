@@ -1,5 +1,3 @@
-# Every developer should learn how to use these applications
-
 In this article, we will discover some common applications in the tech world that every developer should learn how to use it.
 
 No more waiting, let’s jump into them one by one:

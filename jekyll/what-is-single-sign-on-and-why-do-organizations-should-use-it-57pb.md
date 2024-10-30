@@ -1,4 +1,3 @@
-# What is Single Sign-On and Why do organizations should use it?
 
 Imagine one day you just bought a new laptop and have to run all the necessary setup before making it work as you expect. Now because all the setting on this laptop is new, you have to manually sign in to countless websites and applications you use daily. This process is tedious and can take hours to get all the things done, not to mention the headache of managing multiple long and forgettable passwords you use to log in to those sites.
 

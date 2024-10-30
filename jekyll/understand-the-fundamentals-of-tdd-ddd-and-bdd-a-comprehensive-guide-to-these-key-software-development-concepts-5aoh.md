@@ -1,4 +1,3 @@
-# Understand the Fundamentals of TDD, DDD, and BDD: A Comprehensive Guide to these Key Software Development Concepts
 
 With the demand for quick response to business change in the software development world today. Many application development concepts have been introduced to help developers deliver their work in a fast, efficient way.
 

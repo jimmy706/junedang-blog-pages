@@ -5,8 +5,6 @@ image: https://1drv.ms/i/s!At4dit9d4kzBlz9dQbVawvWNzHAp?embed=1&width=660
 date: 2023-05-03
 ---
 
-# Behind the Scenes of the Internet: The Domain Name System Explained
-
 If you ever typed `google.com` and instantly your browser recognizes the domain and loads it into the view, you will be thanked for the **Domain Name System (DNS)** that helps you with all the work of recognizing the domain names and mapping them into the correct IP address over the internet. In this article, we’ll take a closer look at one of the most crucial technologies for the Internet today: What is DNS, How it works behind the scenes, and Why we need it for the Internet to work?
 
 ## Why do we need DNS?

@@ -1,4 +1,3 @@
-# Object.assign in TypeScript: An Introduction to Converting Classes
 
 ## Situation
 Imagine that you are working on calling an API to receive a list of Person. Each Person has their first name, last name and title. Knowing the model received from the backend, you create a model in the frontend side to catch the value received like:

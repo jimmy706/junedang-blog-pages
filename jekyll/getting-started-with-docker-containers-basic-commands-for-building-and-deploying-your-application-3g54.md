@@ -1,5 +1,3 @@
-# Getting Started with Docker Containers: Basic Commands for Building and Deploying Your Application
-
 In our [last article](https://dev.to/junedang/an-evolution-story-of-software-deployment-from-dedicated-server-to-containerization-4ol6), we have discovered what is Docker, how your system benefits from it, and how it works. In the following article, we will discuss the implementation of Docker with hands-on example code from creating Docker Image using Dockerfile to basic commands to run a simple to-do-list application on Docker.
 
 To get the most out of the context of this article, feel free to read my previous article to get a brief understanding of what is Docker and its architecture.

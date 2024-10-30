@@ -4,8 +4,6 @@ date: 2024-10-20T00:00:00+00:00
 image: https://1drv.ms/i/s!At4dit9d4kzBl2wdfLKQfWhuSAFF?embed=1&width=660
 ---
 
-# An evolution story of Software Deployment: From Dedicated Server to Containerization
-
 ## From the early day
 Let’s assume you are developing an application using Java and want to share the result with your clients to test it out and give early feedback. You then push the code to a centralized repository like GitHub to let your clients clone and test it on their machines.
 

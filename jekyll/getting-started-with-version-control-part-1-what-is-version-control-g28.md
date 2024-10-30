@@ -1,5 +1,3 @@
-# Getting started with version control – part 1:– What is version control?
-
 If you are learning how to develop a project and on the path to becoming a developer, you have at least heard a term called "version control" or "source control". In today's article, you will read about what is version control, how it works, and how it benefits a tech project.
 
 ## What is version control anyway?
