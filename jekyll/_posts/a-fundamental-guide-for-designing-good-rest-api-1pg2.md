@@ -1,7 +1,7 @@
 ---
 title: A fundamental guide for Designing Good REST API
 description: A well-written API should provide a clear, consistent, and intuitive interface for developers to interact with it...
-image: https://1drv.ms/i/s!At4dit9d4kzBln0qLVNLGaYkIso3?embed=1&width=256
+image: https://1drv.ms/i/s!At4dit9d4kzBln0qLVNLGaYkIso3?embed=1&width=660
 ---
 
 # A fundamental guide for Designing Good REST API

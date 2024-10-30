@@ -1,7 +1,7 @@
 ---
 title: “Continue with Google” – How OAuth system work?
 date: 2024-10-20T00:00:00+00:00
-image: https://1drv.ms/i/s!At4dit9d4kzBlybjUKQLdO5GDkF1?embed=1&width=256
+image: https://1drv.ms/i/s!At4dit9d4kzBlybjUKQLdO5GDkF1?embed=1&width=660
 description: What is OAuth, How it works behind the scenes, and Why we need it for the Internet to work?
 ---
 

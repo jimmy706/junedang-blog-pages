@@ -1,7 +1,7 @@
 ---
 title: "An evolution story of Software Deployment: From Dedicated Server to Containerization"
 date: 2024-10-20T00:00:00+00:00
-image: https://1drv.ms/i/s!At4dit9d4kzBl2wdfLKQfWhuSAFF?embed=1&width=256
+image: https://1drv.ms/i/s!At4dit9d4kzBl2wdfLKQfWhuSAFF?embed=1&width=660
 ---
 
 # An evolution story of Software Deployment: From Dedicated Server to Containerization
