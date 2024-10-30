@@ -2,6 +2,7 @@
 title: Behind the Scenes of the Internet - The Domain Name System Explained
 description: What is DNS, How it works behind the scenes, and Why we need it for the Internet to work?
 image: https://1drv.ms/i/s!At4dit9d4kzBlz9dQbVawvWNzHAp?embed=1&width=660
+date: 2023-05-03
 ---
 
 # Behind the Scenes of the Internet: The Domain Name System Explained

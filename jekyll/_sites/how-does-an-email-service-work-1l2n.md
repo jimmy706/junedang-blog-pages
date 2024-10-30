@@ -2,6 +2,7 @@
 title: How does an email service work?
 description: How does an email service work?
 image: https://miro.medium.com/v2/resize:fit:1400/format:webp/1*Z5WhK0XAI8buYjN0s4tsdg.jpeg
+date: 2023-03-30
 ---
 
 ![](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*Z5WhK0XAI8buYjN0s4tsdg.jpeg)

@@ -2,6 +2,7 @@
 title: Discovering the History of HTTP Versions
 description: Discovering the History of HTTP Versions
 image: https://1drv.ms/i/s!At4dit9d4kzBvDm5hBq90HUVqfju?embed=1&width=660
+date: 2023-03-30
 ---
 
 ![](https://1drv.ms/i/s!At4dit9d4kzBvDm5hBq90HUVqfju?embed=1&width=1024)

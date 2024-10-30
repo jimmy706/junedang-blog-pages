@@ -1,3 +1,9 @@
+---
+title: Getting started with version control – part 2: Git and basic commands
+description: Learn how to use Git in your project and basic commands of Git
+date: 2020-11-24
+---
+
 # Getting started with version control – part 2: Git and basic commands
 
 In my [previous article](https://dev.to/junedang/getting-started-with-version-control-part-1-what-is-version-control-g28), we learned about what are version control systems and how they work. In this article, we will learn about Git – a distributed version control system. This page will guide you on what is Git, how to use Git in your project, difference between Git and other VCS.
