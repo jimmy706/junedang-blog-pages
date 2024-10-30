@@ -1,3 +1,10 @@
+---
+title: How to Enable Cross-Origin Resource Sharing(CORS) in Django for Safe HTTP Requests
+date: 2021-11-17
+description: How to Enable Cross-Origin Resource Sharing(CORS) in Django for Safe HTTP Requests
+---
+
+
 ## Situation
 Imagine you are learning web development with Python and just started a Django project for your web project. Everything looks clean and perfect, you have the database running, the models are designed and REST APIs are ready to be requested.
 
