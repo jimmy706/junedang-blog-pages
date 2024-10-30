@@ -1,7 +1,7 @@
 ---
-title: "`Object.assign` in TypeScript An Introduction to Converting Classes"
+title: "Object&#46;assign in TypeScript An Introduction to Converting Classes"
 date: 2022-09-09
-description: Object.assign in TypeScript: An Introduced to Converting Classes
+description: An Introduced to Converting Classes in typescript
 ---
 
 ## Situation
