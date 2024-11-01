@@ -1,3 +1,9 @@
+---
+title: Top non-programming language for developers to learn in 2023
+description: explore 5 ways that ChatGPT can help developers skyrocket their daily work.
+date: 2023-03-30
+---
+
 
 Learning new programming language seem normal to us as developers, but besides common programming languages out there like C++, Java, Python, JavaScript… that help programmers build applications and websites, some other non-programming languages are used for documenting, structuring, and management that is worth for developer to learn.
 ## What is programming language?

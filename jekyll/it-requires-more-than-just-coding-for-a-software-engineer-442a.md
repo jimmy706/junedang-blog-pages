@@ -1,3 +1,9 @@
+---
+title: It requires more than just coding for a software engineer
+description: How to survive and become a professional software engineer
+date: 2023-07-06
+---
+
 If you’re a developer like me, it’s likely that you have a deep passion for coding and problem-solving. You can spend hours engrossed in your work, sitting in one place, contemplating complex problems, and using your coding skills to find solutions. This is when you enter your focus zone and experience your most productive sessions.
 
 However, the life of a programmer is never easy. You might believe that your code will change the world, but the reality often falls short of our lofty expectations. As developers, we understand how to write code and we excel at it. But those who can write good code while also bringing value and effectively communicating with clients are the ones who shine.

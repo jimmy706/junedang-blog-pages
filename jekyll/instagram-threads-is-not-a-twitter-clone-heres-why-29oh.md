@@ -1,3 +1,9 @@
+---
+title: Instagram Threads Is Not A Twitter Clone. Here's Why
+description: Instagram Threads Is Not A Twitter Clone. Here's Why
+date: 2023-07-06
+---
+
 Last week, Meta introduced Threads, a new social media platform that aims to compete with Twitter by leveraging Instagram’s account system. However, concerns have been raised, including by Elon Musk, regarding potential threats to freedom of speech due to centralized control of data under Mark Zuckerberg.
 
 Many even think that Threads is just a clone of Twitter and even Elon [threatens a lawsuit against Threads](https://www.theguardian.com/technology/2023/jul/06/twitter-meta-lawsuit-threads-app-musk-zuckerberg) for violating Twitter’s “intellectual property rights”.

@@ -1,3 +1,10 @@
+---
+title: Single Sign On Protocols: SAML vs. OpenID Connect
+description: Single Sign On Protocols: SAML vs. OpenID Connect
+date: 2021-11-29
+image: https://miro.medium.com/v2/resize:fit:1400/format:webp/1*U4sOB24_8x6J8P1uKXzDZA.png
+---
+
 
 Single Sign On (SSO) is a centralized authentication solution that allows users only use a single login and credential to access multiple applications that trust the SSO protocols within the system. This solution is more and more get implemented by organizations since it improves user experience when working with a system that has multiple applications that share the login user data.
 

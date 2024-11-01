@@ -1,3 +1,10 @@
+---
+title: Monorepo the solution to Microfrontend development challenges
+layout: post
+date: 2023-03-11
+description: Monorepo the solution to Microfrontend development challenges
+---
+
 
 As technology advances and businesses become increasingly complex, front-end applications built from a single, monolithic resource are struggling to keep up with the growing demands of both businesses and customers.
 

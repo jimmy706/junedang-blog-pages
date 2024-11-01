@@ -1,3 +1,9 @@
+---
+title: How I learn new things every day as a developer
+date: 2023-03-30
+
+---
+
 Dealing with new technology is our daily basis requirement in the tech world and sometimes it's tough to learn new things when you have so much work to do. Here are some tips that I have learned to keep you on the path of learning new things every day that are easy to adapt.
 No further delay, let's jump into it.
 

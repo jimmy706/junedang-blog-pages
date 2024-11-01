@@ -1,3 +1,12 @@
+---
+title: Efficient System Deployment with Containerization: How Your System Benefits from Docker Containers
+description: This article will provide an overview of containerization and Docker Containers.
+date: 2023-06-01
+image: https://dev-to-uploads.s3.amazonaws.com/uploads/articles/o91pewjlwi4njtj4zvjs.png
+---
+
+![](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/o91pewjlwi4njtj4zvjs.png)
+
 Continuing from our previous [article](https://junedang.com/an-evolution-story-of-software-deployment-from-dedicated-server-to-containerization/) on the evolution of software deployment, we now turn our attention to the remarkable benefits brought about by containerization—a concept that has revolutionized the tech world. Containerization has been used for a while now from its buzz to describe a system virtualized environments to run applications, offering unparalleled flexibility and lightweight execution.
 
 In this story, let’s we will discuss one of the most popular tools used in the containerization realm: Docker Containers. We will unravel what is Docker, why you should use it, and the key concepts of Docker.
