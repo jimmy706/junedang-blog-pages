@@ -1,7 +1,8 @@
 ---
 ttile: How Modern Web Browsers Render Pages? - Part 1
 description: This first part explain how your website is found over the Internet
-date: 2024-02-09
+date: 2025-02-09
+image: https://1drv.ms/i/c/c14ce25ddf8a1dde/IQRdEZe5lXBZQIFM8kjRaUqLASuCuQq5BHcQY3Xe2Shc8oU?width=660
 ---
 
 ## Introduction
