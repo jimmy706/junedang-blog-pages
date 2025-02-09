@@ -1,11 +1,9 @@
 ---
-ttile: How Modern Web Browsers Render Pages? - Part 1
+title: How Modern Web Browsers Render Pages? - Part 1
 description: This first part explain how your website is found over the Internet
 date: 2025-02-09
 image: https://1drv.ms/i/c/c14ce25ddf8a1dde/IQRdEZe5lXBZQIFM8kjRaUqLASuCuQq5BHcQY3Xe2Shc8oU?width=660
 ---
-
-## Introduction
 
 When you typing something on the browser, have you ever wondering whether the site you are looking for locate? And how the browser able to search and response the page to your computer? Let's find out in this article.
 
