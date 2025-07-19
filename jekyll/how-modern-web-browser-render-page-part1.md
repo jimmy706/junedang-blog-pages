@@ -2,7 +2,7 @@
 title: How Modern Web Browsers Render Pages? - Part 1
 description: This first part explain how your website is found over the Internet
 date: 2025-02-09
-image: https://1drv.ms/i/c/c14ce25ddf8a1dde/IQRdEZe5lXBZQIFM8kjRaUqLASuCuQq5BHcQY3Xe2Shc8oU?width=660
+image: https://storage.googleapis.com/junedang_blog_images/how-modern-web-browser-render-page-part1/cover-image.webp
 ---
 
 When you typing something on the browser, have you ever wondering whether the site you are looking for locate? And how the browser able to search and response the page to your computer? Let's find out in this article.
@@ -17,7 +17,7 @@ Before a browser can render a webpage, it must locate the server where the websi
 
 The process to transfer from hostname into a system-readable IP involve following steps:
 
-<iframe src="https://1drv.ms/u/c/c14ce25ddf8a1dde/IQQC_FyYm6NqRpsiqYK7jPHrATDg5ndyrlmzqdM7-HZBnf8" width="100%" height="1000" frameborder="0" scrolling="no"></iframe>
+![DNS Lookup Process](https://storage.googleapis.com/junedang_blog_images/how-modern-web-browser-render-page-part1/dns-navigation.svg)
 
 1. User enters the domain name in the browser.
 2. Computer requests DNS lookup from the DNS resolver (recursive resolver).
