@@ -17,8 +17,6 @@ Message queues are fundamental components of modern distributed systems that ena
 
 ## Core Concepts and Components
 
-**Why it matters.** Understanding the fundamental concepts of message queues is essential for designing decoupled, resilient distributed systems. Message queues solve the critical problem of tight coupling between services by introducing an asynchronous communication layer.
-
 **The basic idea.** A message queue is a buffer that stores messages temporarily, allowing systems to communicate asynchronously. Instead of sending data directly from one service to another, the sender (producer) drops a message into the queue, and the receiver (consumer) picks it up when ready. This decoupling means services don't need to be online simultaneously or process messages at the same speed.
 
 **Producer and consumer roles.**
@@ -44,11 +42,7 @@ messageQueue.subscribe('orders', async (message) => {
 });
 ```
 
-**Further reading.** [1], [2]
-
 ## Message Broker Architecture
-
-**Why it matters.** Message brokers are the central infrastructure components that make message queues reliable and scalable. Understanding broker architecture helps in selecting the right technology and configuring it properly for your use case.
 
 **The broker's role.** A message broker is the middleware that manages message queues, handling storage, routing, ordering, and delivery guarantees. Popular brokers include RabbitMQ, Apache Kafka, AWS SQS, and Redis. The broker ensures messages don't get lost and can enforce ordering requirements when needed.
 
@@ -78,11 +72,7 @@ data:
     cluster_formation.k8s.host = kubernetes.default.svc.cluster.local
 ```
 
-**Further reading.** [3], [4]
-
 ## Message Delivery Mechanisms
-
-**Why it matters.** Understanding delivery semantics is crucial for ensuring data consistency and reliability in distributed systems. Different applications require different guarantees about message delivery and processing.
 
 **How delivery works.** The standard message lifecycle follows these steps:
 1. Producer sends a message to the queue
@@ -119,11 +109,7 @@ channel.consume('tasks', async (message) => {
 }, { noAck: false });
 ```
 
-**Further reading.** [5], [6]
-
 ## Reliability and Scalability
-
-**Why it matters.** Message queues enable systems to handle varying loads gracefully and recover from failures. Understanding reliability and scaling patterns is essential for production deployments.
 
 **Reliability features.**
 - **Persistence**: Messages survive broker restarts by storing to disk
@@ -183,8 +169,6 @@ spec:
         type: AverageValue
         averageValue: "10"
 ```
-
-**Further reading.** [7], [8]
 
 ## Design and Trade-offs
 
