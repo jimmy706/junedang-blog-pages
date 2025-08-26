@@ -2,7 +2,7 @@
 title: "API Gateway Design and Key Components"
 description: "Understanding how API Gateways shape modern distributed systems."
 tags: [research, api-gateway, microservices, architecture, system-design]
-image: https://storage.googleapis.com/junedang_blog_images/api-gateway-design-and-key-components/api_gateway_design.svg
+image: https://storage.googleapis.com/junedang_blog_images/api-gateway-design-and-key-components/api_gateway.webp
 date: 2025-08-24
 ---
 
@@ -23,7 +23,7 @@ At a high level, API Gateways are built around these principles:
 * **Resilience**: Circuit breakers, retries, and timeouts so one bad service doesn’t take down the system.
 * **Horizontal scalability**: Gateways must scale linearly under load, often deployed in clusters.
 
-![API gateway](https://storage.googleapis.com/junedang_blog_images/api-gateway-design-and-key-components/api_gateway.svg)
+![API gateway](https://storage.googleapis.com/junedang_blog_images/api-gateway-design-and-key-components/api_gateway.webp)
 
 ## Key Components You’ll Find in a Gateway
 
