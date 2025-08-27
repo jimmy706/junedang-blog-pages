@@ -45,15 +45,11 @@ date: YYYY-MM-DD
 3. “At a glance” box: key takeaways as bullets (5–8 bullets).
 4. 3–5 H2 sections for the most relevant subtopics. Each subtopic section must include:
 
-   * What it is and why it matters.
+   * What is this topic is about, explain the general concept
    * Current state of the art or standards.
-   * Practical guidance, pitfalls, and decision criteria.
-   * Code or config snippets if relevant.
-   * Links to primary references.
+   * Code or config snippets if relevant. Otherwise just pure topic describe.
+
 5. “Design and trade-offs” H2: compare common approaches in a small table.
-6. “Implementation checklist” H2: step-by-step bullets.
-7. “References” H2: numbered list of sources with titles, publishers, dates, and URLs.
-8. “Changelog” H2: initial entry with today’s date and a one-line summary.
 
 # Subtopic selection rules
 
@@ -76,14 +72,6 @@ date: YYYY-MM-DD
 * Tables for comparisons. Code fences with language hints.
 * Link definitions, standards, and official docs first.
 * Add “Further reading” bullets inside each subtopic when useful.
-
-# Citations
-
-* In-text bracketed numbers like `[1]`. List full entries under “References.”
-* Each reference entry format:
-
-  * `[#]. Title — Site/Publisher — Author (if clear) — Year — URL — Accessed YYYY-MM-DD`
-* Verify links resolve. Prefer HTTPS.
 
 # QA checklist (must pass before saving)
 
@@ -118,7 +106,7 @@ date: <YYYY-MM-DD>
 > - <bullet 5>
 
 ## <Subtopic 1>
-**Why it matters.** <2–3 sentences>  
+<2–3 sentences>  
 **Key points.**
 - <point>
 - <point>
@@ -126,8 +114,6 @@ date: <YYYY-MM-DD>
 ```<lang>
 <code>
 ````
-
-**Further reading.** \[1], \[2]
 
 ## \<Subtopic 2>
 
@@ -152,13 +138,8 @@ date: <YYYY-MM-DD>
 | <A>    | <pros> | <cons> | <fit>    |
 | <B>    | <pros> | <cons> | <fit>    |
 
-## Implementation checklist
+## Implementation checklist (optional)
 
 * [ ] \<step 1>
 * [ ] \<step 2>
 * [ ] \<step 3>
-
-## References
-
-1. <Title> — <Publisher> — <Author> — <Year> — <URL> — Accessed <YYYY-MM-DD>
-2. <…>
