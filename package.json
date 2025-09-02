@@ -1,8 +1,0 @@
-{
-  "name": "junedang-blog-pages",
-  "dependencies": {
-    "axios": "^1.7.7",
-    "isomorphic-dompurify": "^2.16.0",
-    "marked": "^14.1.2"
-  }
-}
