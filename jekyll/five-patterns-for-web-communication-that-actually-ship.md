@@ -17,9 +17,11 @@ Building real-time web applications requires choosing the right communication pa
 > - Start with REST, add push patterns only where needed
 > - Design for at-least-once delivery and implement proper reconnection logic
 
-## Classic Request/Response (REST over HTTP)
+## 1. Classic Request/Response (REST over HTTP)
 
 Classic request/response follows a simple model: client asks, server answers, then the connection dies. This stateless approach forms the backbone of most web APIs and remains the most widely adopted pattern for good reason.
+
+![REST HTTP](https://storage.googleapis.com/junedang_blog_images/five-patterns-for-web-communication-that-actually-ship/http_rest.webp)
 
 **Key characteristics:**
 - Stateless communication model
@@ -59,9 +61,11 @@ ETag: "abc123"
 }
 ```
 
-## Short Polling
+## 2. Short Polling
 
 Short polling implements near-real-time updates by having the client repeatedly request data at fixed intervals. While simple to implement, this approach trades efficiency for simplicity.
+
+![Short polling](https://storage.googleapis.com/junedang_blog_images/five-patterns-for-web-communication-that-actually-ship/short_polling.webp)
 
 **Key characteristics:**
 - Fixed interval requests from client
@@ -96,9 +100,11 @@ setInterval(async () => {
 }, 10000);
 ```
 
-## Long Polling
+## 3. Long Polling
 
 Long polling improves upon short polling by having the server hold requests open until new data becomes available or a timeout occurs. This provides real-time semantics using standard HTTP infrastructure.
+
+![Long polling](https://storage.googleapis.com/junedang_blog_images/five-patterns-for-web-communication-that-actually-ship/long_polling.webp)
 
 **Key characteristics:**
 - Server holds connections open until data arrives
@@ -139,9 +145,11 @@ async function longPoll() {
 }
 ```
 
-## Server-Sent Events (SSE)
+## 4. Server-Sent Events (SSE)
 
 Server-Sent Events provide a standardized way to stream data from server to client over a single HTTP connection. This pattern excels at one-way real-time updates with built-in browser support.
+
+![Server-Sent Events](https://storage.googleapis.com/junedang_blog_images/five-patterns-for-web-communication-that-actually-ship/sse.webp)
 
 **Key characteristics:**
 - One-way server-to-client streaming
@@ -194,9 +202,11 @@ data: {"ticker":"AAPL","px":232.12}
 : heartbeat every 15s
 ```
 
-## WebSocket
+## 5. WebSocket
 
 WebSocket provides full-duplex, long-lived communication channels tunneled through HTTP upgrade. This pattern enables the lowest latency bidirectional communication for interactive applications.
+
+![Websocket](https://storage.googleapis.com/junedang_blog_images/five-patterns-for-web-communication-that-actually-ship/websocket.webp)
 
 **Key characteristics:**
 - Full-duplex communication over single TCP connection
@@ -262,46 +272,6 @@ Use this framework instead of following trends:
 - **"Both directions with lots of small messages"** → WebSocket
 - **"APIs for machines and humans"** → Request/response, add push patterns only where specifically needed
 
-## Scaling and Failure Modes
+## Summary of Recommendations
 
-**Connection Management:**
-- Configure server `read` and `idle` timeouts appropriately for each pattern
-- Document timeout values in client implementation
-- Plan for connection limits and implement connection pooling
-
-**Reconnection Strategy:**
-- Use jittered exponential backoff everywhere to prevent reconnection storms
-- Implement token bucket rate limiting for reconnection attempts
-- Include circuit breaker patterns for degraded service handling
-
-**Message Ordering and Delivery:**
-- Include monotonically increasing sequence numbers or timestamps
-- Design clients to handle duplicate messages (at-least-once delivery)
-- Accept that exactly-once delivery is impractical—design idempotent handlers
-
-**High-Scale Considerations:**
-- For SSE/WebSocket at scale, use message brokers (Redis Streams, NATS, Kafka)
-- Implement horizontal scaling with shared state management
-- Plan zero-downtime deployments with connection draining
-- Advertise `Retry-After` headers during maintenance
-
-**Observability:**
-- Track connected session counts and average session duration
-- Monitor message queue depth and processing lag
-- Measure drop rates and connection failure patterns
-- Alert on abnormal reconnection patterns
-
-## Reference Architecture
-
-**Recommended evolution path:**
-1. **Start REST-first** for all basic operations and APIs
-2. **Add SSE** for notifications and live state updates where needed
-3. **Introduce WebSocket** only for specific features requiring bidirectional real-time communication
-4. **Keep long polling** as a "works everywhere" fallback behind feature flags
-5. **Maintain short polling** as the ultimate fallback for degraded scenarios
-
-This approach minimizes complexity while providing progressive enhancement of real-time capabilities based on actual requirements rather than architectural fashion.
-
-<!-- 
-Subtopic selection rationale: These five patterns represent the complete spectrum of web communication approaches actually used in production systems. They partition the problem space by connection model (stateless vs stateful), directionality (unidirectional vs bidirectional), and latency requirements. Each pattern addresses distinct failure modes and infrastructure constraints, making the selection comprehensive and non-overlapping.
--->
+Start with REST. Add SSE when you need one-way push. Escalate to WebSocket only for true two-way real-time. Keep long polling as a fallback, short polling as a last resort.
