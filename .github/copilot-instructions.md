@@ -73,6 +73,7 @@ date: YYYY-MM-DD
 * Once the topic related to programming langugage or technical technique:
   * include small, runnable examples when possible.
   * Tables for comparisons. Code fences with language hints.
+* For any terms that related to my previous articles, add backlink to it with the slug. (For example term 'API' will linked to: /posts/api-gateway-design-and-key-components)
 
 # QA checklist (must pass before saving)
 
@@ -84,6 +85,7 @@ date: YYYY-MM-DD
 * [ ] No TODOs. No placeholders like “TBD”.
 * [ ] File path and permalink use the same `<slug>`.
 * [ ] Questions for knowledge reminder
+* [ ] Backlinks include (optional)
 
 # Deliverables
 
