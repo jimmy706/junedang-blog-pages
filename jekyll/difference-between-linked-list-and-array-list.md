@@ -75,7 +75,7 @@ When you add initialize an array list, it allocates a small block of memory. As 
 **1. Predictable access time**
 Accessing any element by index is O(1). You can jump directly to the 1000th element without touching the first 999.
 
-**2. Cache-friendly** 
+**2. Cache-friendly**
 Modern CPUs are optimized for sequential memory access. Array lists store elements contiguously, making iteration blazing fast due to better cache locality.
 
 **3. Compact**
@@ -111,30 +111,38 @@ A linked list stores elements as individual nodes scattered throughout memory, w
 **Example in Java:**
 
 ```java
-import java.util.LinkedList;
-
 public class LinkedListDemo {
     public static void main(String[] args) {
-        LinkedList<Integer> numbers = new LinkedList<>();
+        LinkedList<Integer> numbers = new SinglyLinkedList<>();
+        numbers.add(5);
+        numbers.add(7);
+        numbers.add(10);
 
-        // Adding elements - fast at both ends
-        numbers.add(10);        // O(1) at end
-        numbers.addFirst(5);    // O(1) at beginning
-        // Now: [5, 10]
-
-        // Access by index - slow (must traverse)
-        int value = numbers.get(1);    // O(n)
-
-        // Inserting in middle - fast if we have the node reference
-        numbers.add(1, 7);    // O(n) to find position, O(1) to insert
-        // Now: [5, 7, 10]
-
-        // Removing from beginning - fast
-        numbers.removeFirst();    // O(1)
-        // Now: [7, 10]
+         // Traversing the list
+         for (int num : numbers) {
+               System.out.println(num); // Outputs 5, 7, 10
     }
 }
 ```
+
+### How it works?
+
+<pre class="mermaid">
+flowchart TD
+    subgraph LinkedList["Singly Linked List"]
+    direction LR
+    N1["val: 5 | next: →"] --> N2["val: 7 | next: →"] --> N3["val: 10 | next: null"]
+    end
+
+    subgraph DoublyLinkedList["Doubly Linked List"]
+    direction LR
+      D1["val: 5 | prev: null | next: →"] <--> D2["val: 7 | prev: ← | next: →"] <--> D3["val: 10 | prev: ← | next: null"]
+      end
+</pre>
+
+A node in linked list typically contains two parts: the data and a pointer to the next node. In a doubly linked list, there’s an additional pointer to the previous node. All the operations within Linked List involve manipulating these pointers and interacting with nodes.
+
+It can be said that a node does not know about the entire list, it only knows about its immediate neighbors. This is why operations like insertion and deletion can be done efficiently without shifting elements. This is why linked lists excel at dynamic workloads where frequent insertions and deletions occur because they avoid the costly shifting of elements seen in array lists but just simply update node's pointers.
 
 ### Pros of Linked Lists
 
@@ -177,7 +185,6 @@ In contrast, a linked list's design is inherently flexible. Each element (node) 
 
 ![Array List vs Linked List](https://storage.googleapis.com/junedang_blog_images/difference-between-linked-list-and-array-list/array_list_vs_linked_list.webp)
 
-
 ## Performance Comparison
 
 | Operation             | Array List          | Linked List (Singly)                 | Linked List (Doubly) |
@@ -192,7 +199,6 @@ In contrast, a linked list's design is inherently flexible. Each element (node) 
 | Delete from middle    | O(n)                | O(1) after traversal                 | O(1) after traversal |
 | Memory overhead       | Low (just capacity) | Medium (one pointer)                 | High (two pointers)  |
 | Cache performance     | Excellent           | Poor                                 | Poor                 |
-
 
 ## When to Use Array Lists
 
@@ -248,7 +254,6 @@ Linked lists are building blocks for stacks, queues, hash table chaining, and gr
 - Polynomial arithmetic or sparse matrices
 - Memory management (free list in allocators)
 - Browser history navigation
-
 
 ## Questions
 
