@@ -295,7 +295,7 @@ Set "office hours" where you're available for questions. Outside those hours, re
 
 Sometimes a task truly can't wait. A production outage gets pushed to the front of the queue, even if you're mid-task. The deque allows this flexibility without abandoning the queue structure entirely.
 
-The lesson is simple: **treat your attention as a single-threaded processor**. You can only execute one task at a time. Queue it, process it, complete it, then move on. Multi-tasking is a myth—it's just thrashing between queues, losing context each time.
+The lesson is simple: **treat your attention as a single-threaded processor**. You can only execute one task at a time. Queue it, process it, complete it, then move on. Multitasking is a myth—it's just thrashing between queues, losing context each time.
 
 ## Design Trade-offs in Practice
 
