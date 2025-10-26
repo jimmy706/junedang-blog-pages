@@ -43,15 +43,14 @@ date: YYYY-MM-DD
 
 1. Title is handled by front matter.
 2. Intro (3–5 sentences): scope, why it matters, how to use the page.
-3. “At a glance” box: key takeaways as bullets (5–8 bullets).
-4. 3–5 H2 sections for the most relevant subtopics. Each subtopic section must include:
+3. 3–5 H2 sections for the most relevant subtopics. Each subtopic section must include:
 
    * What is this topic is about, explain the general concept
    * Current state of the art or standards.
    * Code or config snippets if relevant. Otherwise just pure topic describe.
 
-5. “Design and trade-offs” H2: compare common approaches in a small table.
-6. "Questions": A list of 1 - 2 questions related to topic's knowledge for reminder
+4. “Design and trade-offs” H2: compare common approaches in a small table.
+5. "Questions": A list of 1 - 2 questions related to topic's knowledge for reminder
 
 # Subtopic selection rules
 
@@ -98,22 +97,15 @@ date: YYYY-MM-DD
 ---
 title: "<Title Case Topic>"
 description: "<one sentence>"
-tags: [research, <tag1>, <tag2>]
+tags: [<tag1>, <tag2>]
 date: <YYYY-MM-DD>
 ---
 
-> **At a glance**
-> - <bullet 1>
-> - <bullet 2>
-> - <bullet 3>
-> - <bullet 4>
-> - <bullet 5>
+<Intro: 3–5 sentences about the topic, its scope, why it matters, and how to use the page.>
 
 ## <Subtopic 1>
 <2–3 sentences>  
-**Key points.**
-- <point>
-- <point>
+
 **Example.**
 ```<lang>
 <code>
@@ -147,6 +139,9 @@ date: <YYYY-MM-DD>
 * [ ] \<step 1>
 * [ ] \<step 2>
 * [ ] \<step 3>
+
+## Closing throughts
+<2–3 sentences wrapping up the topic, future outlook, or additional resources.>
 
 ## Questions
 1. <Question 1>
