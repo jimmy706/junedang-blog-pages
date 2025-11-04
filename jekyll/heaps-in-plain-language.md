@@ -31,10 +31,12 @@ graph TD
 
 ## Operations and Costs
 
-- **Peek**: O(1) – Read the root element without modifying the heap.
-- **Insert (heapify-up)**: O(log n) – Add the new element at the end of the array, then bubble it upward by swapping with its parent until the heap property is restored.
-- **Extract (heapify-down)**: O(log n) – Remove the root, replace it with the last element, then sink it downward by swapping with the smaller (or larger) child until order is restored.
-- **Build-heap**: O(n) – Convert an unsorted array into a heap by heapifying from the bottom up. This is faster than inserting elements one by one.
+| Operation | Time Complexity | Description |
+|-----------|----------------|-------------|
+| **Peek** | O(1) | Read the root element without modifying the heap. |
+| **Insert (heapify-up)** | O(log n) | Add the new element at the end of the array, then bubble it upward by swapping with its parent until the heap property is restored. |
+| **Extract (heapify-down)** | O(log n) | Remove the root, replace it with the last element, then sink it downward by swapping with the smaller (or larger) child until order is restored. |
+| **Build-heap** | O(n) | Convert an unsorted array into a heap by heapifying from the bottom up. This is faster than inserting elements one by one. |
 
 ## Implementation Concept
 
@@ -99,11 +101,43 @@ Start with an empty min-heap. Insert: 5, 3, 8, 1.
 Each insert required at most two comparisons. Each extract needed one comparison. This is the efficiency of heapify.
 
 <pre class="mermaid">
-graph LR
-    A["Insert 5<br>[5]"] --> B["Insert 3<br>[3,5]"]
-    B --> C["Insert 8<br>[3,5,8]"]
-    C --> D["Insert 1<br>[1,5,8,3]"]
-    D --> E["Extract min<br>[3,5,8]<br>Removed: 1"]
+graph TD
+    subgraph "Step 1: Insert 5"
+        A1["Array: [5]<br>Tree:<br>5"]
+    end
+    
+    subgraph "Step 2: Insert 3"
+        B1["Array: [5,3]<br>Tree:<br>  5<br> /"]
+        B2["3 < 5, swap"]
+        B3["Array: [3,5]<br>Tree:<br>  3<br> /<br>5"]
+        B1 --> B2 --> B3
+    end
+    
+    subgraph "Step 3: Insert 8"
+        C1["Array: [3,5,8]<br>Tree:<br>  3<br> / \<br>5   8"]
+        C2["8 > 3, no swap"]
+        C1 --> C2
+    end
+    
+    subgraph "Step 4: Insert 1"
+        D1["Array: [3,5,8,1]<br>Tree:<br>    3<br>   / \<br>  5   8<br> /"]
+        D2["1 < 5, swap up"]
+        D3["Array: [3,1,8,5]<br>Then 1 < 3, swap"]
+        D4["Array: [1,3,8,5]<br>Final Tree:<br>    1<br>   / \<br>  3   8<br> /<br>5"]
+        D1 --> D2 --> D3 --> D4
+    end
+    
+    subgraph "Step 5: Extract Min"
+        E1["Remove 1, replace with 5<br>Array: [5,3,8]"]
+        E2["5 > 3, swap down"]
+        E3["Array: [3,5,8]<br>Final Tree:<br>  3<br> / \<br>5   8"]
+        E1 --> E2 --> E3
+    end
+    
+    A1 --> B1
+    B3 --> C1
+    C2 --> D1
+    D4 --> E1
 </pre>
 
 ## Why It Matters
@@ -145,6 +179,13 @@ graph TD
     C --> D
     C --> E
 </pre>
+
+## Questions
+
+Test your understanding of heaps with these knowledge check questions:
+
+1. What is the time complexity of finding the minimum element in a min-heap, and why is it so efficient?
+2. If you have an array [10, 5, 8, 3, 7] and want to build a min-heap, what would the final array look like after heapifying?
 
 ## Closing Thoughts
 
