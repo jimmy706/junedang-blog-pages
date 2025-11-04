@@ -36,6 +36,56 @@ graph TD
 - **Extract (heapify-down)**: O(log n) – Remove the root, replace it with the last element, then sink it downward by swapping with the smaller (or larger) child until order is restored.
 - **Build-heap**: O(n) – Convert an unsorted array into a heap by heapifying from the bottom up. This is faster than inserting elements one by one.
 
+## Implementation Concept
+
+Here's how the core heap operations look in Python:
+
+```python
+class MinHeap:
+    def __init__(self):
+        self.heap = []
+    
+    def peek(self):
+        return self.heap[0] if self.heap else None
+    
+    def insert(self, value):
+        self.heap.append(value)
+        self._heapify_up(len(self.heap) - 1)
+    
+    def extract_min(self):
+        if not self.heap:
+            return None
+        if len(self.heap) == 1:
+            return self.heap.pop()
+        
+        root = self.heap[0]
+        self.heap[0] = self.heap.pop()
+        self._heapify_down(0)
+        return root
+    
+    def _heapify_up(self, i):
+        parent = (i - 1) // 2
+        if i > 0 and self.heap[i] < self.heap[parent]:
+            self.heap[i], self.heap[parent] = self.heap[parent], self.heap[i]
+            self._heapify_up(parent)
+    
+    def _heapify_down(self, i):
+        smallest = i
+        left = 2 * i + 1
+        right = 2 * i + 2
+        
+        if left < len(self.heap) and self.heap[left] < self.heap[smallest]:
+            smallest = left
+        if right < len(self.heap) and self.heap[right] < self.heap[smallest]:
+            smallest = right
+        
+        if smallest != i:
+            self.heap[i], self.heap[smallest] = self.heap[smallest], self.heap[i]
+            self._heapify_down(smallest)
+```
+
+The heapify-up process bubbles a value upward by comparing with its parent. The heapify-down process sinks a value downward by comparing with both children and swapping with the smallest. Both follow the tree indices faithfully.
+
 ## Mini Example: Min-Heap in Action
 
 Start with an empty min-heap. Insert: 5, 3, 8, 1.
