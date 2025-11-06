@@ -2,6 +2,7 @@
 title: Microsoft Azure outage incident in details
 description: A detailed analysis of the Microsoft Azure outage incident that occurred on Oct 29, 2025, its causes, impacts, and lessons learned.
 date: 2025-10-30
+tags: [cloud, azure, outage, incident-analysis, distributed-systems]
 image: https://storage.googleapis.com/junedang_blog_images/microsoft-azure-outage-incident/AFD_issue.webp
 ---
 
@@ -20,6 +21,8 @@ As customers report high latency and connection timeouts, Microsoft’s engineer
 An inadvertent tenant configuration deployment within AFD introduced an invalid or inconsistent configuration state. As a result, many AFD nodes failed to load properly. When unhealthy nodes dropped out, global traffic shifted unevenly to remaining nodes, which then became overloaded. The imbalance cascaded, producing intermittent availability issues across multiple regions.
 
 This explains why even partially healthy regions saw degraded performance. As downstream services like App Service, Azure Databricks, and Azure Communication Services depend on AFD for front-end delivery, the disruption spread quickly.
+
+![Azure Outage Impacted Services](https://storage.googleapis.com/junedang_blog_images/microsoft-azure-outage-incident/AFD_issue.webp)
 
 ## Why did this happen?
 
