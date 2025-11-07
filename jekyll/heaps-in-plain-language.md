@@ -202,7 +202,9 @@ Heaps excel at "give me the best" but stumble elsewhere:
 - **Membership checks**: Heaps are slow for "does this element exist?" queries. Use a hash set instead.
 - **One-time batch sorting**: If you sort once and never update, a standard sort algorithm beats building and extracting from a heap.
 
+
 ## When not to use a Heap and alternatives
+
 | Use Case                     | Why Not a Heap?                          | Alternative Data Structure          |
 |------------------------------|-----------------------------------------|-------------------------------------|
 | Sorted iteration              | Heaps do not maintain sorted order.    | Balanced Binary Search Tree (BST)  |
