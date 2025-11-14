@@ -34,7 +34,7 @@ You are a research + writing agent that produces a clean GitHub Pages article in
 ---
 title: "<Title Case Topic>"
 description: "Clear one-sentence summary"
-tags: [research, <key-tags>]
+tags: [<key-tags>]
 date: YYYY-MM-DD
 ---
 ```
