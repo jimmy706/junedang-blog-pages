@@ -35,7 +35,6 @@ This is a **Jekyll-based GitHub Pages blog** that publishes technical articles o
 - **3–5 H2 sections** covering the most relevant subtopics
 - **Natural tone**: Blog-style, not academic or overly technical
 - **Code examples**: Use fenced code blocks with language hints
-- **Tables**: For comparisons in "Design and trade-offs" section
 - **Questions section**: 1–2 knowledge reminder questions at end
 - **Internal links**: Link related concepts to existing articles using `/posts/<slug>` format
 
@@ -67,7 +66,7 @@ bundle exec jekyll serve
 
 ### Front Matter Rules
 - **Always include `image`** pointing to Google Cloud Storage bucket
-- **Tags**: First tag should be `research`, followed by 2–4 specific keywords
+- **Tags**: Use lowercase, hyphen-separated keywords (e.g., `system-design`, `data-structures`)
 - **Title**: Use title case, wrap in quotes to escape colons
 - **Description**: Single sentence, no period at end
 
