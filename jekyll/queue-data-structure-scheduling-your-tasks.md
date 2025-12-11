@@ -3,7 +3,7 @@ title: "Queue Data Structure - Scheduling Your Tasks"
 description: "Understanding how Queue works as both a computer science concept and a mental model for task scheduling in modern systems."
 tags: [data-structures, queue, scheduling, system-design]
 image: https://storage.googleapis.com/junedang_blog_images/queue-data-structure-scheduling-your-tasks/queue.webp
-date: 2025-10-26
+date: 2025-11-15
 ---
 
 Every engineer's day is a queue—one task after another. You open your laptop, check your backlog, and start working through issues in order. A bug report comes in, then a code review request, then a deployment alert. You handle them sequentially, first-in, first-out. This isn't just how you work—it's how the systems you build work too.
