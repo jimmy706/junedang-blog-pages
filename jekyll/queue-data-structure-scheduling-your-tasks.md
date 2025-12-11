@@ -1,7 +1,8 @@
 ---
 title: "Queue Data Structure - Scheduling Your Tasks"
 description: "Understanding how Queue works as both a computer science concept and a mental model for task scheduling in modern systems."
-tags: [research, data-structures, queue, scheduling, system-design]
+tags: [data-structures, queue, scheduling, system-design]
+image: https://storage.googleapis.com/junedang_blog_images/queue-data-structure-scheduling-your-tasks/queue.webp
 date: 2025-10-26
 ---
 
@@ -9,9 +10,22 @@ Every engineer's day is a queue—one task after another. You open your laptop, 
 
 From operating system schedulers to message brokers to frontend event loops, the Queue data structure is everywhere. It's the invisible hand that ensures fairness, maintains order, and prevents chaos when multiple tasks compete for limited resources. Understanding queues isn't just about memorizing operations and time complexities. It's about recognizing the fundamental pattern that drives both software systems and human workflows.
 
+## First in First Out: The Essence of Queues
+
+First in first out (FIFO) is the defining characteristic of queues. The first element added to the queue will be the first one to be removed. This property makes queues ideal for scenarios where order matters, such as task scheduling, resource management, and buffering.
+
+In some document, you might see queues compared to stacks, which follow Last In First Out (LIFO). While stacks are great for scenarios like function call management and undo operations, queues excel in situations where fairness and order are paramount.
+
 ## What is a Queue?
 
 A queue is a linear data structure that follows the First-In-First-Out (FIFO) principle. Think of it like a line at a coffee shop: the first person to join the line is the first person served. Items are added at one end (the rear or back) and removed from the other end (the front).
+
+The basic elements of a queue include:
+* **Front** – The end from which elements are removed.
+* **Rear** – The end where elements are added.
+* **Size** – The number of elements currently in the queue.
+
+![Queue Diagram](https://storage.googleapis.com/junedang_blog_images/queue-data-structure-scheduling-your-tasks/queue.webp)
 
 The queue interface is elegant in its simplicity. You need only three fundamental operations:
 
@@ -83,6 +97,23 @@ The FIFO nature of queues makes them perfect for task scheduling, where fairness
 **Operating System Process Scheduling**
 
 Operating systems use queues extensively. In First-Come-First-Served (FCFS) scheduling, processes are placed in a ready queue. The CPU executes them in order, switching to the next process when the current one completes or blocks. Multi-level feedback queues extend this concept by maintaining separate priority queues, with processes moving between them based on behavior.
+
+<pre class="mermaid">
+flowchart LR
+    New[New Process] --> ReadyQ
+    subgraph OS["OS Scheduler"]
+        direction TB
+        ReadyQ[("Ready Queue")]
+        CPU[CPU Execution]
+        WaitQ[("Waiting/Blocked Queue")]
+    end
+    
+    ReadyQ -- Dispatch --> CPU
+    CPU -- Terminate --> Exit[Exit]
+    CPU -- I/O Request --> WaitQ
+    WaitQ -- I/O Complete --> ReadyQ
+    CPU -- Time Slice Expired --> ReadyQ
+</pre>
 
 **Backend Task Queues**
 
@@ -178,9 +209,9 @@ class CircularQueue:
         return item
 ```
 
-**Priority Queue**
+**Priority Queue (Heap)**
 
-Elements are dequeued based on priority rather than arrival order. High-priority items jump the line. Typically implemented using heaps for O(log n) insertion and deletion. Used in Dijkstra's algorithm, A* pathfinding, and operating system scheduling.
+Elements are dequeued based on priority rather than arrival order. High-priority items jump the line. Typically implemented using [heaps](https://docs.python.org/3/library/heapq.html) for O(log n) insertion and deletion. Used in Dijkstra's algorithm, A* pathfinding, and operating system scheduling.
 
 ```python
 import heapq
@@ -214,34 +245,15 @@ print(pq.dequeue())  # "Medium task"
 
 Allows insertion and deletion at both ends. You can push and pop from either the front or rear, making it more flexible than a standard queue. Python's `collections.deque` is the canonical implementation.
 
-**Blocking Queue (Concurrent Queue)**
-
-Thread-safe queues that block producers when full and consumers when empty. Essential for producer-consumer patterns in multithreaded environments. Python's `queue.Queue` provides this with built-in locking.
-
 ```python
-import queue
-import threading
-import time
+from collections import deque
 
-task_queue = queue.Queue(maxsize=5)
+dq = deque()
+dq.appendleft("Front task")  # Add to front
+dq.append("Rear task")        # Add to rear
 
-def producer():
-    for i in range(10):
-        task_queue.put(f"Task {i}")
-        print(f"Produced Task {i}")
-        time.sleep(0.1)
-
-def consumer():
-    while True:
-        task = task_queue.get()
-        print(f"Consumed {task}")
-        time.sleep(0.3)
-        task_queue.task_done()
-
-threading.Thread(target=producer, daemon=True).start()
-threading.Thread(target=consumer, daemon=True).start()
-
-time.sleep(2)
+print(dq.popleft())  # "Front task"
+print(dq.pop())      # "Rear task"
 ```
 
 ## Complexity and Design Trade-offs
@@ -306,7 +318,6 @@ The lesson is simple: **treat your attention as a single-threaded processor**. Y
 | Linked List Queue         | Dynamic size, no resizing                       | Poor cache locality, pointer cost  | Unbounded queues                   |
 | Priority Queue            | Important tasks first                           | More complex, O(log n) operations  | Scheduling, pathfinding            |
 | Distributed Message Queue | Scalability, durability, fault tolerance        | Network latency, operational cost  | Microservices, event-driven systems |
-| Blocking Queue            | Thread-safe, producer-consumer synchronization  | Can cause deadlocks if misused     | Concurrent programming             |
 
 ## Questions
 
@@ -318,14 +329,3 @@ Executing callbacks immediately would create unpredictable behavior and potentia
 <details><summary><b>2. When would you choose a priority queue over a simple queue?</b></summary>
 Choose a priority queue when task importance varies significantly and you can't afford to process all tasks strictly in arrival order. Examples include OS process scheduling (system processes before user processes), hospital emergency rooms (critical patients first), and network packet routing (QoS guarantees). However, be aware that priority queues can cause starvation—low-priority tasks may never execute if high-priority tasks keep arriving. Aging mechanisms (gradually increasing priority over time) can mitigate this.
 </details>
-
-<!-- 
-Subtopic selection rationale:
-1. "What is a Queue?" - Fundamental definition and operations, essential baseline knowledge
-2. "How Queue Powers Scheduling Systems" - Real-world applications showing practical relevance
-3. "Types of Queues" - Common variations that solve different problems
-4. "Complexity and Design Trade-offs" - Engineering decision-making criteria
-5. "Queue as a Life Metaphor" - Unique angle connecting CS concept to personal productivity
-
-These five subtopics partition the problem space: fundamentals, applications, variations, technical analysis, and practical philosophy. They balance theory with practice and provide enduring knowledge applicable across different programming contexts.
--->
