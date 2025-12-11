@@ -1,7 +1,7 @@
 ---
 title: "How databases really store and find your rows"
 description: "Understanding the internal mechanisms of relational databases from storage structures to query processing."
-tags: [research, database, relational, storage, sql]
+tags: [database, relational, storage, sql]
 date: 2025-09-20
 image: https://storage.googleapis.com/junedang_blog_images/how-relational-database-works/database_physical_storage_hierachy.webp
 ---

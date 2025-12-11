@@ -1,7 +1,7 @@
 ---
 title: "Difference Between Heap and Stack Memory and When to Use"
 description: "Understanding the fundamental differences between stack and heap memory allocation in programming languages and when to use each."
-tags: [research, memory, stack, heap, programming]
+tags: [memory, stack, heap, programming]
 date: 2025-09-26
 image: https://storage.googleapis.com/junedang_blog_images/difference-between-heap-and-stack-memory/heap_and_stack_thumbnail.webp
 ---

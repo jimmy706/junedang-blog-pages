@@ -49,8 +49,7 @@ date: YYYY-MM-DD
    * Current state of the art or standards.
    * Code or config snippets if relevant. Otherwise just pure topic describe.
 
-4. “Design and trade-offs” H2: compare common approaches in a small table.
-5. "Questions": A list of 1 - 2 questions related to topic's knowledge for reminder
+4. "Questions": A list of 1 - 2 questions related to topic's knowledge for reminder
 
 # Subtopic selection rules
 
@@ -126,13 +125,6 @@ date: <YYYY-MM-DD>
 ## \<Subtopic 5> *(optional)*
 
 <content>
-
-## Design and trade-offs (optional)
-
-| Option | Pros   | Cons   | Use when |
-| ------ | ------ | ------ | -------- |
-| <A>    | <pros> | <cons> | <fit>    |
-| <B>    | <pros> | <cons> | <fit>    |
 
 ## Implementation checklist (optional)
 
