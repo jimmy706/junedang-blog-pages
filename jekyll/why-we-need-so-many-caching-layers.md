@@ -1,13 +1,32 @@
 ---
 title: "Why We Need So Many Caching Layers"
 description: "Understanding why modern systems require multiple levels of caching—from CPU caches to CDNs—and how they form a speed pyramid."
-tags: [research, caching, operating-systems, performance, architecture]
-date: 2025-11-15
+tags: [caching, operating-systems, performance, architecture]
+image: https://storage.googleapis.com/junedang_blog_images/why-we-need-so-many-caching-layers/cache_thumbnail.webp
+date: 2025-11-20
 ---
 
 Picture a skyscraper with a single elevator moving at walking speed. Every trip from floor 50 to the ground-floor café takes fifteen minutes. That's computing without caching. Now add express elevators to every tenth floor, escalators between nearby floors, and coffee machines on each level. That's layered caching—distributing speed so no one waits for the slowest part.
 
 Modern systems have L1, L2, L3 CPU caches, OS page caches, database caches, application caches, and CDN edge caches. This looks redundant until you see each hides a different performance cliff. CPU to RAM: nanoseconds to microseconds—100x. RAM to disk: microseconds to milliseconds—1000x. Disk to network: milliseconds to tens of milliseconds—10-100x. Can't solve a 100,000x latency problem with one cache. Need layers.
+
+## Why Each Layer Matters
+
+It starts at the silicon level with the **CPU Caches**, designed to feed the processor's insatiable appetite for data.
+
+*   **L1 Cache (Level 1):** The "first responder." It's usually split into two parts: one for instructions (code) and one for data. It runs at the CPU's full speed, taking just 3-4 clock cycles to access. It's tiny (usually 32KB-64KB) but critical for keeping the execution pipeline full.
+*   **L2 Cache (Level 2):** The "backup." Larger than L1 (typically 256KB-1MB) but slightly slower (10-15 cycles). It catches what L1 misses and is often private to each core.
+*   **L3 Cache (Level 3):** The "shared hub." Usually shared across all CPU cores. It's much larger (tens of megabytes) and acts as a staging area for data shared between cores, preventing expensive trips to main memory.
+
+When data isn't in these caches, the CPU fetches from **RAM (Main Memory)**. RAM is the "warehouse"—abundant (gigabytes) but significantly slower (100-200 cycles).
+
+To avoid the massive penalty of going to physical storage (which is thousands of times slower than RAM), the **OS Page Cache** (Disk Cache) steps in. The operating system uses unallocated RAM to store frequently accessed disk blocks. If you open a file twice, the second time it likely comes from RAM, not the disk. Without these hardware and OS layers, the processor would spend most of its time waiting for data.
+
+Then there's application-level caching (Redis, Memcached). These caches store results of expensive computations or database queries in memory. If your app queries a database for user profiles, caching those profiles in Redis means subsequent requests hit the fast cache instead of the slow database.
+
+Finally, CDNs cache static assets (images, CSS, JS) at edge locations worldwide. This reduces latency for users far from the origin server. A user in Sydney requesting a stylesheet from a server in Virginia would face 80ms+ latency. A CDN edge cache nearby can serve it in single-digit milliseconds.
+
+![Cache layers](https://storage.googleapis.com/junedang_blog_images/why-we-need-so-many-caching-layers/data_cache_hierachy.webp)
 
 ## The Latency Pyramid
 
@@ -15,57 +34,89 @@ Network latency: tens to hundreds of milliseconds cross-continental. Disk I/O: s
 
 Browser requests a page? Check browser cache first. Miss? Ask CDN. CDN checks edge cache. Miss? Origin server checks application cache, then database query cache, then disk. Every hit saves you from falling down. Every miss waits for the next slowest thing.
 
-## CPU Caches: Covering the Memory Wall
+<pre class="mermaid">
+
+graph TD
+    A[User Request] --> B{"Browser Cache?"}
+    B -- Hit --> C[Render Page]
+    B -- Miss --> D{"CDN Edge Cache?"}
+    D -- Hit --> C
+    D -- Miss --> E{"App Cache (Redis)?"}
+    E -- Hit --> C
+    E -- Miss --> F{"DB Query Cache?"}
+    F -- Hit --> C
+    F -- Miss --> G[Disk I/O]
+</pre>
+
+## Hardware & OS Caching: The Foundation
 
 The CPU runs at gigahertz speeds, but RAM can't keep up. Fetching from memory: 100-200 CPU cycles—time for dozens of instructions. L1 cache: 3-4 cycles. L2: 10-15. L3 (shared): 40-50. These exploit instruction locality—code reuses memory in tight loops—and prefetch what's next. Without them, CPUs idle waiting for data.
 
-Cache coherence keeps cores synchronized. Core 1 writes to an address Core 2 cached? Hardware invalidates Core 2's copy. This tight coordination works because all CPU caches sit on-chip with fast buses. Consistency is strict: coherent memory across cores. Cost: latency from coherence traffic. But at nanosecond timescales, microsecond delays are catastrophic.
+Below the hardware, the OS Page Cache hides disk latency. Disk I/O takes milliseconds—a million nanoseconds. The OS page cache in RAM caches frequent disk blocks. Read a file? OS pulls entire 4KB pages, betting you'll read nearby data soon.
 
-## OS Page Cache: Hiding Disk Latency
+**Key Difference:**
+*   **CPU Caches**: Strict coherence (hardware managed).
+*   **OS Page Cache**: Weaker consistency (write-back, async flush).
 
-Disk I/O: milliseconds—a million nanoseconds, enough for tens of millions of CPU instructions. The OS page cache in RAM caches frequent disk blocks. Read a file? OS pulls entire 4KB pages, betting you'll read nearby data soon. Spatial locality: sequential file access.
+## Application & Database Caching: The Backend
 
-Page cache uses weaker consistency. Write to a file, OS buffers in cache, flushes to disk seconds later. Asynchronous write-back boosts performance but risks data loss on crashes. Databases use synchronous writes or journals. Trade-off: most applications choose speed over instant persistence.
+Distributed systems talk over networks, and every hop adds milliseconds. Application caches (Redis, Memcached) sit in memory to cache backend results or expensive computations.
 
-## Database Query Cache: Skipping Computation
+A common pattern is **Cache-Aside**:
 
-Databases cache query results, not just disk blocks. Parsing SQL, planning execution, scanning indexes—all expensive. Same query runs repeatedly? Database skips the work, returns cached result. Optimizes repeated access: dashboards, leaderboards, profile lookups.
+```python
+def get_user_profile(user_id):
+    # 1. Check Cache
+    cache_key = f"user:{user_id}"
+    profile = redis.get(cache_key)
+    
+    if profile:
+        return deserialize(profile)
+    
+    # 2. Miss? Fetch from DB
+    profile = db.query("SELECT * FROM users WHERE id = ?", user_id)
+    
+    # 3. Populate Cache (with TTL)
+    redis.setex(cache_key, 3600, serialize(profile))
+    
+    return profile
+```
 
-Catch: staleness. Data changes, cached results become stale. Databases use TTL or write-through invalidation. Distributed databases loosen consistency: eventual consistency lets replicas serve stale reads, betting low latency beats perfect freshness. Works because many apps tolerate slightly old data.
+This layer bridges the gap between fast services and slow databases. If the cache entry expires or is evicted, the application fetches fresh data and repopulates it.
 
-## Application Cache: Bridging Services
+## Edge Caching: Defeating Geography
 
-Distributed systems: services talk over network, every hop adds milliseconds. Application caches (Redis, Memcached) sit in memory, cache backend results or expensive computations. General-purpose: session data, user preferences, rendered HTML, API responses.
+Network latency is limited by the speed of light. Sydney to Virginia is 16,000km—80ms minimum round-trip. CDNs cache content at edge locations near users. Requests hit nearby caches, return in single-digit milliseconds instead of crossing continents.
 
-Weak consistency. Entry expires or evicted? Application fetches fresh data, repopulates. Misses slow the system temporarily, don't break it. Crucial: cache is optimization, not dependency. Heavy reliance on caching creates brittleness when cache fails. Good designs: caches as accelerators, not load-bearing.
+<pre class="mermaid">
+sequenceDiagram
+    participant User
+    participant Edge as CDN Edge (Sydney)
+    participant Origin as Origin Server (Virginia)
+    
+    User->>Edge: GET /style.css
+    alt Cache Hit
+        Edge-->>User: 200 OK (from cache)
+    else Cache Miss
+        Edge->>Origin: GET /style.css
+        Origin-->>Edge: 200 OK (content)
+        Edge-->>User: 200 OK
+    end
+</pre>
 
-## CDN Edge Cache: Defeating Geography
+This layer has the loosest consistency. Edge servers cache with TTLs in minutes or hours. It works because most web content—images, stylesheets, JavaScript—is immutable or changes infrequently.
 
-Network latency: limited by light speed. Sydney to Virginia: 16,000km—80ms minimum round-trip. CDNs cache content at edge locations near users. Requests hit nearby caches, return in single-digit milliseconds instead of crossing continents.
+## Closing Thoughts
 
-Loosest consistency. Edge servers cache with TTLs in minutes or hours. Origin updates a file? Edge serves stale content until TTL expires or manual purge. Works because most web content—images, stylesheets, JavaScript—is immutable or changes infrequently. Dynamic content? CDNs fall back to origin, accepting latency when freshness matters.
+Caching layers aren't redundant—they're cumulative. Each optimizes a different problem. L1 hides CPU-to-L2 latency. Application caches hide service-to-service network latency. CDNs hide geography.
 
-## Cumulative, Not Redundant
-
-Caching layers aren't redundant—they're cumulative. Each optimizes a different problem. L1 hides CPU-to-L2 latency. L2 hides L2-to-RAM. Page cache hides RAM-to-disk. Query caches hide computation. Application caches hide service-to-service network latency. CDNs hide geography.
-
-Speed pyramid: each layer wider and slower than above, but collectively creating a smooth gradient from nanoseconds to milliseconds. Remove one layer, expose a cliff. Remove L1, CPU stalls for L2. Remove page cache, every file read hits disk. Remove CDN, Asian users wait for transatlantic round-trips.
-
-Cache miss costs escalate downward. L1 miss: 10-20 cycles. Page cache miss: millions of cycles (disk seek). CDN miss: tens of millions (cross-continental hop). Layered caching is risk mitigation: each layer reduces probability of falling to the next slower tier.
-
-## Design and Trade-offs
-
-| Cache Layer | Latency | Consistency | Invalidation Strategy | Typical Use Case |
-|-------------|---------|-------------|-----------------------|------------------|
-| L1/L2/L3 CPU | 1-50 cycles | Strict coherence | Hardware-managed | Instruction/data locality |
-| OS Page Cache | 100-200ns | Write-back, async flush | LRU eviction | Disk block caching |
-| Database Query | 1-10ms | Invalidate on write | TTL or explicit purge | Repeated query results |
-| Application Cache | 1-5ms | Eventual consistency | TTL or manual eviction | Session data, API responses |
-| CDN Edge | 10-50ms | Weak, TTL-based | Time or explicit purge | Static assets, media |
+The speed pyramid creates a smooth gradient from nanoseconds to milliseconds. Remove one layer, and you expose a performance cliff. Layered caching is risk mitigation: each layer reduces the probability of falling to the next slower tier.
 
 ## Questions
 
-1. Why does each caching layer use progressively weaker consistency models as you move from CPU caches to CDNs?
-2. What would happen to system performance if you removed the OS page cache but kept all other caching layers intact?
+<details><summary> 1. Why does each caching layer use progressively weaker consistency models as you move from CPU caches to CDNs?</summary>
+Because each layer addresses different performance and scalability challenges. CPU caches require strict coherence to ensure data integrity at high speeds, while OS page caches can afford weaker consistency due to their asynchronous nature. Application caches prioritize speed over strict consistency, as they often deal with frequently changing data. CDNs use the weakest consistency models because they serve static or infrequently changing content, allowing for longer cache lifetimes and reduced latency for end-users.
+</details>
 
-<!-- Selection rationale: Subtopics chosen to partition the caching problem space by latency tier (CPU, memory, disk, network, geography). Each subtopic covers a distinct performance gap and consistency model. Topics are enduring architectural concepts, not tied to specific tools. Real-world examples anchor abstract latency numbers to observable system behavior. -->
+<details><summary>2. What would happen to system performance if you removed the OS page cache but kept all other caching layers intact?</summary>
+Without the OS page cache, every disk read would result in a physical disk I/O operation, significantly increasing latency from milliseconds to potentially tens of milliseconds per read. This would degrade overall system performance, causing applications to experience slower data access times despite having other caching layers. The CPU and application caches would still help, but the absence of the OS page cache would expose the system to the high cost of disk access more frequently.
