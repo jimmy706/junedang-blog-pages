@@ -2,6 +2,7 @@
 title: "Java HashMap: Understanding equals() and hashCode()"
 description: "A complete guide to equals() and hashCode() in Java, explaining the contract, how HashMap works internally, common mistakes, and best practices."
 tags: [java, hashmap, data-structures, best-practices]
+image: https://storage.googleapis.com/junedang_blog_images/java-hashmap-equals-and-hashcode/java_hashcode_and_equal.webp
 date: 2025-12-17
 ---
 
