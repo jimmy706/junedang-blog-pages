@@ -516,18 +516,3 @@ The object becomes unreachable. It's stored in a bucket determined by the old ha
 **2. Why does the contract allow unequal objects to have the same hash code?**
 
 Perfect hashing (unique hash codes for all objects) is mathematically impossible for unbounded domains. Hash codes are `int` (32 bits, ~4 billion values), but there are infinitely many possible Strings. Collisions are inevitable. HashMap handles them with buckets containing multiple entries. Good hash functions minimize collisions, but they can't eliminate them.
-
-<!-- Subtopic selection rationale:
-Selected 7 core subtopics that partition the problem space:
-1. Logical vs reference equality - foundational concept
-2. The contract - the rules developers must follow
-3. HashMap internals - why the contract exists
-4. Default behavior - understanding what you inherit
-5. Common mistakes - real bugs with code examples
-6. Best practices - how to implement correctly
-7. Modern solutions - tools that automate correctness
-
-These cover: conceptual foundation, specification, implementation, pitfalls, and modern approaches.
-Excluded: comparison with other languages (nice-to-have), performance tuning details (advanced).
-Prioritized correctness and practical application over theoretical depth.
--->
