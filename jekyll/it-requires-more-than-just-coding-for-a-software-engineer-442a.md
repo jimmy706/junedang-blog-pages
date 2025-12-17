@@ -2,6 +2,7 @@
 title: It requires more than just coding for a software engineer
 description: How to survive and become a professional software engineer
 date: 2023-07-06
+tags: [career, soft-skills, software-engineering, productivity]
 ---
 
 If you’re a developer like me, it’s likely that you have a deep passion for coding and problem-solving. You can spend hours engrossed in your work, sitting in one place, contemplating complex problems, and using your coding skills to find solutions. This is when you enter your focus zone and experience your most productive sessions.

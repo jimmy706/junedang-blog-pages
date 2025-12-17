@@ -3,6 +3,7 @@ title: Monorepo the solution to Microfrontend development challenges
 layout: post
 date: 2023-03-11
 description: Monorepo the solution to Microfrontend development challenges
+tags: [monorepo, microfrontend, architecture, frontend]
 ---
 
 

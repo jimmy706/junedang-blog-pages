@@ -1,3 +1,7 @@
+---
+tags: [vscode, extensions, productivity, developer-tools]
+---
+
 Visual Studio Code (VS Code) is a great IDE for every developer not for it's free but also from various of extensions that can boost your daily coding productivity. Today let's check some extensions that have helped me to be more productive on VS Code.
 
 ## [GitLens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)

@@ -1,7 +1,7 @@
 ---
 title: "Difference Between Linked List and Array List"
 description: "Understanding the fundamental differences between linked lists and array lists, their trade-offs, and when to use each data structure."
-tags: [data-structures]
+tags: [data-structures, algorithms, arrays, linked-list]
 date: 2025-10-04
 image: https://storage.googleapis.com/junedang_blog_images/difference-between-linked-list-and-array-list/array_list_vs_linked_list.webp
 ---

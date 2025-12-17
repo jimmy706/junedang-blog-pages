@@ -2,6 +2,7 @@
 title: 5 Ways ChatGPT Can Skyrocket Developer Productivity
 description: explore 5 ways that ChatGPT can help developers skyrocket their daily work.
 image: https://storage.googleapis.com/junedang_blog_images/5-ways-chatgpt-can-sky-rocket/chatgpt.webp
+tags: [ai, productivity, developer-tools, chatgpt]
 date: 2023-03-30
 ---
 

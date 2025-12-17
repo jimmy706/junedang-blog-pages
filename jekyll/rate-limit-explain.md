@@ -3,6 +3,7 @@ title: Power of Rate Limiting and Explanation
 date: 2025-07-18T00:00:00+00:00
 image: https://storage.googleapis.com/junedang_blog_images/how-rate-limit-works/how_rate_limit_works.svg
 description: Understanding rate limiting and its importance in API management.
+tags: [rate-limiting, api, scalability, security]
 ---
 
 A system can only serve well when its resources are correctly consumed and allocated.

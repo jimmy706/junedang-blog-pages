@@ -2,6 +2,7 @@
 title: Every developer should learn how to use these applications
 description: How to learn how to use these applications in the tech world
 date: 2023-07-06
+tags: [tools, productivity, developer-tools, workflows]
 ---
 
 In this article, we will discover some common applications in the tech world that every developer should learn how to use it.

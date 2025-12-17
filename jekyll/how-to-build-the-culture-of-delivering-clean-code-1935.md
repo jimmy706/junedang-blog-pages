@@ -2,6 +2,7 @@
 title: How to build the culture of delivering clean code
 description: best practices to follow so that every member of the development team can count on building a culture of keeping the code clean.
 image: https://1drv.ms/i/s!At4dit9d4kzB1khTNHa2zTbyDARE?embed=1&width=660
+tags: [clean-code, engineering-culture, best-practices, maintainability]
 ---
 
 ![](https://1drv.ms/i/s!At4dit9d4kzB1khTNHa2zTbyDARE?embed=1&width=1024)

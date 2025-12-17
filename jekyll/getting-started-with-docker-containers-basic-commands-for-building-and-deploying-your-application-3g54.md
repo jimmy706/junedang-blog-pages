@@ -3,6 +3,7 @@ title: Getting Started With Docker Containers: Basic Commands for Building and D
 date: 2023-05-26
 description: In this article, we will discuss how to build and deploy a simple to-do-list application using Docker.
 image: https://miro.medium.com/v2/resize:fit:2000/format:webp/1*pe1_NvIqaBNwOPdcP_a_2Q.jpeg
+tags: [docker, containers, devops, tutorial]
 ---
 
 In our [last article](https://dev.to/junedang/an-evolution-story-of-software-deployment-from-dedicated-server-to-containerization-4ol6), we have discovered what is Docker, how your system benefits from it, and how it works. In the following article, we will discuss the implementation of Docker with hands-on example code from creating Docker Image using Dockerfile to basic commands to run a simple to-do-list application on Docker.

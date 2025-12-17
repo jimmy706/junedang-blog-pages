@@ -1,6 +1,7 @@
 ---
 title: How I learn new things every day as a developer
 date: 2023-03-30
+tags: [learning, productivity, career, developer]
 
 ---
 

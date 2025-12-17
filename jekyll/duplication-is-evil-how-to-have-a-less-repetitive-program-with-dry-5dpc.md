@@ -3,6 +3,7 @@ title: Duplication is Evil: How to Have a Less Repetitive Program with DRY
 date: 2023-03-15
 description: Apply DRY principle to reduce duplication in your codebase
 image: https://media.tenor.com/XEAk8GX4Ww0AAAAe/spiderman-meme-pointing.png
+tags: [clean-code, dry, best-practices, maintainability]
 ---
 
 As a programmer, we usually work with documentation, specifications and we maintain, organize these documents with [management tools](https://junedang.com/every-developer-should-learn-how-to-use-these-applications/) such as Jira or confluent pages. Normally, we tend to base on these documents to implement into our codebase then we use them again to provide information for test cases.

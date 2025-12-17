@@ -3,6 +3,7 @@ title: Single Sign On Protocols: SAML vs. OpenID Connect
 description: Single Sign On Protocols: SAML vs. OpenID Connect
 date: 2021-11-29
 image: https://miro.medium.com/v2/resize:fit:1400/format:webp/1*U4sOB24_8x6J8P1uKXzDZA.png
+tags: [sso, saml, oidc, security]
 ---
 
 
