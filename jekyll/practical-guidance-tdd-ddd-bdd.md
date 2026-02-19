@@ -1,8 +1,9 @@
 ---
 title: "Practical Guidance for TDD, DDD and BDD"
 description: "Comprehensive comparison and practical guidance on Test-Driven Development, Behavior-Driven Development, and Domain-Driven Design"
-tags: [research, tdd, ddd, bdd, testing, development]
-date: 2024-12-11
+tags: [tdd, ddd, bdd, testing, development]
+date: 2026-02-19
+image: https://storage.googleapis.com/junedang_blog_images/practical-guidance-tdd-ddd-bdd/thumbnail.webp
 ---
 
 Test-Driven Development (TDD), Behavior-Driven Development (BDD), and Domain-Driven Design (DDD) are three influential practices that address different layers of software development complexity. While often mentioned together, each serves distinct purposes and operates at different levels of abstraction. This guide provides practical guidance on when and how to apply each practice, how they complement each other, and common pitfalls to avoid.
@@ -46,31 +47,23 @@ Domain-Driven Design (DDD) was introduced by Eric Evans in his 2003 book "Domain
 
 Each practice operates at different levels of granularity and produces distinct artifacts that serve different stakeholders and purposes.
 
-**TDD operates at the code level** and produces unit tests, integration tests, and well-designed APIs. The primary artifacts are test suites that verify individual components and their interactions. Common tools include JUnit (Java), pytest (Python), Jest (JavaScript), and RSpec (Ruby). TDD ensures that code is testable, loosely coupled, and adheres to single responsibility principles.
+### Test Driven Development (TDD)
 
-**Example TDD workflow:**
-```python
-# 1. Write failing test
-def test_order_total_calculation():
-    order = Order()
-    order.add_item(Item("Widget", 10.00), quantity=2)
-    assert order.total() == 20.00
+> **TDD operates at the code level** and produces unit tests, integration tests, and well-designed APIs. The primary artifacts are test suites that verify individual components and their interactions. Common tools include JUnit (Java), pytest (Python), Jest (JavaScript), and RSpec (Ruby). TDD ensures that code is testable, loosely coupled, and adheres to single responsibility principles.
 
-# 2. Implement minimal code
-class Order:
-    def __init__(self):
-        self.items = []
-    
-    def add_item(self, item, quantity):
-        self.items.append((item, quantity))
-    
-    def total(self):
-        return sum(item.price * qty for item, qty in self.items)
+The TDD cycle is often summarized as Red-Green-Refactor:
 
-# 3. Refactor for quality
-```
+- Red: Write a test that fails (because the functionality doesn't exist yet).
+- Green: Write the simplest code possible to make the test pass.
+- Refactor: Improve the code's structure and readability without changing its behavior.
 
-**BDD operates at the feature level** and produces executable specifications written in natural language. Key artifacts include feature files, step definitions, and living documentation. Popular tools include Cucumber (multiple languages), SpecFlow (.NET), and Behave (Python). BDD ensures that development focuses on valuable user outcomes rather than technical implementation details.
+![TDD Cycle](https://storage.googleapis.com/junedang_blog_images/practical-guidance-tdd-ddd-bdd/tdd.webp)
+
+### Behavior Driven Development (BDD)
+
+> **BDD operates at the feature level** and produces executable specifications written in natural language. Key artifacts include feature files, step definitions, and living documentation. BDD focuses on the behavioral specification of software and encourages the use of a common language that all team members can understand.
+
+BDD uses a simple "Given-When-Then" format to describe the behavior of a system from the user's perspective. This shared understanding helps to ensure that the software being built is the software that the business actually needs.
 
 **Example BDD specification:**
 ```gherkin
@@ -86,28 +79,15 @@ Feature: Order Processing
     Then the order total should be $35.00
 ```
 
-**DDD operates at the domain/architecture level** and produces domain models, bounded context maps, and architectural decisions. Artifacts include entity and value object definitions, aggregate designs, domain services, and context mapping diagrams. DDD modeling is often done through Event Storming sessions and collaborative design workshops rather than specific tools.
+![BDD Workflow](https://storage.googleapis.com/junedang_blog_images/practical-guidance-tdd-ddd-bdd/bdd.webp)
 
-**Example DDD model:**
-```python
-# Aggregate Root
-class Order:
-    def __init__(self, customer_id: CustomerId):
-        self._id = OrderId.generate()
-        self._customer_id = customer_id
-        self._items = []
-        self._status = OrderStatus.DRAFT
-    
-    def add_item(self, product: Product, quantity: Quantity):
-        if self._status != OrderStatus.DRAFT:
-            raise InvalidOperationError("Cannot modify confirmed order")
-        
-        item = OrderItem(product, quantity)
-        self._items.append(item)
-        
-        # Domain event
-        self._events.append(ItemAddedToOrder(self._id, item))
-```
+### Domain-Driven Design (DDD)
+
+> **DDD operates at the domain/architecture level** and produces domain models, bounded context maps, and architectural decisions. Artifacts include entity and value object definitions, aggregate designs, domain services, and context mapping diagrams. DDD modeling is often done through Event Storming sessions and collaborative design workshops rather than specific tools.
+
+A key concept in DDD is the Ubiquitous Language, a common language used by both technical and non-technical team members to describe the domain model. The image below shows two different Bounded Contexts (Sales and Shipping) that share this ubiquitous language.
+
+![DDD Bounded Contexts](https://storage.googleapis.com/junedang_blog_images/practical-guidance-tdd-ddd-bdd/ddd.webp)
 
 ## When and How to Apply Each Practice
 
