@@ -2,6 +2,7 @@
 title: Understand the fundamentals of TDD, DDD, and BDD: A comprehensive guide to these key software development concepts
 description: How to survive and become a professional software engineer
 date: 2021-11-15
+tags: [tdd, bdd, ddd, software-engineering]
 ---
 
 With the demand for quick response to business change in the software development world today. Many application development concepts have been introduced to help developers deliver their work in a fast, efficient way.

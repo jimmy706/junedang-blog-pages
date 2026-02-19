@@ -1,7 +1,7 @@
 ---
 title: "API Gateway Design and Key Components"
 description: "Understanding how API Gateways shape modern distributed systems."
-tags: [research, api-gateway, microservices, architecture, system-design]
+tags: [api-gateway, microservices, architecture, system-design]
 image: https://storage.googleapis.com/junedang_blog_images/api-gateway-design-and-key-components/api_gateway.webp
 date: 2025-08-24
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Five Patterns for Web Communication That Actually Ship"
 description: "Most teams only need one of these communication patterns. Pick by failure mode and cost, not fashion."
-tags: [research, web-communication, api, websocket, polling]
+tags: [web-communication, api, websocket, polling]
 image: https://storage.googleapis.com/junedang_blog_images/five-patterns-for-web-communication-that-actually-ship/http_rest.webp
 date: 2025-09-01
 ---

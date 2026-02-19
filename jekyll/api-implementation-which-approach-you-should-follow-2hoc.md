@@ -2,6 +2,7 @@
 title: API implementation which approach you should follow
 description: How to choose the right API implementation approach for your organization
 date: 2021-11-11
+tags: [api, design-first, code-first, architecture]
 ---
 
 Imagine your team has a new business requirement and you are aside to implement that business logic into set of APIs for both application and website. What process or approach of API implementation will you do?

@@ -3,6 +3,7 @@ title: Efficient System Deployment with Containerization: How Your System Benefi
 description: This article will provide an overview of containerization and Docker Containers.
 date: 2023-06-01
 image: https://dev-to-uploads.s3.amazonaws.com/uploads/articles/o91pewjlwi4njtj4zvjs.png
+tags: [docker, containers, devops, deployment]
 ---
 
 ![](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/o91pewjlwi4njtj4zvjs.png)

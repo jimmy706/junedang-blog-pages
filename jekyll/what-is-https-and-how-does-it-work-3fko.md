@@ -3,6 +3,7 @@ title: What is HTTPS and how does it work?
 description: What is HTTPS and how does it work?
 date: 2024-10-20T00:00:00+00:00
 image: https://1drv.ms/i/s!At4dit9d4kzBmhlfLwvKN0npPfo1?embed=1&height=256
+tags: [https, tls, security, networking]
 ---
 
 Have you ever wondered how websites communicate with a web browser and request data to the server to render into view?  I used to ask those questions too.
