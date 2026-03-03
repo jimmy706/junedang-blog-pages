@@ -1,120 +1,74 @@
 ---
-title: "Monotonic Stack: A Powerful Pattern for Sequential Problems"
-description: "Learn how monotonic stacks solve complex sequential problems with elegant simplicity and O(n) efficiency."
-tags: [algorithms, data-structures, competitive-programming, problem-solving]
-date: 2025-11-10
+title: "Monotonic Stack Pattern"
+description: "Plain-language guide to using monotonic stacks for one-pass comparisons."
+tags: [research, algorithms, data-structures, competitive-programming]
+date: 2026-03-03
+permalink: /monotonic-stack/
 ---
 
-You're browsing weather forecasts, looking at temperatures day by day. For each day, you wonder: "When will it get warmer?" You could scan forward from each day, comparing every future temperature—but that's wasteful. What if there was a way to answer all "next warmer day" questions in a single pass, never looking backward, never rechecking the same data twice?
+Monotonic stacks feel like carrying a neat pile of plates: every new plate must fit the order, and anything that no longer fits gets popped off. By enforcing that rule, you can answer “what’s the next higher (or lower) item?” in one left-to-right sweep instead of scanning repeatedly. This guide keeps the tone conversational while showing you how to apply the pattern when you have to compare neighbors in a stream of values. Use it as a reference: skim the subtopics, grab the code snippets, and check the trade-offs table when deciding if the approach fits your problem.
 
-That's the essence of the **monotonic stack**: a simple data structure that maintains order while discarding useless information. It transforms quadratic-time scanning problems into linear-time solutions, and once you see it, you'll spot its pattern everywhere—from building skylines to trapping rainwater.
+## Intuition and When to Reach for It
 
-## What is a Monotonic Stack?
+A monotonic stack is just a stack with an extra promise: its contents stay sorted (increasing or decreasing) from bottom to top. Before pushing a new element, you pop anything that breaks the order. The result is a tiny “frontier” of candidates that might matter for future comparisons. Because each element is pushed and popped at most once, the whole pass runs in O(n) time [1].
 
-A monotonic stack maintains its elements in either strictly increasing or strictly decreasing order. Unlike a regular stack, it enforces a rule: before adding a new element, pop any elements that violate the monotonic property.
+Reach for it when you need relative comparisons across neighbors—“next warmer day,” “first taller bar,” “previous smaller price”—and you cannot afford to scan backward repeatedly. Skip it if your queries are random access; segment trees or binary indexed trees may serve better.
 
-Think of it as a filter. For an **increasing stack**, you pop everything greater than or equal to the incoming element. For a **decreasing stack**, you pop everything smaller. This selective forgetting prunes away elements that can never be useful again.
+## Increasing vs Decreasing Stacks
 
-Why? Because once you've seen a "better" element (larger or smaller, depending on the problem), previous elements become irrelevant. The monotonic stack discards the obsolete and keeps only what might matter for future comparisons.
+Choosing the direction flips the comparison:
 
-## How It Works: Step-by-Step
+* **Increasing stack** (top is smallest): pop while top ≥ incoming. This reveals the previous smaller element.
+* **Decreasing stack** (top is largest): pop while top ≤ incoming. This reveals the next greater element.
 
-Let's solve the classic **"Next Greater Element"** problem: for each element in an array, find the next element to its right that is larger.
-
-Consider the array: `[2, 1, 5, 6, 2, 3]`
-
-We'll use a **decreasing stack** (storing indices, not values) and scan left to right:
-
-```
-Array:  [2, 1, 5, 6, 2, 3]
-Index:   0  1  2  3  4  5
-
-Step 1: i=0, val=2
-  Stack empty → push index 0
-  Stack: [0]
-
-Step 2: i=1, val=1
-  arr[stack.top]=2 > 1 → push index 1
-  Stack: [0, 1]
-
-Step 3: i=2, val=5
-  arr[stack.top]=1 < 5 → pop 1, answer[1]=5
-  arr[stack.top]=2 < 5 → pop 0, answer[0]=5
-  Stack empty → push index 2
-  Stack: [2]
-
-Step 4: i=3, val=6
-  arr[stack.top]=5 < 6 → pop 2, answer[2]=6
-  Stack empty → push index 3
-  Stack: [3]
-
-Step 5: i=4, val=2
-  arr[stack.top]=6 > 2 → push index 4
-  Stack: [3, 4]
-
-Step 6: i=5, val=3
-  arr[stack.top]=2 < 3 → pop 4, answer[4]=3
-  arr[stack.top]=6 > 3 → push index 5
-  Stack: [3, 5]
-
-Result: [5, 5, 6, -1, 3, -1]
-```
-
-**Pseudocode:**
+Store indices, not raw values, so you can compute distances or look up original data. Here is a friendly Python example for “next greater element” that resolves each index exactly once:
 
 ```python
-def nextGreaterElement(arr):
-    result = [-1] * len(arr)
-    stack = []
-    
-    for i in range(len(arr)):
-        while stack and arr[stack[-1]] < arr[i]:
-            index = stack.pop()
-            result[index] = arr[i]
+def next_greater(nums):
+    res = [-1] * len(nums)
+    stack = []  # holds indices of unresolved items, values decreasing top-down
+
+    for i, val in enumerate(nums):
+        while stack and nums[stack[-1]] < val:
+            res[stack.pop()] = val
         stack.append(i)
-    
-    return result
+    return res
+
+print(next_greater([2, 1, 5, 6, 2, 3]))
+# -> [5, 5, 6, -1, 3, -1]
 ```
 
-**Time Complexity**: O(n). Each element is pushed and popped at most once.
+The moment a bigger value arrives, the stack lets you “pay off” every smaller value waiting for a match—no rework, no nested loops.
 
-**Space Complexity**: O(n) for the stack.
+## Canonical Problems to Practice
 
-The beauty: at any moment, the stack holds indices that haven't found their "next greater" yet, stored in decreasing order. When a larger element arrives, it resolves all pending smaller elements in one sweep.
+* **Daily Temperatures / Next Greater Element**: Find the next warmer day or larger number by sweeping once with a decreasing stack [2].
+* **Largest Rectangle in Histogram**: Use a decreasing stack of bar indices; when a shorter bar appears, you pop to compute maximal widths [3].
+* **Trapping Rainwater (two-pass variant)**: A monotonic stack can capture left/right boundaries for each bar without multiple scans [4].
+* **Stock Span**: With a decreasing stack, count how many prior days were cheaper or equal, then push today’s index for future spans.
 
-## Use Cases: Where Monotonic Stacks Shine
+These exercises cover right-to-left, left-to-right, and bi-directional scans, which is all you need to adapt the pattern to most interview and production tasks.
 
-Monotonic stacks excel at problems involving **relative comparisons in sequences**. Here are the most common patterns:
+## Implementation Tips and Edge Cases
 
-**Next Greater/Smaller Element**: Given an array, for each element, find the next element (to the right or left) that is greater or smaller. This is the canonical use case and appears in variations across competitive programming.
+* **Duplicates**: Decide whether “greater” means strictly greater or greater-or-equal, and adjust the pop condition accordingly.
+* **Bounds**: Add a sentinel (e.g., push `0` height at the end for histogram) to flush the stack without extra loops.
+* **Circular arrays**: Iterate twice with modulo indexing to find “next” values in a wraparound list.
+* **Memory**: The stack size never exceeds `n`, but for streaming systems consider discarding fully resolved prefixes to keep memory flat.
 
-**Largest Rectangle in Histogram**: Given bar heights, find the largest rectangular area. A decreasing stack tracks bars that could extend rectangles backward, popping when a shorter bar appears.
+## Design and Trade-offs
 
-**Trapping Rainwater**: Calculate how much water can be trapped between elevation bars. Monotonic stacks help find left and right boundaries efficiently.
+| Approach | Strengths | Weaknesses | Use when |
+| --- | --- | --- | --- |
+| Brute-force scan | Simple, no extra memory | O(n²) time [1] | Tiny inputs or quick prototypes |
+| Balanced tree / heap window | Handles arbitrary order stats | O(n log n) time, more code | Sliding-window percentiles, not just next greater |
+| Monotonic stack | O(n) time, small and cache-friendly [1] | Only answers monotone neighbor queries; order matters | One-pass “next greater/smaller,” histogram, span problems |
 
-**Stock Span Problem**: For each day's stock price, calculate how many consecutive previous days had prices less than or equal to today. A decreasing stack naturally tracks this span.
+## Questions
 
-**Building Visibility**: Determine which buildings can "see" each other across a city skyline—a problem reducible to next greater elements in both directions.
+1. Which pop condition (strict vs non-strict) matches your definition of “next greater” in this problem?
+2. Can you process the data in the opposite direction to simplify how you compute distances or spans?
 
-These problems share a common thread: you need to track the "next relevant" element based on some ordering constraint, and scanning backward repeatedly would be too slow. The monotonic stack compresses that backward-looking logic into a forward pass.
+References: [1] MIT 6.006 lecture notes on amortized analysis and stacks (O(n) pushes/pops) — https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/resources/lecture-3-amortization/; [2] LeetCode 739 “Daily Temperatures” official solution (monotonic stack) — https://leetcode.com/problems/daily-temperatures/solutions/157480/daily-temperatures/; [3] LeetCode 84 “Largest Rectangle in Histogram” official solution — https://leetcode.com/problems/largest-rectangle-in-histogram/solutions/289680/approach-3-using-stack-accepted/; [4] LeetCode 42 “Trapping Rain Water” official solution (stack variant) — https://leetcode.com/problems/trapping-rain-water/solutions/173113/trapping-rain-water/
 
-## Why It Matters
-
-Monotonic stacks represent a shift in thinking: instead of asking "What do I check?" ask "What can I forget?" In interviews, this pattern transforms brute-force O(n²) solutions into elegant O(n) ones.
-
-Beyond interviews, the pattern appears in compiler optimizations, streaming algorithms, and real-time processing where you answer "next greater/smaller" queries continuously without reprocessing history.
-
-Mastering monotonic stacks means understanding that sometimes the best solution is throwing away most of the data. What remains is exactly what you need—nothing more, nothing less.
-
-<!-- 
-Research rationale:
-Selected subtopics based on:
-1. Core definition and intuition (highest priority for understanding)
-2. Step-by-step mechanics with concrete example (critical for learning)
-3. Common problem patterns (practical application, high relevance)
-4. Efficiency analysis embedded in mechanics section
-5. Interview and real-world context for motivation
-
-Word count: ~880 words
-Sources synthesized: LeetCode problem patterns, algorithm course materials, competitive programming references
--->
+<!-- Rationale: picked intuition, stack direction, canonical problems, and implementation tips as the 4 subtopics because they partition what readers need to understand (concept, configuration, practice set, operational details) without overlap. -->
