@@ -5,30 +5,35 @@ tags: [research, proxy, networking, architecture, system-design]
 date: 2025-09-02
 ---
 
-Proxies are intermediary servers that sit between clients and servers, but not all proxies are created equal. The terms "forward proxy" and "reverse proxy" often confuse developers, yet understanding their differences is crucial for building scalable, secure systems. This guide breaks down both types, explains their use cases, and provides practical guidance on when to deploy each one.
+Proxies are intermediary servers that sit between clients and servers, but not all proxies are created equal. The terms "forward proxy" and "reverse proxy" often confuse developers, yet understanding their differences is crucial for building scalable, secure systems. This guide clarifies both roles, shows where they fit in modern architectures, and gives practical cues for choosing and configuring them.
 
 > **At a glance**
-> - Forward proxies act on behalf of clients, hiding client identity from servers
-> - Reverse proxies act on behalf of servers, hiding server details from clients
-> - Forward proxies excel at content filtering, caching, and anonymity
-> - Reverse proxies provide load balancing, SSL termination, and security
-> - Both types offer caching benefits but serve different architectural needs
-> - Choose based on whether you need client-side or server-side optimization
-> - Modern systems often use both types in different parts of the infrastructure
+> - Forward proxies act for clients; reverse proxies act for servers
+> - Forward proxies enforce outbound controls, privacy, and caching
+> - Reverse proxies centralize inbound routing, TLS, and shielding of backends
+> - Caching exists in both, but the optimization target (clients vs services) differs
+> - Pick based on who you need to protect or control: users or origin services
+> - Combining both is common: egress governance plus ingress protection
 
 ## Forward Proxies
 
-A forward proxy sits between clients and the internet, acting as an intermediary that makes requests on behalf of clients. From the server's perspective, all requests appear to come from the proxy, not the original client.
+A forward proxy sits between clients and the internet, making outbound requests on behalf of clients. From the server's perspective, all requests appear to come from the proxy, not the original client.
 
 **How it works:**
 ```
 Client → Forward Proxy → Internet/Server
 ```
+```mermaid
+flowchart LR
+  C[Client] -->|HTTP/HTTPS| FP[Forward Proxy]
+  FP -->|Filtered/Logged| Internet[Internet resources]
+  FP -->|Cached responses| C
+```
 
-The client configures their system to route traffic through the proxy. Popular forward proxy implementations include Squid, Apache HTTP Server with mod_proxy, and cloud services like AWS NAT Gateway.
+The client (or a local agent) configures outbound traffic to transit the proxy. Popular forward proxy implementations include Squid, Apache HTTP Server with mod_proxy, and cloud services like AWS NAT Gateway.
 
 **Key characteristics:**
-- Client-side proxy configuration required
+- Client-side proxy configuration is required
 - Hides client IP addresses from destination servers
 - Can modify or filter outbound requests
 - Often deployed in corporate networks
@@ -64,6 +69,13 @@ A reverse proxy sits in front of one or more servers, accepting requests from cl
 **How it works:**
 ```
 Client → Reverse Proxy → Backend Server(s)
+```
+```mermaid
+flowchart LR
+  Client --> RP[Reverse Proxy]
+  RP -->|Routing| S1[App Server A]
+  RP -->|Routing| S2[App Server B]
+  RP -->|Health checks| S3[App Server C]
 ```
 
 The reverse proxy handles incoming requests and distributes them across multiple backend servers. Popular implementations include Nginx, HAProxy, Apache HTTP Server, and cloud load balancers like AWS ALB.
@@ -178,6 +190,16 @@ Choose **reverse proxies** when you need to:
 - Cache application responses to reduce backend load
 - Implement security controls for inbound traffic
 - Present a unified interface for microservices
+
+```mermaid
+flowchart TD
+  A[Need a proxy?] --> B{Control outbound traffic?}
+  B -->|Yes| FP[Use forward proxy\n(filter/log egress)]
+  B -->|No| C{Protect or scale inbound services?}
+  C -->|Yes| RP[Use reverse proxy\n(route/terminate TLS)]
+  C -->|No| D[No proxy needed]
+  RP --> E[Combine with forward proxy if both needs exist]
+```
 
 **Common deployment patterns:**
 - **Enterprise networks**: Forward proxy for employee internet access, reverse proxy for internal services
