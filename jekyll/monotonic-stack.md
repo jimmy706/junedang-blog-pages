@@ -3,7 +3,6 @@ title: "Monotonic Stack Pattern"
 description: "Plain-language guide to using monotonic stacks for one-pass comparisons."
 tags: [research, algorithms, data-structures, competitive-programming]
 date: 2026-03-03
-permalink: /monotonic-stack/
 ---
 
 Monotonic stacks feel like carrying a neat pile of plates: every new plate must fit the order, and anything that no longer fits gets popped off. By enforcing that rule, you can answer “what’s the next higher (or lower) item?” in one left-to-right sweep instead of scanning repeatedly. This guide keeps the tone conversational while showing you how to apply the pattern when you have to compare neighbors in a stream of values. Use it as a reference: skim the subtopics, grab the code snippets, and check the trade-offs table when deciding if the approach fits your problem.
