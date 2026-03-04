@@ -30,6 +30,13 @@ These services act as intermediaries, maintaining persistent connections with yo
 
 Each app installation on your device receives a unique device token from the notification service. This token serves as an address that app servers can use to target notifications to your specific device and app combination. The token is opaque and doesn't contain any personal information, but it allows the notification service to route messages correctly.
 
+High-level delivery path:
+```text
++-----------------+      +------------------+      +-------------------------+      +---------------------------+
+| App backend API | ---> | APNs / FCM edge  | ---> | Persistent device link  | ---> | OS surfaces + target app  |
++-----------------+      +------------------+      +-------------------------+      +---------------------------+
+```
+
 ### 2. The server triggers the event
 
 When something happens that warrants a notification – like receiving a new message, a friend request, or a breaking news alert – the app's backend server initiates the notification process.
@@ -105,6 +112,15 @@ Different types of notifications receive different treatment:
 - **Normal priority:** Regular app notifications
 - **Low priority:** Background sync notifications that can wait
 
+Notification pipeline at a glance:
+```text
+[App backend] --> [APNs/FCM intake] --> [Validation + auth] --> [Priority queues]
+                                               |                     |
+                                               v                     v
+                                      [Regional routers] --> [Device connection]
+                                                             (retries + QoS)
+```
+
 ### 4. Delivery to the device
 
 When your device receives a notification from the push service, several things happen in quick succession.
@@ -170,6 +186,14 @@ Despite this sophisticated infrastructure, notifications sometimes fail to reach
 - **Do Not Disturb:** Scheduled quiet hours block most notifications
 - **Focus modes:** iOS Focus or Android's similar features filter notifications
 - **Permission revocation:** Users might have denied notification permissions
+
+Troubleshooting flow:
+```text
+[Server event?] -> [Valid token?] -> [Service accepted?] -> [Device online?] -> [User settings allow?]
+                                             |
+                                             v
+                                   [Retry / backoff / alert]
+```
 
 **App-specific factors:**
 
