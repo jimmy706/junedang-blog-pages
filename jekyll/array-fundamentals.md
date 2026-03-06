@@ -3,6 +3,7 @@ title: "Array Fundamentals"
 description: "A complete guide to arrays from first principles — what they are, how they work, common operations, and the core techniques every programmer should know."
 tags: [data-structures, algorithms, arrays, python, beginners]
 date: 2026-03-06
+image: https://storage.googleapis.com/junedang_blog_images/array-fundamentals/thumbnail.jpg
 ---
 
 Every programmer, at some point, needs to store a collection of items. A list of student scores. A sequence of daily temperatures. The names of passengers on a flight. Arrays are the most fundamental tool for the job — the first data structure most people learn and the one that underpins countless others. Yet it is easy to rush through arrays because they "feel simple," and miss the depth they carry.
@@ -33,9 +34,9 @@ config:
 flowchart LR
     subgraph Array["Array in memory"]
         direction LR
-        I0["[0]\n42"] --- I1["[1]\n17"] --- I2["[2]\n85"] --- I3["[3]\n6"] --- I4["[4]\n31"]
+        I0["[0] - 42"] --- I1["[1] - 17"] --- I2["[2] - 85"] --- I3["[3] - 6"] --- I4["[4] - 31"]
     end
-    P["base address\n(e.g. 0x1000)"] --> I0
+    P["base address (e.g. 0x1000)"] --> I0
 </pre>
 
 In Python, arrays are represented by the built-in `list` type. Creating one is straightforward:
@@ -117,7 +118,7 @@ config:
 flowchart LR
     subgraph Months["months array"]
         direction LR
-        A0["[0]\nJan"] --- A1["[1]\nFeb"] --- A2["[2]\nMar"] --- A3["[3]\nApr"] --- A4["[4]\nMay"] --- A5["[5]\nJun"]
+        A0["[0] - Jan"] --- A1["[1] - Feb"] --- A2["[2] - Mar"] --- A3["[3] - Apr"] --- A4["[4] - May"] --- A5["[5] - Jun"]
     end
 </pre>
 
@@ -129,8 +130,8 @@ config:
   look: handDrawn
 ---
 flowchart LR
-    Query["months[2]"] -->|"base + 2 × size"| A2["[2]\nMar ✓"]
-    A0["[0] Jan"] --- A1["[1] Feb"] --- A2 --- A3["[3] Apr"] --- A4["[4] May"] --- A5["[5] Jun"]
+    Query["months[2]"] -->|"base + 2 × size"| A2["[2] - Mar ✓"]
+    A0["[0] - Jan"] --- A1["[1] - Feb"] --- A2 --- A3["[3] - Apr"] --- A4["[4] - May"] --- A5["[5] - Jun"]
 </pre>
 
 ## Common Array Operations
@@ -210,13 +211,16 @@ config:
   look: handDrawn
 ---
 flowchart LR
+    classDef new fill:#e6fffa,stroke:#00b894,color:#005c4b;
+    classDef shifted fill:#fff8e1,stroke:#ffa000,color:#5c3a00;
+
     subgraph Before["Before insert(2, 70)"]
         direction LR
-        B0["[0]\n88"] --- B1["[1]\n92"] --- B2["[2]\n75"] --- B3["[3]\n95"] --- B4["[4]\n61"]
+        B0["[0] - 88"] --- B1["[1] - 92"] --- B2["[2] - 75"] --- B3["[3] - 95"] --- B4["[4] - 61"]
     end
     subgraph After["After insert(2, 70)"]
         direction LR
-        A0["[0]\n88"] --- A1["[1]\n92"] --- A2["[2]\n70 ✦new"] --- A3["[3]\n75 ⇒"] --- A4["[4]\n95 ⇒"] --- A5["[5]\n61 ⇒"]
+        A0["[0] - 88"] --- A1["[1] - 92"] --- A2["[2] - 70 ✦new"]:::new --- A3["[3] - 75 ⇒"]:::shifted --- A4["[4] - 95 ⇒"]:::shifted --- A5["[5] - 61 ⇒"]:::shifted
     end
     Before --> After
 </pre>
@@ -246,13 +250,16 @@ config:
   look: handDrawn
 ---
 flowchart LR
+    classDef deleted fill:#ffebee,stroke:#d32f2f,color:#b71c1c;
+    classDef shifted fill:#fff8e1,stroke:#ffa000,color:#5c3a00;
+
     subgraph Before["Before pop(2)"]
         direction LR
-        B0["[0]\n88"] --- B1["[1]\n92"] --- B2["[2]\n70 ✕"] --- B3["[3]\n75"] --- B4["[4]\n95"]
+        B0["[0] - 88"] --- B1["[1] - 92"] --- B2["[2] - 70 ✕"]:::deleted --- B3["[3] - 75"] --- B4["[4] - 95"]
     end
     subgraph After["After pop(2)"]
         direction LR
-        A0["[0]\n88"] --- A1["[1]\n92"] --- A2["[2]\n75 ⇐"] --- A3["[3]\n95 ⇐"]
+        A0["[0] - 88"] --- A1["[1] - 92"] --- A2["[2] - 75 ⇐"]:::shifted --- A3["[3] - 95 ⇐"]:::shifted
     end
     Before --> After
 </pre>
@@ -397,7 +404,7 @@ config:
 flowchart LR
     subgraph Array["Sorted array: [1, 3, 5, 7, 9]  target sum = 10"]
         direction LR
-        P0["[0]\n1\n← L"] --- P1["[1]\n3"] --- P2["[2]\n5"] --- P3["[3]\n7"] --- P4["[4]\n9\nR →"]
+        P0["[0] - 1\n← L"] --- P1["[1] - 3"] --- P2["[2] - 5"] --- P3["[3] - 7"] --- P4["[4] - 9\nR →"]
     end
     Note["L+R = 1+9=10 ✓ Found!"]
 </pre>
@@ -436,18 +443,18 @@ Imagine a physical window sliding along a row of houses. The window shows you ex
 config:
   look: handDrawn
 ---
-flowchart LR
+flowchart TB
     subgraph W1["Window 1 (sum=6)"]
         direction LR
-        E1["[0]\n1"] --- E2["[1]\n3"] --- E3["[2]\n2"]
+        E1["[0] - 1"] --- E2["[1] - 3"] --- E3["[2] - 2"]
     end
     subgraph W2["Window 2 (sum=7)"]
         direction LR
-        F1["[1]\n3"] --- F2["[2]\n2"] --- F3["[3]\n2"]
+        F1["[1] - 3"] --- F2["[2] - 2"] --- F3["[3] - 2"]
     end
     subgraph W3["Window 3 (sum=8)"]
         direction LR
-        G1["[2]\n2"] --- G2["[3]\n2"] --- G3["[4]\n4"]
+        G1["[2] - 2"] --- G2["[3] - 2"] --- G3["[4] - 4"]
     end
     W1 -->|"slide right"| W2 -->|"slide right"| W3
 </pre>
