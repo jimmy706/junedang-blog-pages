@@ -2,7 +2,8 @@
 title: "How Credit Card Payment Systems Work"
 description: "A deep technical exploration of the credit card payment ecosystem, from authorization to settlement, explaining the architecture behind billions of daily transactions."
 tags: [payments, fintech, system-design, architecture, finance]
-date: 2026-03-09
+date: 2026-03-13
+image: https://storage.googleapis.com/junedang_blog_images/how-credit-card-payment-systems-work/thumbnail.webp
 ---
 
 You tap your card at a coffee shop. Two seconds later, the terminal beeps and prints a receipt. Behind those two seconds lies one of the most intricate, resilient, and economically significant distributed systems ever built. A transaction that feels instant actually involves a dozen parties, crosses multiple networks, triggers fraud checks, updates ledgers in different time zones, and settles days later through a clearing infrastructure most people never see.
@@ -24,6 +25,37 @@ This credit model is why authorization and settlement are separate steps. Author
 ## The Main Players in the Payment Ecosystem
 
 A credit card transaction involves many parties, each with specific roles, incentives, and information boundaries. Here is the complete cast:
+
+<pre class="mermaid">
+flowchart TD
+    Cardholder((Cardholder))
+    Terminal[POS Terminal / Gateway]
+    Merchant[Merchant]
+    Processor[Payment Processor]
+    Acquirer[Acquirer Bank]
+    Network[Card Network]
+    TSP[Token Service Provider]
+    Issuer[Issuer Bank]
+    Fraud[Fraud & Risk Systems]
+    Clearing[Settlement & Clearing]
+
+    Cardholder -->|1. Presents Card| Terminal
+    Terminal -->|2. Captures Data| Processor
+    Processor -->|3. Routes| Acquirer
+    Acquirer -->|4. Forwards| Network
+    Network -.->|Token Lookup| TSP
+    Network -->|5. Routes| Issuer
+    Issuer -.->|Risk Check| Fraud
+    Issuer -->|6. Approve/Decline| Network
+    Network -->|7. Returns Decision| Acquirer
+    Acquirer -->|8. Returns Decision| Processor
+    Processor -->|9. Returns Decision| Terminal
+    Terminal -->|10. Completes Sale| Merchant
+    Merchant -->|11. Delivers Goods| Cardholder
+
+    Acquirer ===>|Batch Clearing| Clearing
+    Clearing ===>|Net Settlement| Issuer
+</pre>
 
 ### Cardholder
 
@@ -144,6 +176,47 @@ The back-office systems that reconcile authorization messages, calculate net pos
 ## The Complete Transaction Lifecycle
 
 Let's walk through a single transaction from start to finish. We will use a concrete example: a customer buys a $100 item at a physical store using a Visa credit card issued by Chase.
+
+<pre class="mermaid">
+sequenceDiagram
+    participant C as Cardholder
+    participant T as Terminal
+    participant P as Processor
+    participant A as Acquirer
+    participant N as Network (Visa)
+    participant I as Issuer (Chase)
+    participant M as Merchant
+
+    Note over C,I: Step 1-5: Authorization (1-3 seconds)
+    C->>T: Tap Card (PAN + Cryptogram)
+    T->>T: Tokenize & Create Auth Request
+    T->>P: ISO 8583 Message
+    P->>A: Forward Request
+    A->>N: Add Acquirer BIN
+    N->>I: Route to Issuer
+    I->>I: Validate + Fraud Check
+    I->>N: Approve (Code: AB1234)
+    N->>A: Forward Approval
+    A->>P: Forward Approval
+    P->>T: Forward Approval
+    T->>C: Beep! Approved
+    
+    Note over C,M: Step 6-7: Capture (minutes to hours)
+    M->>A: Capture Request (EOD)
+    A->>A: Mark as Captured
+    
+    Note over A,I: Step 8-9: Clearing & Settlement (T+1 to T+3)
+    A->>N: Clearing File (Nightly Batch)
+    N->>N: Calculate Fees
+    N->>I: Forward Clearing
+    N->>A: Settlement Instruction
+    A->>M: Deposit $97.50
+    
+    Note over I,C: Step 10-11: Posting & Billing
+    I->>C: Post $100 to Statement
+    I->>C: Send Monthly Statement
+    C->>I: Pay Balance
+</pre>
 
 ### Step 1: Card Presented
 
@@ -314,19 +387,11 @@ The fraud score is computed by a separate system that may use machine learning m
 - **Merchant category:** Online gambling, cryptocurrency, or high-risk merchants get higher scrutiny.
 - **Device fingerprint:** For online transactions, the browser, IP address, and device ID are compared to known profiles.
 
-### Partial Approvals
-
-Some issuers support **partial approvals**: if you request $100 but only have $60 of available credit, the issuer approves $60 and tells the terminal to request the remaining $40 via another payment method. This is common at gas stations and prepaid cards.
-
 ### Auth-Only vs. Auth-Capture
 
 **Auth-only:** The merchant checks if the card can pay but does not yet charge it. Used for pre-authorization at hotels (they hold $200 but only charge your actual stay amount later) or at gas pumps (hold $100, settle the actual pump amount later).
 
 **Auth-capture:** The merchant authorizes and captures immediately. Used for most retail transactions.
-
-### Incremental Authorization
-
-Restaurants use this: the initial authorization is for the meal cost ($50), but the customer adds a $10 tip. The terminal sends an **incremental auth** for the tip, updating the total hold to $60.
 
 ### Reversals
 
@@ -410,60 +475,6 @@ When you use a credit card:
 3. The issuer gives you a **grace period** (typically 21-25 days after the statement closing date) to repay without interest.
 4. If you pay the full balance, you pay zero interest. This is called **transacting** behavior.
 5. If you pay less than the full balance, the remaining amount becomes a **revolving balance**, and interest accrues daily at the APR specified in your card agreement.
-
-### Billing Cycle
-
-A typical billing cycle:
-
-- **March 1-31:** Billing cycle. All purchases post to your account.
-- **March 31:** Statement closes. Balance = $1,000.
-- **April 1-25:** Grace period. No interest accrues yet.
-- **April 25:** Payment due date. Minimum payment = $25 (typically 1-3% of balance).
-- If you pay $1,000: no interest, balance = $0.
-- If you pay $25: revolving balance = $975. Interest starts accruing daily.
-
-### Interest Calculation
-
-Interest is calculated using the **average daily balance** method:
-
-```
-Daily interest rate = APR / 365
-Daily balance = outstanding balance after each transaction posts
-Interest for the month = Σ(daily balance × daily interest rate)
-```
-
-Example: APR = 18%, balance = $1,000 for the entire month.
-
-```
-Daily rate = 18% / 365 = 0.0493%
-Monthly interest = $1,000 × 0.000493 × 30 = $14.79
-```
-
-This compounds. If you only pay the minimum, your balance grows exponentially.
-
-### Why Issuers Profit from Revolvers
-
-Cardholders who carry a balance month-to-month are called **revolvers**. They generate the majority of issuer profit through interest charges. Cardholders who pay in full each month are called **transactors**. They generate profit only through interchange fees.
-
-Issuers design rewards programs to attract high-spending transactors while hoping a percentage become revolvers.
-
-### Minimum Payment and Debt Trap
-
-The minimum payment is typically 1-3% of the balance. Paying only the minimum keeps the account current (no late fees) but barely touches the principal. A $1,000 balance at 18% APR with $25 minimum payments takes **5+ years** to pay off and costs over $600 in interest.
-
-This is intentional. Credit card debt is profitable for issuers but financially destructive for consumers who do not understand the math.
-
-### Grace Period Exceptions
-
-The grace period only applies if you paid the previous month's balance in full. If you carry a balance from the prior month, **new purchases start accruing interest immediately**. This is a common trap.
-
-### Late Fees and Penalties
-
-Miss a payment? Expect:
-
-- Late fee: $25-$40
-- Penalty APR: Your rate may jump to 29.99%
-- Credit score damage: 30-60 day delinquencies are reported to credit bureaus
 
 ## Technical Infrastructure
 
@@ -564,6 +575,46 @@ Debugging a failed transaction requires stitching together logs from terminal, p
 
 Card-present (in-store) and card-not-present (online) transactions have different fraud profiles, security mechanisms, and authorization flows.
 
+<pre class="mermaid">
+flowchart TD
+    subgraph CP ["Card-Present (In-Store)"]
+        CP1[Physical Card + Cardholder]
+        CP2[EMV Chip / NFC]
+        CP3[Dynamic Cryptogram]
+        CP4[Terminal → Network → Issuer]
+        CP5[No CVV Required]
+        CP6{Fraud Check}
+        CP7[Approve: 95-98%]
+        CP8[Liability: Issuer]
+        
+        CP1 --> CP2 --> CP3 --> CP4 --> CP5 --> CP6
+        CP6 -->|Low Risk| CP7
+        CP7 --> CP8
+    end
+    
+    subgraph CNP ["Card-Not-Present (Online)"]
+        CNP1[No Physical Card]
+        CNP2[Manual Entry: PAN + CVV]
+        CNP3[No Cryptogram]
+        CNP4[Gateway → Network → Issuer]
+        CNP5[CVV + AVS Required]
+        CNP6{Fraud Check}
+        CNP7{3D Secure?}
+        CNP8[Approve: 85-92%]
+        CNP9[Liability: Merchant*]
+        
+        CNP1 --> CNP2 --> CNP3 --> CNP4 --> CNP5 --> CNP6
+        CNP6 -->|High Risk| CNP7
+        CNP7 -->|Optional| CNP8
+        CNP8 --> CNP9
+    end
+    
+    style CP fill:#e1ffe1
+    style CNP fill:#ffe1e1
+    style CP8 fill:#90EE90
+    style CNP9 fill:#FFB6C1
+</pre>
+
 ### Card-Present (CP)
 
 **How it works:**
@@ -641,99 +692,6 @@ Contactless payments (Apple Pay, Google Pay, tap-to-pay cards) use **Near Field 
 | Fraud risk | Low | High |
 | Merchant liability | No (issuer liable) | Yes (unless 3DS used) |
 | Approval rate | ~95-98% | ~85-92% |
-
-## Security Mechanisms
-
-Payment systems are high-value targets for fraud. Security is layered and defense-in-depth.
-
-### PAN (Primary Account Number)
-
-The 16-digit card number. The first 6 digits are the **BIN (Bank Identification Number)**, which identifies the issuer. The last digit is a **checksum** (Luhn algorithm) to detect typos.
-
-The PAN is the most sensitive piece of data. Modern systems avoid storing or transmitting it.
-
-### Tokenization
-
-**Tokenization** replaces the PAN with a token that is meaningless outside a specific context. The token looks like a real card number but is randomly generated and maps to the real PAN only in the token service provider's vault.
-
-**Example:** Real PAN = 4532-1234-5678-9010. Token = 4532-9999-8888-7777. The token is used for authorization. The network's token service translates it back to the real PAN before routing to the issuer.
-
-**Benefits:**
-
-- If the merchant's database is breached, the tokens are useless.
-- Tokens can be restricted to a specific merchant, device, or transaction type.
-- Tokens can be rotated or revoked without canceling the card.
-
-### Encryption
-
-Card data is encrypted **at rest** (in databases) and **in transit** (TLS/SSL for network transmission). Modern terminals encrypt the PAN immediately after reading it. The acquirer never sees the plaintext PAN.
-
-### PCI DSS (Payment Card Industry Data Security Standard)
-
-**PCI DSS** is a set of security standards for any entity that stores, processes, or transmits card data. Compliance is mandatory for merchants and processors.
-
-**Key requirements:**
-
-- Encrypt cardholder data in transit and at rest.
-- Do not store CVV after authorization.
-- Restrict access to card data to authorized personnel only.
-- Regularly test security systems (penetration testing, vulnerability scans).
-- Maintain audit logs of all access to card data.
-
-Merchants that handle card data directly must undergo annual PCI audits. Using a payment gateway (Stripe, Adyen) offloads PCI compliance to the gateway.
-
-### EMV Cryptograms
-
-The EMV chip generates a **dynamic cryptogram** for each transaction. The cryptogram is encrypted using the chip's private key and can only be validated by the issuer using the corresponding public key.
-
-**Static vs. dynamic data:**
-
-- **Magnetic stripe:** Static data. Cloning is trivial.
-- **EMV chip:** Dynamic cryptogram. Cloning requires breaking cryptography, which is infeasible.
-
-### CVV / CVC (Card Verification Value)
-
-The 3-digit code on the back of the card (or 4 digits on the front for Amex). The CVV is not stored on the magnetic stripe or chip and must not be stored by merchants after authorization.
-
-**Purpose:** Proves possession of the physical card for card-not-present transactions.
-
-### AVS (Address Verification Service)
-
-The issuer checks if the billing postal code provided by the customer matches the address on file. Used for online transactions to reduce fraud.
-
-**Response codes:**
-
-- **Y:** Address and ZIP match.
-- **Z:** ZIP matches, address does not.
-- **N:** Neither matches.
-- **U:** AVS unavailable.
-
-Merchants can decline transactions with AVS mismatches.
-
-### 3-D Secure / Strong Customer Authentication
-
-3-D Secure adds a second factor (password, OTP, biometric) to online purchases. In Europe, **Strong Customer Authentication (SCA)** is legally required for most online transactions under PSD2 regulations.
-
-### Fraud Scoring
-
-Real-time fraud detection uses machine learning models to assign a risk score (0-100) to each transaction. High-risk transactions may be declined automatically or flagged for manual review.
-
-**Features used:**
-
-- Transaction amount relative to history
-- Merchant category (high-risk: gambling, crypto)
-- Geographic location (is the cardholder traveling?)
-- Device fingerprint (browser, IP, OS)
-- Velocity checks (how many transactions in the last hour?)
-- Time of day (purchases at 3 AM are unusual)
-
-### Velocity Checks
-
-Issuers track the number and frequency of transactions:
-
-- More than 5 transactions in 10 minutes? Suspicious.
-- More than $5,000 in one day on a card that normally spends $200? Suspicious.
-- 3 declined transactions followed by an approval? Possible card testing.
 
 ## Failure and Edge Cases
 
@@ -839,6 +797,28 @@ For a $100 transaction:
 - **Interchange (to issuer):** ~$1.80
 - **Network fee (to Visa/Mastercard):** ~$0.10
 - **Acquirer/processor fee:** ~$1.10
+
+<pre class="mermaid">
+flowchart LR
+    Customer([Customer<br/>Pays $100])
+    Merchant[Merchant<br/>Receives $97.00]
+    Issuer[Issuer Bank<br/>Gets $1.80<br/>Interchange]
+    Network[Card Network<br/>Gets $0.10<br/>Scheme Fee]
+    Acquirer[Acquirer/Processor<br/>Gets $1.10<br/>Processing Fee]
+    
+    Customer -->|$100.00| Transaction{{Transaction}}
+    Transaction -->|$97.00| Merchant
+    Transaction -->|$1.80| Issuer
+    Transaction -->|$0.10| Network
+    Transaction -->|$1.10| Acquirer
+    
+    style Customer fill:#e1f5ff
+    style Merchant fill:#fff4e1
+    style Issuer fill:#e1ffe1
+    style Network fill:#ffe1f5
+    style Acquirer fill:#f5e1ff
+    style Transaction fill:#f0f0f0
+</pre>
 
 ### Merchant Discount Rate (MDR)
 
@@ -1058,204 +1038,7 @@ Let's walk through every step of a $100 purchase at a physical retail store usin
 - **Acquirer:** $0.60 from MDR → **$0.60 profit**.
 - **Cardholder:** Paid $100, received the product. If using a rewards card, may have earned $1-$2 in cashback → **net cost $98-$99**.
 
-## System Design Perspective for Engineers
-
-If you were designing a payment system from scratch, here are the key engineering considerations:
-
-### Latency-Sensitive Authorization Path
-
-**Requirement:** Authorization must complete in <2 seconds (ideally <1 second).
-
-**Architecture:**
-
-- **Synchronous request-response** from terminal to issuer.
-- **In-memory caches** for card status, BIN lookups, fraud rules.
-- **Load balancing** across multiple authorization servers.
-- **Circuit breakers** to fail fast if an upstream service is down.
-- **Retry logic** with exponential backoff, but be careful of double-charges.
-- **Distributed tracing** to measure latency at each hop.
-
-**Consistency:** Strong consistency is not required. If a cardholder's credit limit was updated 5 seconds ago, it is acceptable for the authorization system to see the old value briefly (eventual consistency).
-
-### Ledger and Settlement Path
-
-**Requirement:** Ledgers must be **strongly consistent** and **auditable**. Every dollar must be accounted for.
-
-**Architecture:**
-
-- **Relational database** (PostgreSQL, Oracle) with ACID transactions.
-- **Double-entry bookkeeping:** Every debit has a corresponding credit.
-- **Immutable event log:** All state changes are appended to an event stream (Kafka).
-- **Batch reconciliation jobs** that run nightly to detect discrepancies.
-- **Distributed locks** to prevent concurrent modification of the same ledger entry.
-
-**Consistency:** Strong consistency. Settlement is not real-time, so we can afford higher latency to guarantee correctness.
-
-### Idempotency and Retries
-
-**Problem:** Networks are unreliable. A timeout does not mean the transaction failed.
-
-**Solution:**
-
-- Every authorization request includes a **transaction ID** or **idempotency key**.
-- If the same transaction ID arrives twice, return the cached response from the first attempt.
-- Store the response in a cache (Redis) with a TTL of 24 hours.
-
-```python
-def authorize(transaction_id, amount, card_token):
-    # Check if we have already processed this transaction
-    cached_response = redis.get(f"auth:{transaction_id}")
-    if cached_response:
-        return cached_response  # Idempotent response
-
-    # Process the transaction
-    response = check_balance_and_fraud(card_token, amount)
-
-    # Cache the response
-    redis.setex(f"auth:{transaction_id}", 86400, response)
-    return response
-```
-
-### High Availability
-
-**Requirement:** Authorization systems must have 99.99%+ uptime. Downtime = lost revenue for merchants and bad customer experience.
-
-**Architecture:**
-
-- **Multi-region deployment** with automatic failover.
-- **Active-active** across data centers if possible (authorization systems are mostly stateless except for caches).
-- **Health checks** and **auto-scaling** to handle traffic spikes.
-- **Stand-in processing:** If the issuer is unreachable, the network can approve low-risk transactions using historical patterns.
-
-### Fraud Detection
-
-**Requirement:** Score every transaction for fraud in <200ms.
-
-**Architecture:**
-
-- **Real-time feature extraction:** IP address, device fingerprint, location, velocity.
-- **Pre-trained ML models** (logistic regression, gradient boosting, neural networks) served from low-latency inference systems.
-- **Feature store** (Redis, DynamoDB) for fast lookups of cardholder history.
-- **Rule engine** for deterministic policies ("always decline transactions from blacklisted countries").
-
-### Reconciliation and Audit
-
-**Requirement:** Every transaction must be reconcilable. Detect discrepancies between authorization, clearing, and settlement.
-
-**Architecture:**
-
-- **Event sourcing:** Store every state change (authorized, captured, cleared, settled) as an immutable event.
-- **Nightly batch jobs** that compare:
-  - Authorizations vs. captures (detect missing captures)
-  - Captures vs. clearing (detect mismatches)
-  - Clearing vs. settlement (detect accounting errors)
-- **Alert on exceptions** for manual review.
-
-### Security Boundaries
-
-**Requirement:** Card data must not leak.
-
-**Architecture:**
-
-- **Tokenization:** Replace PAN with a token at the earliest possible point (terminal or gateway).
-- **Encryption at rest and in transit:** All card data encrypted with strong keys (AES-256).
-- **Secrets management:** Use a vault (HashiCorp Vault, AWS Secrets Manager) to store keys and credentials.
-- **PCI DSS compliance:** Regular audits, penetration testing, and vulnerability scans.
-- **Least privilege:** Services only access the data they need. Acquirers never see CVV. Merchants never see the full PAN.
-
-### Observability
-
-**Requirement:** Understand the state of the system in real time. Debug failures across organizational boundaries.
-
-**Architecture:**
-
-- **Distributed tracing:** Every request has a trace ID that follows it across services (terminal → processor → acquirer → network → issuer).
-- **Structured logging:** Log every authorization decision, decline reason, and latency measurement.
-- **Metrics and dashboards:** Approval rate, decline rate by reason, P50/P95/P99 latency, fraud score distribution.
-- **Alerting:** Spike in declines, drop in approval rate, latency regression.
-
-### API Design Example
-
-If you were building an authorization API:
-
-```
-POST /v1/authorize
-Content-Type: application/json
-Idempotency-Key: txn-abc123
-
-{
-  "amount": 10000,  // cents
-  "currency": "USD",
-  "card_token": "tok_4532XXXX9999",
-  "merchant_id": "merchant_12345",
-  "terminal_id": "terminal_67890",
-  "mcc": "5732",
-  "timestamp": "2026-03-09T14:32:10Z",
-  "cryptogram": "AES_ENCRYPTED_BLOB",
-  "card_entry_mode": "contactless"
-}
-
-Response (200 OK):
-{
-  "authorization_code": "AB1234",
-  "status": "approved",
-  "available_credit": 370000,  // cents
-  "fraud_score": 5,
-  "timestamp": "2026-03-09T14:32:11Z"
-}
-
-Response (402 Payment Required):
-{
-  "status": "declined",
-  "reason_code": "51",
-  "reason_message": "Insufficient funds",
-  "timestamp": "2026-03-09T14:32:11Z"
-}
-```
-
-## Common Misconceptions
-
-Let's correct some common misunderstandings about credit card payments:
-
-### Misconception: "Approved means the merchant got paid instantly"
-
-**Reality:** Approval means the issuer placed a hold on the cardholder's credit line. The merchant receives funds T+1 to T+3 days later, after clearing and settlement.
-
-### Misconception: "The card network and the issuer are the same thing"
-
-**Reality:** The network (Visa, Mastercard) routes messages. The issuer (Chase, Bank of America) makes the authorization decision and extends credit. They are separate entities with separate roles. (Exception: American Express acts as both network and issuer.)
-
-### Misconception: "Credit card payments are just bank transfers"
-
-**Reality:** Credit cards involve credit extension, risk assessment, interchange fees, authorization holds, clearing, settlement, and potential chargebacks. Bank transfers (ACH, wire) are simpler: money moves directly from one account to another with no credit involved.
-
-### Misconception: "Chargebacks are the same as refunds"
-
-**Reality:** A refund is initiated by the merchant and is a voluntary reversal. A chargeback is initiated by the cardholder and is a dispute. Chargebacks are adversarial and costly for merchants.
-
-### Misconception: "Contactless payments are less secure"
-
-**Reality:** Contactless payments use dynamic cryptograms, just like chip cards. They are equally secure and often more secure than magnetic stripe or card-not-present transactions.
-
-### Misconception: "The CVV is stored on the card's chip"
-
-**Reality:** The CVV is printed on the card and is not stored on the chip or magnetic stripe. This is why online merchants ask for it—it proves you have the physical card in hand. Merchants are not allowed to store the CVV after authorization.
-
-### Misconception: "The merchant sees why the card was declined"
-
-**Reality:** The merchant receives a generic decline response. The specific reason (fraud, insufficient funds, card stolen) is not disclosed to protect cardholder privacy.
-
-### Misconception: "High-limit cards are always approved"
-
-**Reality:** Authorization depends on available credit (limit minus current balance), not the limit itself. A $10,000 limit with a $9,900 balance will decline a $200 transaction.
-
-### Misconception: "Authorization holds disappear immediately if a transaction is canceled"
-
-**Reality:** Authorization holds typically expire after 5-7 days if not captured. Merchants can issue a reversal to release the hold sooner, but it is not instant. This is why cardholders sometimes see "pending" charges for days after a canceled order.
-
-## Conclusion: Why This System Is One of the Most Important Invisible Infrastructures
-
-Every day, billions of credit card transactions flow through this system. It is invisible to most people—just a tap, a beep, and a receipt. But behind that simplicity is a distributed system of staggering scale and complexity.
+## Summary
 
 Credit card payments are hard because they require:
 
@@ -1270,8 +1053,6 @@ This is not a simple CRUD app. It is a real-time, distributed, strongly consiste
 
 For software engineers, payment systems are a masterclass in distributed systems design. They show you how to build systems that are fast, correct, secure, and resilient under adversarial conditions. They force you to think about idempotency, eventual consistency, failure modes, observability, and economics.
 
-For system architects, payment systems reveal the tradeoffs between latency and consistency, between security and usability, between centralization and federation. They demonstrate how to design APIs, message formats, and protocols that work at global scale across organizational boundaries.
-
 For everyone else, payment systems are a reminder that the modern world runs on invisible infrastructure. The next time you tap your card for coffee, remember: you just participated in a choreographed dance involving a dozen companies, three networks, two banks, a fraud detection system, a clearing house, and a settlement process—all in under two seconds.
 
 That is the magic and the engineering brilliance of credit card payment systems.
@@ -1281,5 +1062,3 @@ That is the magic and the engineering brilliance of credit card payment systems.
 1. **Why are authorization and settlement separate steps in credit card payments?** What would happen if they were combined into a single operation?
 
 2. **How does the fraud detection system balance false positives (declining legitimate transactions) and false negatives (approving fraudulent transactions)?** What is the cost of each type of error?
-
-<!-- Subtopic selection rationale: Chose "Main Players" (system components and relationships), "Transaction Lifecycle" (end-to-end flow from authorization to settlement), "Authorization in Detail" (latency-sensitive real-time path), "Clearing and Settlement" (async batch reconciliation), "Credit Model" (the business logic of credit extension), "Technical Infrastructure" (engineering architecture), "Online vs In-Store" (different threat models and security mechanisms), "Security Mechanisms" (defense in depth), "Failure and Edge Cases" (real-world complications), "Economics" (incentives and money flow), "Example Walkthrough" (concrete instantiation), "System Design" (engineering perspective), and "Common Misconceptions" (correcting mental models). These fifteen sections partition the problem space from first principles through implementation reality, balancing business and technical depth. -->
