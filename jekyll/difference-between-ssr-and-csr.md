@@ -54,6 +54,41 @@ Here's the simplest way to think about the difference:
 
 This fundamental difference cascades into performance characteristics, user experience, and infrastructure requirements. When the server does the work, users see content faster but your server does more. When the browser does the work, your server is simpler but users wait longer for that initial view.
 
+### Request/response flows at a glance
+
+**CSR sequence**
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Browser
+    participant Server
+    participant API
+    Browser->>Server: GET /
+    Server-->>Browser: Minimal HTML + script tags
+    Browser->>Server: GET JS bundle
+    Server-->>Browser: bundle.js
+    Browser->>API: Fetch data (JSON)
+    API-->>Browser: Data payload
+    Browser-->>Browser: Build DOM and render UI
+```
+
+**SSR sequence**
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Browser
+    participant Server
+    participant API
+    Browser->>Server: GET /
+    Server->>API: Fetch data (JSON)
+    API-->>Server: Data payload
+    Server-->>Browser: Rendered HTML + script tags
+    Browser-->>Browser: Paint content immediately
+    Browser->>Server: GET JS bundle
+    Server-->>Browser: bundle.js
+    Browser-->>Browser: Hydrate to attach interactivity
+```
+
 ## Pros and Cons of Client-Side Rendering
 
 **Advantages:**
