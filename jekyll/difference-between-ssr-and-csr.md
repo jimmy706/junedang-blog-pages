@@ -3,6 +3,7 @@ title: "Understanding Server-Side Rendering (SSR) vs Client-Side Rendering (CSR)
 description: "A beginner-friendly guide to how modern web applications render content and when to use each approach."
 tags: [web-development, ssr, csr, react, next-js, frontend]
 date: 2026-03-13
+image: https://storage.googleapis.com/junedang_blog_images/difference-between-ssr-and-csr/thumbnail.webp
 ---
 
 When you visit a website, the browser displays a fully interactive page. But have you ever wondered where that HTML comes from? In modern web development, there are two main strategies for generating the HTML you see: **Server-Side Rendering (SSR)** and **Client-Side Rendering (CSR)**. These aren't competing technologies—they're different approaches to the same problem, and understanding when to use each one can dramatically improve how your web application performs.
@@ -57,7 +58,7 @@ This fundamental difference cascades into performance characteristics, user expe
 ### Request/response flows at a glance
 
 **CSR sequence**
-```mermaid
+<pre class="mermaid">
 sequenceDiagram
     autonumber
     participant Browser
@@ -70,10 +71,10 @@ sequenceDiagram
     Browser->>API: Fetch data (JSON)
     API-->>Browser: Data payload
     Browser-->>Browser: Build DOM and render UI
-```
+</pre>
 
 **SSR sequence**
-```mermaid
+<pre class="mermaid">
 sequenceDiagram
     autonumber
     participant Browser
@@ -87,7 +88,7 @@ sequenceDiagram
     Browser->>Server: GET JS bundle
     Server-->>Browser: bundle.js
     Browser-->>Browser: Hydrate to attach interactivity
-```
+</pre>
 
 ## Pros and Cons of Client-Side Rendering
 
