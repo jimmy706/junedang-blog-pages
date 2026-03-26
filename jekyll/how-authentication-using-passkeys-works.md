@@ -2,7 +2,8 @@
 title: "How Authentication Using Passkeys Works"
 description: "A technical deep dive into passkey authentication, explaining the cryptographic mechanisms, registration and login flows, and why passkeys are replacing passwords."
 tags: [authentication, security, passkeys, webauthn, cryptography]
-date: 2026-03-15
+date: 2026-03-26
+image: https://storage.googleapis.com/junedang_blog_images/how-authentication-using-passkeys-works/thumbnail.webp
 ---
 
 You visit a website and click "Sign in." Instead of typing a password, you glance at your phone. Face ID confirms it's you. You're logged in. No password to remember, no credential to leak, no phishing risk. This is passkey authentication, and it represents the most significant shift in how we prove our identity online since passwords were invented decades ago.
