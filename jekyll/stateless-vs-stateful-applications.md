@@ -3,6 +3,7 @@ title: "Stateless vs Stateful Applications"
 description: "Understanding how state placement shapes system scalability, resilience, and operational complexity in modern software architecture."
 tags: [architecture, system-design, scalability, stateless, stateful]
 date: 2026-04-04
+image: https://storage.googleapis.com/junedang_blog_images/stateless-vs-stateful-applications/thumbnail.webp
 ---
 
 You deploy a new version of your API server. Kubernetes drains traffic from the old pod, starts a new one, and routes requests to it. Users notice nothing. The deployment takes thirty seconds. Now imagine the same scenario with a different service—the one running your real-time multiplayer game servers. You cannot simply kill a pod. Active games are in progress. Players are connected. State lives in memory. Draining that pod means ending those sessions. The difference between these two systems is not just architecture—it is a fundamental decision about where state lives and what that choice costs you.
