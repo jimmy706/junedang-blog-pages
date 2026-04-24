@@ -2,7 +2,7 @@
 title: "How Enterprise Applications Delegate User Access Across Services"
 description: "Understanding identity propagation and authorization in distributed systems"
 tags: [oauth, microservices, authorization, system-design, security]
-image: https://storage.googleapis.com/junedang_blog_images/how-enterprise-applications-delegate-user-access-across-services/delegation-pattern.webp
+image: https://storage.googleapis.com/junedang_blog_images/how-enterprise-applications-delegate-user-access-across-services/thumbnail.webp
 date: 2026-04-23
 ---
 
