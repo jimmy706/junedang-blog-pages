@@ -2,7 +2,7 @@
 title: "How the Java Virtual Machine Works"
 description: "A system walkthrough of JVM internals, from bytecode loading to garbage collection and runtime optimization."
 tags: [java, jvm, runtime, memory-management, performance]
-image: https://storage.googleapis.com/junedang_blog_images/how-the-java-virtual-machine-works/jvm_architecture.webp
+image: https://storage.googleapis.com/junedang_blog_images/how-the-java-virtual-machine-works/thumbnail.webp
 date: 2026-04-24
 ---
 
