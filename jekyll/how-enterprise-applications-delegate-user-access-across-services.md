@@ -97,7 +97,7 @@ Instead of spreading delegation logic across services or injecting stale data at
 
 Here's how a complete request flows through the system:
 
-```mermaid
+<pre class="mermaid">
 sequenceDiagram
     participant User
     participant Gateway
@@ -124,7 +124,7 @@ sequenceDiagram
     Broker-->>ServiceA: Response
     ServiceA-->>Gateway: Response
     Gateway-->>User: Final response
-```
+</pre>
 
 **Step-by-step:**
 
