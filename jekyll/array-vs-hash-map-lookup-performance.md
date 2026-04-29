@@ -8,7 +8,7 @@ image: https://storage.googleapis.com/junedang_blog_images/array-vs-hash-map-loo
 
 You've probably heard it hundreds of times: "Array lookup is O(1). Hash map lookup is O(1). They're the same." But if you've ever benchmarked them, you know that's not the full story. In practice, array index access consistently crushes hash map lookups—often by 3x to 10x or more. How can two O(1) operations perform so differently?
 
-The answer lies in what Big-O notation hides: constant factors, CPU cache behavior, branch prediction, and the actual machine operations required. This article breaks down exactly why `array[i]` is faster than `dict[key]`, when each one wins, and how to use this knowledge to write faster code. We'll use Python for concrete examples, but these principles apply across all languages.
+The answer lies in what Big-O notation hides: constant factors, CPU cache behavior, branch prediction, and the actual machine operations required. We'll use Python to dig into the specifics, but these principles hold across all languages.
 
 ## The O(1) Misconception
 
@@ -24,7 +24,7 @@ Think of it like comparing two cars: both have O(1) time to start the engine—i
 - **Branch prediction**: Conditional jumps can stall the CPU pipeline if mispredicted.
 - **Indirection**: Following pointers costs time; direct addressing is faster.
 
-The rest of this article explains why array lookup has tiny constant factors and excellent cache behavior, while hash map lookup—despite also being O(1)—pays a much higher constant cost.
+Array lookup has tiny constant factors and excellent cache behavior. Hash map lookup—despite also being O(1)—pays a much steeper constant cost. The sections below show exactly why.
 
 ## How Array Lookup Works (Direct Addressing)
 
@@ -100,6 +100,23 @@ Hash maps (Python `dict`, Java `HashMap`, C++ `unordered_map`) provide key-value
 5. Key comparison:       check if stored_key == search_key (using equals)
 6. Return value:         if match, return value; else None
 ```
+
+<pre class="mermaid">
+---
+config:
+  look: handDrawn
+---
+flowchart TD
+    A(["hash(key)"])
+    A --> B["bucket_index = hash % table_size"]
+    B --> C["Access bucket"]
+    C --> D{"Bucket empty?"}
+    D -- Yes --> E(["Return None"])
+    D -- No --> F{"Key matches?"}
+    F -- Yes --> G(["Return value"])
+    F -- No --> H["Probe next bucket"]
+    H --> C
+</pre>
 
 Let's break down each step.
 
@@ -209,7 +226,7 @@ Total: ~20-50 CPU instructions, multiple branches, multiple memory accesses.
 
 ## Real Performance Factors
 
-Beyond the number of operations, hardware realities determine actual speed. Modern CPUs are complex machines optimized for specific access patterns. Let's examine the factors that make arrays fast and hash maps slower.
+The operation count alone doesn't explain the full gap. The hardware does. CPUs are deeply opinionated about how you access memory—and arrays play by those rules far better than hash maps do.
 
 ### CPU cache locality
 
@@ -222,6 +239,23 @@ L2 Cache:     ~3 ns       (medium, per-core)
 L3 Cache:     ~12 ns      (large, shared)
 RAM:          ~100 ns     (huge, slow)
 ```
+
+<pre class="mermaid">
+---
+config:
+  look: handDrawn
+---
+flowchart LR
+    R["🏎️ Register\n~0.3 ns"]
+    L1["L1 Cache\n~1 ns"]
+    L2["L2 Cache\n~3 ns"]
+    L3["L3 Cache\n~12 ns"]
+    RAM["🐢 RAM\n~100 ns"]
+    R -- "miss" --> L1
+    L1 -- "miss" --> L2
+    L2 -- "miss" --> L3
+    L3 -- "miss" --> RAM
+</pre>
 
 When you read from memory, the CPU doesn't just fetch the single byte you asked for. It fetches an entire **cache line**—typically 64 bytes. If your next access is nearby, it's already in cache (a **cache hit**). If it's far away, the CPU must fetch from RAM again (a **cache miss**).
 
@@ -310,7 +344,7 @@ Python mitigates this by resizing the table when the load factor (entries / capa
 
 ## Case Study: 26 Lowercase Characters Optimization
 
-In many coding problems, you need to count the frequency of lowercase English letters (a-z). There are two common approaches:
+Take a common coding problem: counting how often each lowercase letter appears in a string. Most people reach for a dict. But there's a faster way.
 
 ### Approach 1: Hash map (dict)
 
@@ -408,7 +442,21 @@ Use a hash map when:
 
 ## When Arrays Win vs When Hash Maps Win
 
-Both data structures have their place. Choosing the right one depends on your access patterns and constraints.
+So when should you actually reach for one over the other? It comes down to what your keys look like and how predictably you access them.
+
+<pre class="mermaid">
+---
+config:
+  look: handDrawn
+---
+flowchart TD
+    A["Do you know all possible keys?"] -- Yes --> B["Are keys small integers\nin a dense range?"]
+    A -- No --> HM
+    B -- Yes --> C["Will most possible\nkeys be used?"]
+    B -- No --> HM
+    C -- Yes --> ARR(["✅ Use Array"])
+    C -- No --> HM(["✅ Use Hash Map"])
+</pre>
 
 ### When arrays win
 
@@ -447,10 +495,10 @@ Both data structures have their place. Choosing the right one depends on your ac
 
 ### Hybrid strategies
 
-Sometimes you can combine both. For example:
-- Use a hash map for the general case, but optimize hot paths with arrays.
-- Use an array for ASCII characters (0-127), fall back to a hash map for Unicode.
-- Store a "small table" as an array, switch to a hash map if it grows beyond a threshold.
+You don't have to pick just one. A common pattern:
+- Use a hash map for the general case, but swap in arrays on hot paths.
+- Cover ASCII characters (0-127) with an array, fall back to a hash map for Unicode.
+- Start with a fixed-size array; promote to a hash map once it grows beyond a threshold.
 
 ```python
 # Hybrid approach for character counting
@@ -468,29 +516,10 @@ def count_chars_hybrid(s):
     return ascii_freq, unicode_freq
 ```
 
-## Implementation Checklist
-
-When choosing between arrays and hash maps for performance-critical code:
-
-- [ ] **Identify your key space**: Are keys small integers, or arbitrary objects?
-- [ ] **Estimate key density**: Will most possible keys be used, or just a few?
-- [ ] **Profile access patterns**: Sequential or random? Read-heavy or write-heavy?
-- [ ] **Consider cache behavior**: Will the data fit in cache?
-- [ ] **Measure actual performance**: Don't guess—benchmark with realistic data.
-- [ ] **Check for collisions**: If using a hash map, monitor collision rates.
-- [ ] **Optimize hot paths**: Use arrays where performance matters most.
-
 ## Closing Thoughts
 
-Big-O notation is a powerful tool for reasoning about scalability, but it's only part of the story. Both arrays and hash maps are O(1) for lookup, yet array indexing is consistently 3-10x faster in practice. The difference lies in constant factors: cache locality, branch prediction, pointer indirection, and hash computation cost.
+Big-O tells you how something scales. It doesn't tell you how fast it actually runs. Both arrays and hash maps are O(1) for lookup, yet array indexing runs 3-10x faster in practice—because constant factors, cache behavior, and branch prediction all compound.
 
-Arrays excel when keys are small integers and the key space is dense. Hash maps excel when keys are arbitrary and sparse. The best choice depends on your workload—and sometimes the right answer is to use both.
+Arrays win when keys are small integers in a dense range. Hash maps win when keys are arbitrary or sparse. Often the right answer is to use arrays on the hot path and hash maps everywhere else.
 
 The next time you write `data[key]`, ask yourself: "Is this key really an integer in disguise?" If the answer is yes, and you need maximum performance, reach for an array. The CPU will thank you.
-
-## Questions
-
-1. **Why don't we always use arrays if they're so much faster?**
-2. **How can I tell if my hash map has too many collisions?**
-
-<!-- Subtopic selection rationale: (1) "The O(1) Misconception" establishes the foundational error that leads to misunderstanding. (2) "How Array Lookup Works" explains the simplest case with memory layout and direct addressing. (3) "How Hash Map Lookup Works" breaks down the complex multi-step process. (4) "Real Performance Factors" covers cache locality, branch prediction, and other hardware-level effects that drive the performance gap. (5) "Case Study: 26 Lowercase Characters" provides a concrete, measurable example that shows the difference in practice. (6) "When Arrays Win vs When Hash Maps Win" gives engineers a decision framework. These six subtopics cover the problem space from theory (Big-O), to implementation (how each structure works), to hardware reality (why constant factors matter), to practice (when to use each). -->
