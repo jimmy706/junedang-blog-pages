@@ -72,6 +72,7 @@ date: YYYY-MM-DD
   * include small, runnable examples when possible.
   * Tables for comparisons. Code fences with language hints.
 * For any terms that related to my previous articles, add backlink to it with the slug. (For example term 'API' will linked to: /posts/api-gateway-design-and-key-components)
+* When adding Mermaid diagrams that show system components, infrastructure, or services: **always use `architecture-beta` with the registered `logos` icon pack** — load the **mermaid-architecture-icons** skill to get icon names. Fall back to flowcharts only for non-architecture content (trees, sequences, state machines).
 
 # QA checklist (must pass before saving)
 

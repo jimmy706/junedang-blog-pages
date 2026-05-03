@@ -50,12 +50,15 @@ Choose the diagram type based on what the article needs to illustrate:
 
 | Content Type | Diagram Type | Example Use Case |
 |---|---|---|
+| **System / infrastructure architecture** | **`architecture-beta` with icon packs** *(preferred)* | Microservices, cloud infra, deployment topology |
 | Tree / hierarchy | `flowchart TD` | Data structures (heap, BST, trie) |
 | Sequence / flow of events | `sequenceDiagram` | Auth flows, HTTP lifecycle, function call stack |
 | State transitions | `stateDiagram-v2` | Connection states, deployment pipelines |
 | Left-to-right flow | `flowchart LR` | Data pipelines, system layers |
 | Relationship / comparison | `graph TD` with subgraphs | Memory segments, architecture layers |
 | Timeline / order | `flowchart TD` with steps | Algorithm steps, deployment stages |
+
+> **Architecture diagrams:** Always prefer `architecture-beta` with the registered `logos` icon pack over generic flowcharts when illustrating system components, infrastructure, or service interactions. See the **mermaid-architecture-icons** skill for the full icon catalog and syntax.
 
 ---
 
@@ -123,7 +126,7 @@ graph TD
 ## Step-by-Step: How to Add a Diagram to an Article
 
 1. **Identify the right moment** — diagram after the concept is introduced, not before.
-2. **Choose diagram type** from the table above.
+2. **Choose diagram type** from the table above. For any architecture or system diagram, default to `architecture-beta` with `logos:` icon prefixes — load the **mermaid-architecture-icons** skill to get the correct icon names.
 3. **Draft the diagram** in the `<pre class="mermaid">` wrapper.
 4. **Add optional config** (`layout: elk`, `look: handDrawn`) if the graph is complex or conceptual.
 5. **Label nodes clearly** — use descriptive text like `"Index 0: 3 (root)"`, not just `A`, `B`, `C`.
