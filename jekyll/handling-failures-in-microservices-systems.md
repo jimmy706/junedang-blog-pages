@@ -3,7 +3,7 @@ title: "Handling Failures in Microservices Systems"
 description: "How timeout, retries, circuit breakers, and fallback patterns keep distributed systems running when everything goes wrong."
 tags: [microservices, distributed-systems, resilience, system-design, architecture]
 date: 2026-05-03
-image: https://storage.googleapis.com/junedang_blog_images/handling-failures-in-microservices-systems/circuit-breaker-pattern.webp
+image: https://storage.googleapis.com/junedang_blog_images/handling-failures-in-microservices-systems/thumbnail.webp
 ---
 
 One service slows to a crawl. Requests pile up. Threads exhaust. The slowdown cascades upstream. Within minutes, the entire system grinds to a halt. This is not a hypothetical scenario—it is Tuesday afternoon in production. In microservices, failure is not an edge case. It is the default condition. The network drops packets. Services crash. Dependencies timeout. Latency spikes unpredictably. You do not prevent these failures. You design systems that survive them.
