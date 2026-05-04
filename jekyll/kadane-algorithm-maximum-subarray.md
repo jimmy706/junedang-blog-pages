@@ -2,8 +2,8 @@
 title: "Kadane's Algorithm — Why This Simple Trick Beats Brute Force"
 description: "Understanding how Kadane's Algorithm solves the maximum subarray problem in linear time with elegant simplicity"
 tags: [algorithms, dynamic-programming, optimization, problem-solving]
-image: https://storage.googleapis.com/junedang_blog_images/kadane-algorithm-maximum-subarray/kadane_algorithm.webp
-date: 2026-05-03
+image: https://storage.googleapis.com/junedang_blog_images/kadane-algorithm-maximum-subarray/thumbnail.webp
+date: 2026-05-04
 ---
 
 You're analyzing a stock's daily price changes over the last year. Some days it went up, some days it tanked. Your task: find the best consecutive period to hold the stock. Check every possible window of days and you're looking at millions of calculations. Or, you could use Kadane's Algorithm and solve it in one clean pass. This is the beauty of recognizing that sometimes, carrying forward negative momentum just isn't worth it.
