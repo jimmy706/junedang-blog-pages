@@ -10,6 +10,39 @@ It's peak traffic. Your payment system is processing 30,000 requests per minute.
 
 The question is not whether you will face infrastructure failures. The question is whether your system survives them with financial integrity intact. This article walks through the engineering decisions that matter when critical infrastructure collapses under load, covering incident containment, consistency guarantees, recovery strategies, and architectural lessons for building payment systems that fail safely.
 
+**Typical payment system architecture with Redis:**
+
+<pre class="mermaid">
+architecture-beta
+  group edge(logos:network-router-signal-1)[Edge Layer]
+  group app(logos:server-api-cloud)[Application Layer]
+  group cache(logos:cloud-storage-drive)[Cache Layer]
+  group data(logos:database-hierarchy)[Data Layer]
+  group external(logos:worldwide-web-network-www)[External Services]
+
+  service lb(logos:network-monitor-transfer-arrow-1)[Load Balancer] in edge
+  service api1(logos:terminal)[Payment API] in app
+  service api2(logos:terminal)[Payment API] in app
+  service worker(logos:programming-code-idea)[Background Workers] in app
+  service redis(logos:cloud-storage-drive)[Redis Cache] in cache
+  service db(logos:database)[PostgreSQL Ledger] in data
+  service queue(logos:data-transfer-horizontal)[Message Queue] in data
+  service gateway(logos:security-shield-network)[Payment Gateway] in external
+
+  lb:B --> T:api1
+  lb:B --> T:api2
+  api1:R --> L:redis
+  api2:R --> L:redis
+  api1:B --> T:db
+  api2:B --> T:db
+  api1:R --> L:queue
+  worker:L --> R:queue
+  worker:B --> T:redis
+  worker:B --> T:db
+  api1:R --> L:gateway
+  api2:R --> L:gateway
+</pre>
+
 ## Blast Radius Containment — Stop the Bleeding First
 
 When infrastructure fails during peak load, the first instinct is to fix the root cause. That instinct is wrong. The first priority is preventing system-wide collapse. A slow system beats a dead system. Financial corruption beats both.
@@ -19,6 +52,33 @@ When infrastructure fails during peak load, the first instinct is to fix the roo
 **Enable circuit breakers.** Stop calling Redis entirely if it's timing out. Failing fast is better than letting requests pile up waiting for a service that won't respond. A circuit breaker that trips in 5 seconds with a 60-second cooldown prevents retry storms from amplifying the failure.
 
 **Pause non-critical workloads.** Email notifications, analytics events, recommendation updates, and settlement batch jobs can wait. Payment authorization cannot. Identify the critical path and shut down everything else. This buys time and reclaims worker capacity.
+
+**Blast radius containment architecture:**
+
+<pre class="mermaid">
+architecture-beta
+  group edge(logos:network-router-signal-1)[Edge Defense]
+  group critical(logos:security-shield-network)[Critical Path]
+  group noncritical(logos:app-window-graph)[Non-Critical]
+  group storage(logos:database)[Storage]
+
+  service ratelimit(logos:network-connection-locked)[Rate Limiter] in edge
+  service circuit(logos:security-shield-wall)[Circuit Breaker] in edge
+  service payment(logos:terminal)[Payment Service] in critical
+  service fraud(logos:security-it-service)[Fraud Check] in critical
+  service email(logos:worldwide-web-users)[Email Service] in noncritical
+  service analytics(logos:analytics-graph-line-triple)[Analytics] in noncritical
+  service db(logos:database)[Ledger DB] in storage
+  service redis(logos:cloud-storage-drive)[Redis - DOWN] in storage
+
+  ratelimit:B --> T:circuit
+  circuit:B --> T:payment
+  circuit:B --> T:fraud
+  payment:B --> T:db
+  fraud:B --> T:db
+  email:B --> T:db
+  analytics:B --> T:db
+</pre>
 
 **Activate degraded mode.** Define what "minimal viable payment system" looks like before the incident. Can you authorize payments without Redis? If Redis was storing sessions or rate limit counters, accept the risk and keep processing. If it was holding idempotency state, you have a harder problem—but you still need a degraded mode strategy.
 
@@ -112,6 +172,27 @@ def process_payment(request):
     return result
 ```
 
+**Idempotency architecture with database-backed state:**
+
+<pre class="mermaid">
+architecture-beta
+  group client(logos:programming-browser)[Client]
+  group fastpath(logos:cloud-storage-drive)[Fast Path]
+  group durable(logos:database)[Durable Path]
+  group processing(logos:terminal)[Processing]
+
+  service app(logos:worldwide-web-browser)[Client App] in client
+  service redis(logos:cloud-storage-drive)[Redis Cache] in fastpath
+  service api(logos:server-api-cloud)[Payment API] in processing
+  service db(logos:database)[PostgreSQL] in durable
+  service gateway(logos:security-shield-network)[Payment Gateway] in processing
+
+  app:R --> L:api
+  api:B --> T:redis
+  api:B --> T:db
+  api:R --> L:gateway
+</pre>
+
 **Idempotency keys must have TTL.** Storing every idempotency key forever is not scalable. After 24-48 hours, it's reasonable to expire keys and allow reuse. This requires careful TTL selection based on client retry windows and reconciliation cycles.
 
 **The trade-off is storage cost versus duplicate protection window.** Storing idempotency keys for 7 days provides strong protection but increases storage requirements. Storing for 24 hours is cheaper but creates a small window where very delayed retries might create duplicates. Most systems settle on 48-72 hours as a pragmatic balance.
@@ -143,6 +224,29 @@ def correct_payment():
         )
         # Balance is computed: SELECT SUM(amount) FROM ledger WHERE account_id = ?
 ```
+
+**Ledger architecture patterns comparison:**
+
+<pre class="mermaid">
+architecture-beta
+  group wrong(logos:bug-browser-warning)[Mutable Balance Pattern]
+  group right(logos:security-shield-network)[Append-Only Ledger]
+
+  service api1(logos:terminal)[Payment Request 1] in wrong
+  service api2(logos:terminal)[Payment Request 2] in wrong
+  service balance(logos:database-settings)[Account Balance] in wrong
+  
+  service req1(logos:terminal)[Payment Request 1] in right
+  service req2(logos:terminal)[Payment Request 2] in right
+  service ledger(logos:database)[Immutable Ledger] in right
+  service computed(logos:analytics-graph-line-triple)[Computed Balance] in right
+
+  api1:B --> T:balance
+  api2:B --> T:balance
+  req1:B --> T:ledger
+  req2:B --> T:ledger
+  ledger:R --> L:computed
+</pre>
 
 **Every financial state change is a ledger entry.** Authorization, capture, refund, chargeback, fee—each is a separate immutable entry. You never update a ledger entry. You append a new entry that represents the new state. This provides complete audit history and makes reconciliation possible.
 
@@ -188,6 +292,38 @@ flowchart TD
 
 Redis is fast, but it is not magic. Understanding how it fails determines what breaks when it dies.
 
+**Redis usage patterns and failure impacts:**
+
+<pre class="mermaid">
+architecture-beta
+  group cache(logos:cloud-check)[Cache Pattern - Safe]
+  group session(logos:app-window-user)[Session Pattern - Annoying]
+  group queue(logos:data-transfer-horizontal)[Queue Pattern - Risky]
+  group lock(logos:security-shield-wall)[Lock Pattern - Dangerous]
+  group idempotency(logos:bug-browser-warning)[Idempotency Pattern - Catastrophic]
+
+  service redis1(logos:cloud-storage-drive)[Redis Cache] in cache
+  service db1(logos:database)[Database Fallback] in cache
+  
+  service redis2(logos:cloud-storage-drive)[Redis Sessions] in session
+  service users(logos:worldwide-web-users)[Users Re-login] in session
+  
+  service redis3(logos:cloud-storage-drive)[Redis Queue] in queue
+  service lost(logos:bug-browser-warning)[Lost Messages] in queue
+  
+  service redis4(logos:cloud-storage-drive)[Redis Locks] in lock
+  service duplicate1(logos:bug-browser-warning)[Duplicate Processing] in lock
+  
+  service redis5(logos:cloud-storage-drive)[Redis Idempotency] in idempotency
+  service duplicate2(logos:bug-browser-warning)[Duplicate Charges] in idempotency
+
+  redis1:B --> T:db1
+  redis2:B --> T:users
+  redis3:B --> T:lost
+  redis4:B --> T:duplicate1
+  redis5:B --> T:duplicate2
+</pre>
+
 **Redis as cache.** This is the safe use case. If Redis crashes, reads go to the database. Latency increases but the system stays correct. Cache warming after recovery is slow but manageable.
 
 **Redis as session store.** Users lose sessions and must re-authenticate. Annoying but not catastrophic. The alternative is storing sessions in a database—slower but more durable.
@@ -209,6 +345,40 @@ Redis is fast, but it is not magic. Understanding how it fails determines what b
 ## Recovery and Reconciliation — Finding What Broke
 
 Redis is back online. The system is stable. Now comes the hard part: figuring out what data is corrupted and fixing it.
+
+**Recovery and reconciliation workflow:**
+
+<pre class="mermaid">
+architecture-beta
+  group system(logos:database-hierarchy)[Internal Systems]
+  group external(logos:worldwide-web-network-www)[External Sources]
+  group reconcile(logos:analytics-board-graph-line)[Reconciliation]
+  group action(logos:programming-code-idea)[Actions]
+
+  service ledger(logos:database)[Internal Ledger] in system
+  service queues(logos:data-transfer-horizontal)[Message Queues] in system
+  service cache(logos:cloud-storage-drive)[Cached State] in system
+  
+  service gateway(logos:security-shield-network)[Payment Gateway API] in external
+  service bank(logos:security-it-service)[Bank Records] in external
+  
+  service compare(logos:analytics-graph-line-triple)[Comparison Engine] in reconcile
+  service detect(logos:bug-browser-warning)[Mismatch Detection] in reconcile
+  
+  service refund(logos:worldwide-web-users)[Issue Refunds] in action
+  service notify(logos:worldwide-web-users)[Notify Customers] in action
+  service fix(logos:programming-code-idea)[Compensating Transactions] in action
+
+  ledger:R --> L:compare
+  gateway:L --> R:compare
+  bank:L --> R:compare
+  compare:B --> T:detect
+  detect:B --> T:refund
+  detect:B --> T:notify
+  detect:B --> T:fix
+  queues:R --> L:compare
+  cache:R --> L:compare
+</pre>
 
 **Reconcile ledger against payment gateway.** Query your payment gateway (Stripe, Braintree, etc.) for all transactions during the incident window. Compare against your ledger. Missing transactions were lost. Duplicate transactions need investigation—were they legitimate retries or duplicates?
 
