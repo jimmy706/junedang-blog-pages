@@ -21,26 +21,21 @@ architecture-beta
   group external(logos:worldwide-web-network-www)[External Services]
 
   service lb(logos:network-monitor-transfer-arrow-1)[Load Balancer] in edge
-  service api1(logos:terminal)[Payment API] in app
-  service api2(logos:terminal)[Payment API] in app
+  service api(logos:terminal)[Payment API Pool] in app
   service worker(logos:programming-code-idea)[Background Workers] in app
   service redis(logos:cloud-storage-drive)[Redis Cache] in cache
   service db(logos:database)[PostgreSQL Ledger] in data
   service queue(logos:data-transfer-horizontal)[Message Queue] in data
   service gateway(logos:security-shield-network)[Payment Gateway] in external
 
-  lb:B --> T:api1
-  lb:B --> T:api2
-  api1:R --> L:redis
-  api2:R --> L:redis
-  api1:B --> T:db
-  api2:B --> T:db
-  api1:R --> L:queue
+  lb:B --> T:api
+  api:R --> L:redis
+  api:B --> T:db
+  api:R --> L:queue
+  api:R --> L:gateway
   worker:L --> R:queue
   worker:B --> T:redis
   worker:B --> T:db
-  api1:R --> L:gateway
-  api2:R --> L:gateway
 </pre>
 
 ## Blast Radius Containment — Stop the Bleeding First
@@ -59,7 +54,7 @@ When infrastructure fails during peak load, the first instinct is to fix the roo
 architecture-beta
   group edge(logos:network-router-signal-1)[Edge Defense]
   group critical(logos:security-shield-network)[Critical Path]
-  group noncritical(logos:app-window-graph)[Non-Critical]
+  group noncritical(logos:app-window-graph)[Non Critical]
   group storage(logos:database)[Storage]
 
   service ratelimit(logos:network-connection-locked)[Rate Limiter] in edge
@@ -69,7 +64,7 @@ architecture-beta
   service email(logos:worldwide-web-users)[Email Service] in noncritical
   service analytics(logos:analytics-graph-line-triple)[Analytics] in noncritical
   service db(logos:database)[Ledger DB] in storage
-  service redis(logos:cloud-storage-drive)[Redis - DOWN] in storage
+  service redis(logos:cloud-storage-drive)[Redis DOWN] in storage
 
   ratelimit:B --> T:circuit
   circuit:B --> T:payment
@@ -230,7 +225,7 @@ def correct_payment():
 <pre class="mermaid">
 architecture-beta
   group wrong(logos:bug-browser-warning)[Mutable Balance Pattern]
-  group right(logos:security-shield-network)[Append-Only Ledger]
+  group right(logos:security-shield-network)[Append Only Ledger]
 
   service api1(logos:terminal)[Payment Request 1] in wrong
   service api2(logos:terminal)[Payment Request 2] in wrong
@@ -296,17 +291,17 @@ Redis is fast, but it is not magic. Understanding how it fails determines what b
 
 <pre class="mermaid">
 architecture-beta
-  group cache(logos:cloud-check)[Cache Pattern - Safe]
-  group session(logos:app-window-user)[Session Pattern - Annoying]
-  group queue(logos:data-transfer-horizontal)[Queue Pattern - Risky]
-  group lock(logos:security-shield-wall)[Lock Pattern - Dangerous]
-  group idempotency(logos:bug-browser-warning)[Idempotency Pattern - Catastrophic]
+  group cache(logos:cloud-check)[Cache Pattern Safe]
+  group session(logos:app-window-user)[Session Pattern Annoying]
+  group queue(logos:data-transfer-horizontal)[Queue Pattern Risky]
+  group lock(logos:security-shield-wall)[Lock Pattern Dangerous]
+  group idempotency(logos:bug-browser-warning)[Idempotency Pattern Catastrophic]
 
   service redis1(logos:cloud-storage-drive)[Redis Cache] in cache
   service db1(logos:database)[Database Fallback] in cache
   
   service redis2(logos:cloud-storage-drive)[Redis Sessions] in session
-  service users(logos:worldwide-web-users)[Users Re-login] in session
+  service users(logos:worldwide-web-users)[Users Relogin] in session
   
   service redis3(logos:cloud-storage-drive)[Redis Queue] in queue
   service lost(logos:bug-browser-warning)[Lost Messages] in queue
