@@ -98,6 +98,37 @@ JWTs became popular because they eliminated the session storage bottleneck in di
 
 The right pattern: short-lived JWT access tokens (5–15 minutes) paired with refresh tokens stored server-side. Services validate JWTs stateless. When an access token expires, the client uses the refresh token to get a new one. If you need to revoke access, you invalidate the refresh token server-side. The access token continues working until expiration, but the user cannot get a new one. Maximum revocation latency equals access token lifetime.
 
+**Access token and refresh token lifecycle:**
+
+<pre class="mermaid">
+---
+config:
+  look: handDrawn
+---
+sequenceDiagram
+    participant C as Client
+    participant A as Auth Service
+    participant R as Resource API
+
+    C->>A: POST /auth/login (credentials)
+    A-->>C: access_token (15 min) + refresh_token (7 days)
+
+    C->>R: GET /api/resource — Bearer access_token
+    R-->>C: 200 OK
+
+    Note over C,R: 15 minutes pass — access token expires
+
+    C->>R: GET /api/resource (expired token)
+    R-->>C: 401 Unauthorized
+
+    C->>A: POST /auth/refresh — refresh_token
+    A-->>C: new access_token + new refresh_token
+    A->>A: Old refresh_token invalidated
+
+    C->>R: GET /api/resource — new access_token
+    R-->>C: 200 OK
+</pre>
+
 ## JWT Internals — Why the Payload Is Visible
 
 A JWT consists of three parts separated by dots: `header.payload.signature`. Each part is base64url-encoded JSON.
@@ -189,6 +220,31 @@ Experience teaches that token management is a continuous operational concern, no
 
 **Refresh token rotation on every use prevents abuse.** When a client uses a refresh token to get a new access token, the response includes a new refresh token. The old refresh token is invalidated. If both the legitimate user and an attacker try to refresh, the first succeeds and the second fails. This signals compromise. Revoke all tokens for that user and force re-authentication. Single-use refresh tokens are harder to implement but significantly improve security.
 
+**How rotation detects a stolen refresh token:**
+
+<pre class="mermaid">
+---
+config:
+  look: handDrawn
+---
+sequenceDiagram
+    participant U as User
+    participant A as Auth Service
+    participant E as Attacker
+
+    Note over U,E: Attacker steals refresh_token_v1
+
+    U->>A: POST /auth/refresh (refresh_token_v1)
+    A-->>U: new access_token + refresh_token_v2
+    A->>A: refresh_token_v1 invalidated
+
+    E->>A: POST /auth/refresh (refresh_token_v1)
+    A->>A: Already used — reuse detected!
+    A-->>E: 401 Token Reuse
+    A->>A: Revoke ALL sessions for this user
+    A-->>U: Force re-authentication
+</pre>
+
 **Secure storage is non-negotiable.** For web apps, use HTTP-only cookies for tokens to prevent JavaScript access. For mobile apps, use platform keychains (iOS Keychain, Android Keystore). For server-to-server, use secret management systems, not environment variables or config files committed to git. For client-side apps that need JavaScript access to tokens, understand that XSS is your biggest risk. No storage mechanism is safe if XSS is possible.
 
 **HTTPS everywhere is mandatory.** Tokens transmitted over HTTP are trivially intercepted. This includes internal service-to-service communication. "Internal networks are trusted" is a false assumption. Compromise of one service should not grant access to all traffic. Mutual TLS (mTLS) between services adds defense in depth—both client and server authenticate via certificates.
@@ -212,6 +268,38 @@ Real-world systems combine multiple patterns to balance security, performance, a
 **OAuth 2.0 and OpenID Connect are industry standards.** OAuth 2.0 handles authorization (granting access to resources). OpenID Connect (OIDC) extends OAuth to handle authentication (proving identity). Using these protocols means interoperability with identity providers (Okta, Auth0, Azure Entra ID, Google, GitHub) and well-tested libraries. Implementing custom authentication is risky—protocol details matter, and subtle mistakes create vulnerabilities.
 
 **Identity providers centralize authentication.** Instead of every application managing passwords, an identity provider handles authentication. Applications trust the identity provider and accept its tokens. This enables single sign-on (SSO)—one login grants access to multiple applications. It also centralizes security—password policies, MFA, breach detection, and compliance happen in one place rather than being reimplemented in every app.
+
+**OAuth 2.0 / OIDC ecosystem — how identity providers manage token issuance and validation:**
+
+<pre class="mermaid">
+architecture-beta
+  group clients(logos:programming-browser)[Clients]
+  group authzone(logos:security-shield-network)[Auth Layer]
+  group apis(logos:server-api-cloud)[Resource APIs]
+  group infra(logos:database)[Infrastructure]
+
+  service browser(logos:worldwide-web-browser)[Web App] in clients
+  service mobile(logos:responsive-design-monitor-phone)[Mobile App] in clients
+
+  service idp(logos:security-it-service)[Identity Provider] in authzone
+  service gateway(logos:network-router-signal-1)[API Gateway] in authzone
+
+  service svc1(logos:terminal)[Orders API] in apis
+  service svc2(logos:terminal)[Users API] in apis
+
+  service tokendb(logos:database)[Token Store] in infra
+  service keystore(logos:security-shield-wall)[Key Store] in infra
+
+  browser:R --> L:idp
+  mobile:R --> L:idp
+  idp:R --> L:gateway
+  idp:B --> T:tokendb
+  idp:B --> T:keystore
+  gateway:R --> L:svc1
+  gateway:R --> L:svc2
+  svc1:B --> T:keystore
+  svc2:B --> T:keystore
+</pre>
 
 **API gateways enforce authentication at the edge.** Gateways sit between clients and backend services, validating tokens before forwarding requests. This offloads authentication from services, which can trust that authenticated requests already passed validation. But it requires defense in depth—services should still validate tokens, assuming the gateway might be bypassed.
 
