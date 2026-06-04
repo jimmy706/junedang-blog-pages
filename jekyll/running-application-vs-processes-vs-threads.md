@@ -2,8 +2,8 @@
 title: "Running Application vs Processes vs Threads: What Actually Runs Inside Your Computer?"
 description: "Understanding the difference between applications, processes, and threads—and why opening Chrome creates hundreds of execution units."
 tags: [operating-systems, processes, threads, concurrency, system-architecture]
-image: https://storage.googleapis.com/junedang_blog_images/running-application-vs-processes-vs-threads/application_process_thread.webp
-date: 2026-05-28
+image: https://storage.googleapis.com/junedang_blog_images/running-application-vs-processes-vs-threads/thumbnail.webp
+date: 2026-06-04
 ---
 
 You open Chrome. Task Manager suddenly shows 15 processes. Activity Monitor reveals 200+ threads. Your CPU happily executes all of them. What's actually happening? Most developers casually use terms like "app," "process," and "thread" as if they mean the same thing. They don't. Understanding the difference unlocks why modern software behaves the way it does—and why certain bugs only appear under load.
@@ -221,7 +221,9 @@ When you debug "why is this app slow," you need to think in all three layers:
 - **Process layer**: Is one process leaking memory? Are processes crashing and restarting?
 - **Thread layer**: Is one thread blocking on I/O? Are 100 threads competing for one lock?
 
-Real example: a Node.js application server. Users see "one app." The OS manages one process. But that process spawns a thread pool of 8-16 worker threads handling concurrent requests. If one request does a blocking database call without using async I/O, that thread stalls—reducing concurrency by 12%. CPU utilization drops. Latency spikes. The problem isn't CPU-bound, it's thread-bound.
+![Application vs Process vs Thread](https://storage.googleapis.com/junedang_blog_images/running-application-vs-processes-vs-threads/computing-layers.webp)
+
+Real example: You open a Chrome browser tab. The browser process spawns a renderer process for that tab. The renderer process creates multiple threads: one for JavaScript execution, one for rendering, one for network requests. The OS schedules those threads across CPU cores. If the JavaScript thread blocks on a long-running script, the UI thread can still keep the tab responsive. If the renderer process crashes, the browser process can restart it without affecting other tabs.
 
 ## Why Modern Systems Became This Complex
 
@@ -305,17 +307,3 @@ Chrome uses a multi-process architecture for security and stability. Each websit
 <details><summary><b>2. What's the difference between concurrency and parallelism in the context of threads?</b></summary>
 Concurrency means multiple threads make progress over time by rapidly context switching on limited CPU cores—they're not running simultaneously, but they're all advancing. Parallelism means multiple threads execute simultaneously on multiple CPU cores—true parallel execution. A single-core system can have concurrent threads but not parallel threads. A quad-core system can run four threads in true parallelism.
 </details>
-
-<!--
-Subtopic selection rationale:
-1. "What Users See vs What Systems Manage" - Establishes the confusion and sets up the three-layer model
-2. "Applications: The Human-Facing Concept" - Defines applications as ecosystems, not single executables
-3. "Processes: Isolated Execution Containers" - Explains OS-level resource management and isolation
-4. "Threads: The Actual Execution Workers" - Shows what CPUs actually execute and why threads exist
-5. "The Three-Layer Mental Model" - Unifies the concepts with the key insight
-6. "Why Modern Systems Became This Complex" - Historical context and architectural drivers
-7. "Real Engineering Problems from Misunderstanding" - Practical debugging and common failure modes
-8. "Connecting to Modern Development Patterns" - Language-specific implementations
-
-These 8 sections comprehensively cover the topic while maintaining engineering focus and practical applicability. The structure follows the narrative flow specified in the requirements, starting with user perspective, building through technical layers, and connecting to real-world engineering problems.
--->
