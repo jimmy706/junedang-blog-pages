@@ -35,8 +35,29 @@ This is what the **buffer** is. Before playback starts, the player pre-loads sev
 
 The protocol that governs this on most modern platforms is **HLS (HTTP Live Streaming)**, developed by Apple, or **MPEG-DASH (Dynamic Adaptive Streaming over HTTP)**. Both work the same way at a high level: a manifest file describes which chunk URLs to fetch and in what order, and the player requests them one by one over plain HTTPS. No special protocols, no persistent connections—just regular web requests.
 
+When you press Play, here's the step-by-step sequence:
+
+![Video Streaming Sequence](https://storage.googleapis.com/junedang_blog_images/how-video-streaming-works/how-stream-video-works.webp)
+
+**.1 User clicks Play**: The video player (web browser or mobile app) requests playback metadata first. The backend responds with a manifest file includes information like: available quality levels, chunk URLs, audio tracks, subtitles...
+```json
+{
+  "duration": 5420,
+  "qualities": [
+    "360p",
+    "720p",
+    "1080p",
+    "4K"
+  ],
+  "segmentDuration": 4,
+  "manifest": "video.m3u8"
+}
 ```
-# Simplified HLS manifest (m3u8)
+**2. Server responds with manifest**: The server response not yet the video data but it return the manifest file that contains the list of chunk URLs and their metadata. The player uses this to know what chunks to request next. Example of a manifest file (HLS format) is shown above.
+
+```bash
+server: HTTP/1.1 200 OK
+Content-Type: application/vnd.apple.mpegurl
 #EXTM3U
 #EXT-X-TARGETDURATION:6
 #EXTINF:6.0,
@@ -45,29 +66,39 @@ chunk_001.ts
 chunk_002.ts
 #EXTINF:5.9,
 chunk_003.ts
+...
+```
+Think of the manifest as a table of contents for the video. It tells the player where to find each chunk and how long it is. Each chunk act as a small, self-contained piece of the video that can be downloaded and played independently.
+
+**3. Player requests first chunk**: This is where actual video data starts flowing. The player makes an HTTP GET request for the first chunk URL listed in the manifest. The server responds with the chunk file, which is a small binary file containing compressed video data.
+
+```bash
+GET /chunk_001.ts HTTP/1.1
+Host: video.example.com
 ```
 
-When you press Play, here's the step-by-step sequence:
 
-<pre class="mermaid">
-sequenceDiagram
-    participant User
-    participant Player
-    participant Server
+**4. Fill up the buffer**: As chunks arrive, the player decodes and plays them in order. Meanwhile, it continues to request subsequent chunks, keeping the buffer filled. If the network is fast, the buffer grows; if it's slow, the player may drop to a lower quality stream (more on that later).
 
-    User->>Player: Click Play
-    Player->>Server: Request manifest file
-    Server-->>Player: Return chunk list + URLs
-    Player->>Server: Fetch chunks 1–3
-    Server-->>Player: Return first chunks
-    Note over Player: Buffer ready → Playback begins
-    loop While watching
-        Player->>Server: Fetch next chunk
-        Server-->>Player: Return chunk
-    end
-</pre>
+> Usually, the player requests several chunks ahead of the current playback position to ensure smooth playback. For example, if the chunk duration is 6 seconds, the player might request chunks 1 through 5 immediately after receiving the manifest.
 
-Playback begins after just those first few chunks arrive—typically under a second of content. You're watching while the rest is still downloading.
+Example of chunk request sequence:
+
+```bash
+Downloaded
+
+██████████
+
+Playing
+
+██
+```
+
+Suspose the player is currently playing chunk 1 (0:00–0:06). It has already downloaded chunks 2–5 (0:06–0:30) and is requesting chunk 6 (0:30–0:36). The buffer ensures that even if the network slows down, playback continues uninterrupted.
+
+**5. Playback starts**: The player begins decoding and rendering the video frames from the first chunk. As each chunk finishes playing, the player moves to the next one in the buffer. This continues until the end of the video or until the user stops playback.
+
+**6. Stream continues**: The player keeps requesting chunks in order, maintaining the buffer. If the network speed changes, the player may switch to a different quality level (adaptive bitrate) to ensure smooth playback.
 
 ## Adaptive Bitrate: Why Quality Changes Automatically
 
